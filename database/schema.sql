@@ -1,0 +1,2 @@
+-- SCHEMA DE BASE DE DONNEES — MENTORLINK (PIL1_2526_47)
+-- À compléter avec les tables du projet
