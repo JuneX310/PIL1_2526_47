@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Publier une Annonce — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/groupe1.css' %}"/>
+{% endblock %}
+
+{% block content %}
+{% verbatim %}
+<div id="app" v-cloak class="min-h-[calc(100vh-160px)] py-xl px-marge-page">
+    <div class="max-w-[720px] mx-auto">
+        <!-- Header Section -->
+        <div class="text-center mb-lg">
+            <h1 class="font-titre-h2 text-titre-h2 text-primary mb-xs">Publier une annonce</h1>
+            <p class="text-on-surface-variant font-corps-lg text-corps-lg">Partagez vos compétences ou trouvez le mentor idéal pour votre réussite académique.</p>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="bg-white rounded-[16px] p-md md:p-lg border border-outline-variant/30 shadow-md">
+            <form @submit.prevent="submitForm" class="space-y-lg">
+                <!-- Toggle Switch (Je propose vs Je cherche) -->
+                <div class="flex p-1 bg-surface-container-low rounded-xl border border-outline-variant/10">
+                    <label class="flex-1 cursor-pointer">
+                        <input v-model="formData.type" class="sr-only peer" name="type" type="radio" value="propose"/>
+                        <div class="py-3 text-center rounded-lg font-bouton text-bouton transition-all peer-checked:bg-primary-container peer-checked:text-white text-on-surface-variant hover:bg-white/50">
+                            Je propose du mentorat
+                        </div>
+                    </label>
+                    <label class="flex-1 cursor-pointer">
+                        <input v-model="formData.type" class="sr-only peer" name="type" type="radio" value="cherche"/>
+                        <div class="py-3 text-center rounded-lg font-bouton text-bouton transition-all peer-checked:bg-primary-container peer-checked:text-white text-on-surface-variant hover:bg-white/50">
+                            Je cherche un mentor
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Tag Selector: Matières -->
+                <div class="space-y-sm">
+                    <label class="font-titre-h3 text-[16px] block text-primary font-bold">Matières concernées</label>
+                    <div class="flex flex-wrap gap-sm">
+                        <label v-for="subject in availableSubjects" :key="subject.id" class="cursor-pointer group">
+                            <input v-model="formData.subjects" :value="subject.name" class="sr-only peer" type="checkbox"/>
+                            <span class="px-4 py-2 rounded-full border border-outline-variant bg-white text-on-surface-variant font-bouton text-bouton peer-checked:bg-primary-container peer-checked:text-white peer-checked:border-primary-container transition-all block">
+                                {{ subject.name }}
+                            </span>
+                        </label>
+                        
+                        <!-- Add Custom Subject Button / Input -->
+                        <div v-if="showCustomInput" class="flex items-center gap-xs">
+                            <input v-model="newSubjectName" 
+                                   ref="customInput"
+                                   @keyup.enter="addCustomSubject" 
+                                   class="px-sm py-1.5 border border-outline-variant rounded-full text-xs font-bouton outline-none focus:ring-1 focus:ring-primary w-32" 
+                                   placeholder="Nouvelle matière..." 
+                                   type="text"/>
+                            <button @click="addCustomSubject" type="button" class="p-1.5 bg-primary text-white rounded-full hover:bg-primary-container">
+                                <span class="material-symbols-outlined text-[14px]">check</span>
+                            </button>
+                            <button @click="showCustomInput = false" type="button" class="p-1.5 bg-erreur/10 text-erreur rounded-full hover:bg-erreur hover:text-white">
+                                <span class="material-symbols-outlined text-[14px]">close</span>
+                            </button>
+                        </div>
+                        
+                        <button v-else @click="openCustomInput" class="flex items-center gap-xs px-4 py-2 rounded-full border border-dashed border-outline text-primary font-bouton text-bouton hover:bg-surface-container transition-colors" type="button">
+                            <span class="material-symbols-outlined text-[18px]">add</span> Ajouter une matière
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Radio Buttons with Icons: Format -->
+                <div class="space-y-sm">
+                    <label class="font-titre-h3 text-[16px] block text-primary font-bold">Format des sessions</label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+                        <label class="cursor-pointer">
+                            <input v-model="formData.format" class="sr-only peer" name="format" type="radio" value="présentiel"/>
+                            <div class="flex flex-col items-center gap-sm p-md rounded-xl border-2 border-outline-variant bg-white transition-all peer-checked:border-secondary-container peer-checked:bg-secondary-fixed/10 hover:border-outline duration-200">
+                                <span class="material-symbols-outlined text-[32px] text-primary">location_on</span>
+                                <span class="font-bouton text-bouton text-on-surface">Présentiel</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input v-model="formData.format" class="sr-only peer" name="format" type="radio" value="en ligne"/>
+                            <div class="flex flex-col items-center gap-sm p-md rounded-xl border-2 border-outline-variant bg-white transition-all peer-checked:border-secondary-container peer-checked:bg-secondary-fixed/10 hover:border-outline duration-200">
+                                <span class="material-symbols-outlined text-[32px] text-primary">videocam</span>
+                                <span class="font-bouton text-bouton text-on-surface">En ligne</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input v-model="formData.format" class="sr-only peer" name="format" type="radio" value="les deux"/>
+                            <div class="flex flex-col items-center gap-sm p-md rounded-xl border-2 border-outline-variant bg-white transition-all peer-checked:border-secondary-container peer-checked:bg-secondary-fixed/10 hover:border-outline duration-200">
+                                <span class="material-symbols-outlined text-[32px] text-primary">sync_alt</span>
+                                <span class="font-bouton text-bouton text-on-surface">Les deux</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Time Grid: Disponibilités -->
+                <div class="space-y-sm">
+                    <label class="font-titre-h3 text-[16px] block text-primary font-bold">Disponibilités hebdomadaires</label>
+                    <div class="overflow-x-auto pb-sm custom-scrollbar">
+                        <table class="w-full text-center border-collapse">
+                            <thead>
+                                <tr>
+                                    <th class="p-2"></th>
+                                    <th v-for="day in days" :key="day" class="p-2 font-label-caps text-label-caps text-on-surface-variant text-[11px]">{{ day }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="timeSlot in timeSlots" :key="timeSlot.id" class="border-t border-outline-variant/30">
+                                    <td class="p-2 font-label-caps text-[10px] text-on-surface-variant text-left pr-4 font-bold">{{ timeSlot.label }}</td>
+                                    <td v-for="day in days" :key="day" class="p-1">
+                                        <button type="button"
+                                                @click="toggleSlot(day, timeSlot.id)"
+                                                :class="isSlotSelected(day, timeSlot.id) ? 'time-slot-active' : 'bg-surface-container-low hover:bg-outline-variant/30'"
+                                                class="block w-full h-8 rounded cursor-pointer transition-colors duration-150">
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Textarea: Message -->
+                <div class="space-y-sm">
+                    <label class="font-titre-h3 text-[16px] block text-primary font-bold">Message de l'annonce</label>
+                    <textarea v-model="formData.description" 
+                              class="w-full px-md py-sm rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none font-corps-md text-corps-md text-sm" 
+                              :placeholder="descriptionPlaceholder" 
+                              rows="4" 
+                              required></textarea>
+                </div>
+
+                <!-- Submit CTA -->
+                <button type="submit" 
+                        :disabled="isSubmitting"
+                        class="w-full py-4 bg-primary text-white rounded-lg font-bouton text-[16px] shadow-lg hover:bg-primary-container active:scale-[0.98] transition-all flex items-center justify-center gap-sm disabled:opacity-50">
+                    <span v-if="isSubmitting" class="material-symbols-outlined animate-spin text-[20px]">sync</span>
+                    <span v-else class="material-symbols-outlined text-[20px] text-white">send</span>
+                    {{ isSubmitting ? 'Publication en cours...' : 'Publier l\'annonce' }}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div v-if="showToast" 
+         class="fixed bottom-8 right-8 bg-succes text-white px-lg py-md rounded-xl font-bold flex items-center gap-xs shadow-lg z-[1000] transition-all">
+         <span class="material-symbols-outlined text-white">check_circle</span>
+         <span>Annonce publiée avec succès !</span>
+    </div>
+</div>
+{% endverbatim %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/publier.js' %}"></script>
+{% endblock %}
