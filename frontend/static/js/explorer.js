@@ -40,10 +40,10 @@ createApp({
                 name: "Koffi AGOSSOU",
                 filiere: "Génie Logiciel",
                 niveau: "M2",
-                matchScore: 98,
-                description: "Passionné par l'architecture logicielle et le Clean Code. Je peux t'aider sur Java, SQL et la conception orientée objet.",
+                matchScore: 99,
+                description: "Passionné par l'architecture logicielle, les bonnes pratiques de codage (Clean Code) et l'écosystème Java. Je peux vous accompagner sur vos projets académiques.",
                 subjects: ["Java", "Algorithmique", "SQL"],
-                availability: "Mercredi, Samedi",
+                availability: "Mercredi, Samedi, Dimanche",
                 format: "Présentiel",
                 avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBPctlMaplPECRB8inV7MpRzb4w6FNjDBJT4san1XhxerXmzMvgIZln9zgfd6mB8s55L0zOLSus3ujangA5ye9lQtm4zpI0aIIaWSoQGkSqzFCnPp-K4RrWu6OriDTve_d68abp6s3h1uHy9FKK1L7PwYNjcdA29tiWIRbQ2uFZ_LYcMBmwdGqSjMV3WuSS_ULGXMooNQyZ2dIce6hAGXASKiQhNBrsSEEcn35I3yOd8v3KaqnKdqR-ANbm6kAPEw--usDh8-4Mg3o"
             },
