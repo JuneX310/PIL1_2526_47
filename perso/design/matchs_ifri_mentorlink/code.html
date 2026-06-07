@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Résultats de Matching - IFRI Mentorat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@600&amp;family=Nunito+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .gauge-circle {
+            transition: stroke-dashoffset 0.8s ease-out;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#bf7658",
+                      "on-error": "#ffffff",
+                      "tertiary-container": "#401200",
+                      "on-tertiary-fixed-variant": "#70361d",
+                      "erreur": "#D90429",
+                      "secondary": "#8b5000",
+                      "on-primary-fixed": "#05154f",
+                      "surface-container-high": "#d8ebf7",
+                      "primary-container": "#0c1b54",
+                      "primary-fixed-dim": "#b8c3ff",
+                      "primary-fixed": "#dde1ff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#b8c3ff",
+                      "inverse-on-surface": "#e2f3ff",
+                      "outline": "#767681",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed-dim": "#ffb598",
+                      "on-secondary-fixed": "#2d1600",
+                      "surface-variant": "#d2e5f2",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#7885c3",
+                      "tertiary-fixed": "#ffdbce",
+                      "on-primary-fixed-variant": "#36437c",
+                      "on-surface-variant": "#454650",
+                      "surface-container": "#def1fd",
+                      "on-background": "#0b1e27",
+                      "surface-fond": "#F2F0EC",
+                      "on-surface": "#0b1e27",
+                      "secondary-container": "#ffa441",
+                      "inverse-surface": "#21333c",
+                      "error-container": "#ffdad6",
+                      "on-tertiary": "#ffffff",
+                      "surface-carte": "#FFFFFF",
+                      "primary": "#00052b",
+                      "outline-variant": "#c6c5d1",
+                      "on-tertiary-fixed": "#370e00",
+                      "on-secondary-container": "#6d3e00",
+                      "surface-dim": "#cadde9",
+                      "tertiary": "#1a0400",
+                      "secondary-fixed-dim": "#ffb872",
+                      "on-primary": "#ffffff",
+                      "surface-container-highest": "#d2e5f2",
+                      "surface": "#f4faff",
+                      "on-secondary-fixed-variant": "#6a3c00",
+                      "succes": "#2D6A4F",
+                      "surface-tint": "#4e5b96",
+                      "surface-bright": "#f4faff",
+                      "surface-container-low": "#e8f6ff",
+                      "secondary-fixed": "#ffdcbe",
+                      "background": "#f4faff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "sm": "12px",
+                      "grille-colonnes": "12",
+                      "xl": "80px",
+                      "grille-gouttiere": "24px",
+                      "md": "24px",
+                      "marge-page": "5%",
+                      "base": "8px",
+                      "lg": "48px"
+              },
+              "fontFamily": {
+                      "titre-h1": ["Montserrat"],
+                      "label-caps": ["Inter"],
+                      "corps-lg": ["Nunito Sans"],
+                      "titre-h3": ["Montserrat"],
+                      "titre-h1-mobile": ["Montserrat"],
+                      "corps-md": ["Nunito Sans"],
+                      "bouton": ["Inter"],
+                      "titre-h2": ["Montserrat"]
+              },
+              "fontSize": {
+                      "titre-h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "corps-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "titre-h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "titre-h1-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "corps-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "bouton": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                      "titre-h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface-fond font-corps-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-inverse-surface shadow-sm sticky top-0 z-50">
+<div class="flex justify-between items-center px-marge-page py-4 w-full max-w-[1200px] mx-auto">
+<div class="font-titre-h3 text-titre-h3 font-bold text-primary dark:text-primary-fixed-dim">IFRI Mentorat</div>
+<!-- Desktop Links -->
+<div class="hidden md:flex items-center gap-md">
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-2 py-1 rounded-lg" href="#">Tableau de bord</a>
+<a class="text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 font-bold" href="#">Mentors</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-2 py-1 rounded-lg" href="#">Ressources</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-2 py-1 rounded-lg" href="#">Messages</a>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-all active:scale-95">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-all active:scale-95">
+<span class="material-symbols-outlined text-primary" data-icon="settings">settings</span>
+</button>
+<img alt="Photo de profil de l'étudiant" class="w-10 h-10 rounded-full object-cover border-2 border-surface-container-high" data-alt="A professional studio headshot of a young African university student smiling confidently. The lighting is soft and warm, highlighting clear skin and sharp features. The background is a minimalist, slightly out-of-focus academic setting with light wood tones and white walls, creating a clean, modern, and trustworthy atmosphere in line with a high-end educational platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKbkTzULng5rA1OiDMDo7fv2yOWU7T1B-buQ5Xl2WamZgjG1dKltlWKCJT2MUXD4EpGHtBRfMI0x-E6e0MfX9y2_aHPztkjBSmIdMAn5lK6J7PGCqWGaexkRC86vjWqkkFrUvoPxW91CsQq8L2bYw3Z13ecwATDHiaV-gJ_UYXprpf9-IwPJk2cukn1UeUnFC3Bo7Bzd6wQcmzu0DbKY5vxJ6MnSQuhdsUh3asxq9VEkRbCx2KhHJjCO8ygmjhvGye6thR93fqcy8"/>
+</div>
+</div>
+</nav>
+<main class="max-w-[1200px] mx-auto px-marge-page py-lg">
+<!-- Header Section -->
+<header class="mb-lg">
+<h1 class="font-titre-h1 text-titre-h1 text-primary mb-xs">Vos meilleurs matchs</h1>
+<p class="font-corps-lg text-corps-lg text-on-surface-variant">Basé sur vos compétences et disponibilités</p>
+</header>
+<!-- Search & Filter Bar -->
+<div class="bg-surface-carte rounded-xl p-md mb-lg shadow-sm flex flex-col md:flex-row items-center justify-between gap-md">
+<div class="flex flex-wrap gap-sm items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Trier par :</span>
+<button class="px-sm py-base rounded-full bg-primary-fixed text-on-primary-fixed-variant font-bouton text-bouton flex items-center gap-xs">
+                    Compatibilité
+                    <span class="material-symbols-outlined text-[16px]" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</button>
+<button class="px-sm py-base rounded-full border border-outline-variant text-on-surface-variant font-bouton text-bouton hover:bg-surface-container-low transition-colors">
+                    Filière
+                </button>
+<button class="px-sm py-base rounded-full border border-outline-variant text-on-surface-variant font-bouton text-bouton hover:bg-surface-container-low transition-colors">
+                    Disponibilité
+                </button>
+</div>
+<div class="relative w-full md:w-64">
+<input class="w-full pl-10 pr-4 py-2 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary font-corps-md" placeholder="Rechercher un mentor..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+</div>
+</div>
+<!-- Matches List -->
+<div class="grid grid-cols-1 gap-md">
+<!-- Match Card 1 (TOP MATCH) -->
+<div class="group relative bg-surface-carte border-2 border-secondary-container rounded-[16px] p-md md:p-lg shadow-lg hover:shadow-xl transition-all duration-300">
+<div class="absolute -top-4 left-6 bg-secondary-container text-on-secondary-container px-sm py-1 rounded-full font-bouton text-bouton flex items-center gap-xs shadow-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill">star</span>
+                    Meilleur match
+                </div>
+<div class="flex flex-col lg:flex-row gap-lg items-start lg:items-center">
+<!-- Profile Info -->
+<div class="flex items-center gap-md min-w-[280px]">
+<img alt="Mentor Avatar" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-4 border-surface-fond" data-alt="A close-up portrait of a mature African male mentor with glasses, smiling warmly. He is dressed in a professional navy blue suit. The lighting is crisp, studio-quality, emphasizing a professional yet approachable demeanor. The background consists of a brightly lit modern office library with soft blue and white accents, reflecting academic excellence and leadership." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWl31smWdHXpZ2Bk4ugGLW5mgD9Q6KzowRGjMZ8KGABEVrj1WKNw1jSr07KJ3WNsStZ-hkjZdVO2oErbJ7zB-EVeDY1Cd54Q8MLHCnBQ1gMhJnUMaoE_BAAOXWp_9_iX5EVGUutQuaaOxwxCalL-txZN870ZYh5LuInijSC9cjab6FbPb_jDGB2IaJS60x1WnlYSFLPMqJ_0BA70Ix04GozqziHilqPTjJL3I4TQSsrFWadjeGRR31QaDnRD5I4qlefPVuylqQtDo"/>
+<div>
+<h3 class="font-titre-h3 text-titre-h3 text-primary">Dr. Arnaud Zinsou</h3>
+<p class="text-secondary font-bold uppercase tracking-tight text-[14px]">Génie Logiciel • M2</p>
+<div class="flex items-center gap-1 mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span class="text-corps-md">Campus d'Abomey-Calavi</span>
+</div>
+</div>
+</div>
+<!-- Skills -->
+<div class="flex-grow">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-sm">COMPÉTENCES CLÉS</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">Architecture Logicielle</span>
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">Python Advanced</span>
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">Machine Learning</span>
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">+3</span>
+</div>
+</div>
+<!-- Compatibility & Stats -->
+<div class="flex items-center gap-lg w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-outline-variant pt-md lg:pt-0 lg:pl-lg">
+<!-- Gauge -->
+<div class="relative w-20 h-20 flex flex-col items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-high" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-secondary-container gauge-circle" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-dasharray="226" stroke-dashoffset="11" stroke-width="6"></circle>
+</svg>
+<span class="absolute font-bold text-primary">95%</span>
+<span class="absolute -bottom-6 font-label-caps text-[10px] text-on-surface-variant whitespace-nowrap">COMPATIBILITÉ</span>
+</div>
+<!-- Availability -->
+<div class="flex flex-col gap-xs">
+<div class="font-label-caps text-[10px] text-on-surface-variant">PROCHAINE DISPO</div>
+<div class="flex items-center gap-xs text-succes font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="event_available">event_available</span>
+<span>Demain, 14h00</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-col gap-sm w-full lg:w-48">
+<button class="flex-1 bg-primary text-on-primary font-bouton text-bouton py-3 rounded-lg hover:bg-primary-container transition-all active:scale-95 shadow-md">Contacter</button>
+<button class="flex-1 border-2 border-primary text-primary font-bouton text-bouton py-3 rounded-lg hover:bg-surface-container-low transition-all active:scale-95">Voir profil</button>
+</div>
+</div>
+</div>
+<!-- Match Card 2 -->
+<div class="group bg-surface-carte border border-outline-variant/30 rounded-[16px] p-md md:p-lg shadow-sm hover:shadow-md transition-all duration-300">
+<div class="flex flex-col lg:flex-row gap-lg items-start lg:items-center">
+<!-- Profile Info -->
+<div class="flex items-center gap-md min-w-[280px]">
+<img alt="Mentor Avatar" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-surface-fond" data-alt="A portrait of a young African female graduate in tech, wearing a stylish smart-casual blazer. She has a bright, intelligent expression. The lighting is natural and bright, captured in a modern workspace with floor-to-ceiling windows showing a blurred green cityscape. The aesthetic is clean, professional, and optimistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9UQmJbPMwD32n-BJrd8mOL7wLFNM9S5DB0PK_NRo1hnzR2OhpswFtAQxu30hpWOMBM5E3PZ_xYptByUtRMP7mYGDmjmI1ZdVm8vv5z4UZ2ZEW6LxmNkSRFdvFz0SAE8J5S1_F3QAzi9cksnIUdG1hdCBJmN5f7QyWg0ZARSfpbqNhZRQfXEIxRKd_pZflkr11kEAYseNyAUHLBUZY7aRcd5HHGwZBbwu24gOwoRTr6F5m3QKRob4MFurafQbOoBvvr2TXiFyhXSA"/>
+<div>
+<h3 class="font-titre-h3 text-titre-h3 text-primary">Gloria Deguenon</h3>
+<p class="text-on-surface-variant font-bold uppercase tracking-tight text-[14px]">Cybersécurité • M1</p>
+<div class="flex items-center gap-1 mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span class="text-corps-md">Hybride / IFRI</span>
+</div>
+</div>
+</div>
+<!-- Skills -->
+<div class="flex-grow">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-sm">COMPÉTENCES CLÉS</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">Ethical Hacking</span>
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">Cloud Security</span>
+</div>
+</div>
+<!-- Compatibility & Stats -->
+<div class="flex items-center gap-lg w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-outline-variant pt-md lg:pt-0 lg:pl-lg">
+<!-- Gauge -->
+<div class="relative w-20 h-20 flex flex-col items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-high" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-primary-container gauge-circle" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-dasharray="226" stroke-dashoffset="38" stroke-width="6"></circle>
+</svg>
+<span class="absolute font-bold text-primary">83%</span>
+<span class="absolute -bottom-6 font-label-caps text-[10px] text-on-surface-variant whitespace-nowrap">COMPATIBILITÉ</span>
+</div>
+<!-- Availability -->
+<div class="flex flex-col gap-xs">
+<div class="font-label-caps text-[10px] text-on-surface-variant">PROCHAINE DISPO</div>
+<div class="flex items-center gap-xs text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+<span>Vendredi, 09h00</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-col gap-sm w-full lg:w-48">
+<button class="flex-1 bg-primary-container text-on-primary-container font-bouton text-bouton py-3 rounded-lg hover:opacity-90 transition-all active:scale-95">Contacter</button>
+<button class="flex-1 border-2 border-primary-container text-primary-container font-bouton text-bouton py-3 rounded-lg hover:bg-surface-container-low transition-all active:scale-95">Voir profil</button>
+</div>
+</div>
+</div>
+<!-- Match Card 3 -->
+<div class="group bg-surface-carte border border-outline-variant/30 rounded-[16px] p-md md:p-lg shadow-sm hover:shadow-md transition-all duration-300">
+<div class="flex flex-col lg:flex-row gap-lg items-start lg:items-center">
+<!-- Profile Info -->
+<div class="flex items-center gap-md min-w-[280px]">
+<img alt="Mentor Avatar" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-surface-fond" data-alt="A portrait of a focused young African man in his late 20s. He is wearing a minimalist white shirt. The background is a crisp, clean architectural space with neutral stone textures and bright daylight, conveying a sense of stability and professional expertise. The overall mood is serious yet open and helpful." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFCqwOLzi5ve-o3KqaPnl4HdMsguh88_uT8T04UMF4lAOfou5IzIIHfFQzQWmG4qLuGPRfDnJAvN15Ij6jaxIGpPr1wVpKCOU6vnzQXQOBZClMHqSnrjrIwUBydb86SUt--t5o5j230144-hJGHrZkYQcNevqg1-7e69oTiGQdEqnwpgfL7TaO_HSM387rKHT-HzlwxUN8fwjudM57-2shgTVtVcS8JGStY2AGGZkwGlxenWqRP349c5io1P9cXT200LXzJXkOPWE"/>
+<div>
+<h3 class="font-titre-h3 text-titre-h3 text-primary">Samuel Kpadonou</h3>
+<p class="text-on-surface-variant font-bold uppercase tracking-tight text-[14px]">Data Science • L3</p>
+<div class="flex items-center gap-1 mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span class="text-corps-md">À distance</span>
+</div>
+</div>
+</div>
+<!-- Skills -->
+<div class="flex-grow">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-sm">COMPÉTENCES CLÉS</div>
+<div class="flex flex-wrap gap-xs">
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">Data Analysis</span>
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">R programming</span>
+<span class="px-sm py-1 bg-primary/10 text-primary rounded-full font-bouton text-[12px]">SQL</span>
+</div>
+</div>
+<!-- Compatibility & Stats -->
+<div class="flex items-center gap-lg w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-outline-variant pt-md lg:pt-0 lg:pl-lg">
+<!-- Gauge -->
+<div class="relative w-20 h-20 flex flex-col items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-high" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-primary-container/60 gauge-circle" cx="40" cy="40" fill="transparent" r="36" stroke="currentColor" stroke-dasharray="226" stroke-dashoffset="63" stroke-width="6"></circle>
+</svg>
+<span class="absolute font-bold text-primary">72%</span>
+<span class="absolute -bottom-6 font-label-caps text-[10px] text-on-surface-variant whitespace-nowrap">COMPATIBILITÉ</span>
+</div>
+<!-- Availability -->
+<div class="flex flex-col gap-xs">
+<div class="font-label-caps text-[10px] text-on-surface-variant">PROCHAINE DISPO</div>
+<div class="flex items-center gap-xs text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+<span>Lundi prochain</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-col gap-sm w-full lg:w-48">
+<button class="flex-1 bg-primary-container text-on-primary-container font-bouton text-bouton py-3 rounded-lg hover:opacity-90 transition-all active:scale-95">Contacter</button>
+<button class="flex-1 border-2 border-primary-container text-primary-container font-bouton text-bouton py-3 rounded-lg hover:bg-surface-container-low transition-all active:scale-95">Voir profil</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More -->
+<div class="mt-lg flex justify-center">
+<button class="group flex items-center gap-sm px-lg py-md border-2 border-outline-variant text-primary font-bouton text-bouton rounded-full hover:bg-primary hover:text-on-primary hover:border-primary transition-all">
+                Voir plus de profils
+                <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-lg px-marge-page flex flex-col md:flex-row justify-between items-center gap-md bg-primary dark:bg-primary-container mt-xl">
+<div class="flex flex-col gap-xs items-center md:items-start">
+<div class="font-titre-h3 text-titre-h3 font-bold text-on-primary">IFRI</div>
+<div class="font-label-caps text-label-caps text-on-primary/60">© 2024 IFRI - Université d'Abomey-Calavi. Tous droits réservés.</div>
+</div>
+<div class="flex flex-wrap justify-center gap-md">
+<a class="font-corps-md text-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Guide Académique</a>
+<a class="font-corps-md text-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Bibliothèque Numérique</a>
+<a class="font-corps-md text-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Charte de Mentorat</a>
+<a class="font-corps-md text-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Support Technique</a>
+</div>
+</footer>
+<script>
+        // Micro-interactions for buttons and effects
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (icon && icon.getAttribute('data-icon') === 'star') {
+                    icon.style.transform = 'scale(1.2) rotate(15deg)';
+                }
+            });
+            btn.addEventListener('mouseleave', () => {
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (icon && icon.getAttribute('data-icon') === 'star') {
+                    icon.style.transform = 'scale(1) rotate(0deg)';
+                }
+            });
+        });
+
+        // Initialize progress circles with a small delay for animation
+        window.addEventListener('load', () => {
+            const circles = document.querySelectorAll('.gauge-circle');
+            circles.forEach(circle => {
+                const currentOffset = circle.style.strokeDashoffset;
+                circle.style.strokeDashoffset = '226'; // Start from 0
+                setTimeout(() => {
+                    circle.style.strokeDashoffset = currentOffset;
+                }, 100);
+            });
+        });
+    </script>
+</body></html>

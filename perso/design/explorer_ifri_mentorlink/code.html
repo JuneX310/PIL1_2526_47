@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IFRI Mentorat — Explorer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Nunito+Sans:wght@400;600;700&amp;family=Inter:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#bf7658",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#401200",
+                    "on-tertiary-fixed-variant": "#70361d",
+                    "erreur": "#D90429",
+                    "secondary": "#8b5000",
+                    "on-primary-fixed": "#05154f",
+                    "surface-container-high": "#d8ebf7",
+                    "primary-container": "#0c1b54",
+                    "primary-fixed-dim": "#b8c3ff",
+                    "primary-fixed": "#dde1ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#b8c3ff",
+                    "inverse-on-surface": "#e2f3ff",
+                    "outline": "#767681",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#ffb598",
+                    "on-secondary-fixed": "#2d1600",
+                    "surface-variant": "#d2e5f2",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#7885c3",
+                    "tertiary-fixed": "#ffdbce",
+                    "on-primary-fixed-variant": "#36437c",
+                    "on-surface-variant": "#454650",
+                    "surface-container": "#def1fd",
+                    "on-background": "#0b1e27",
+                    "surface-fond": "#F2F0EC",
+                    "on-surface": "#0b1e27",
+                    "secondary-container": "#ffa441",
+                    "inverse-surface": "#21333c",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "surface-carte": "#FFFFFF",
+                    "primary": "#00052b",
+                    "outline-variant": "#c6c5d1",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-secondary-container": "#6d3e00",
+                    "surface-dim": "#cadde9",
+                    "tertiary": "#1a0400",
+                    "secondary-fixed-dim": "#ffb872",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#d2e5f2",
+                    "surface": "#f4faff",
+                    "on-secondary-fixed-variant": "#6a3c00",
+                    "succes": "#2D6A4F",
+                    "surface-tint": "#4e5b96",
+                    "surface-bright": "#f4faff",
+                    "surface-container-low": "#e8f6ff",
+                    "secondary-fixed": "#ffdcbe",
+                    "background": "#f4faff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "sm": "12px",
+                    "grille-colonnes": "12",
+                    "xl": "80px",
+                    "grille-gouttiere": "24px",
+                    "md": "24px",
+                    "marge-page": "5%",
+                    "base": "8px",
+                    "lg": "48px"
+            },
+            "fontFamily": {
+                    "titre-h1": ["Montserrat"],
+                    "label-caps": ["Inter"],
+                    "corps-lg": ["Nunito Sans"],
+                    "titre-h3": ["Montserrat"],
+                    "titre-h1-mobile": ["Montserrat"],
+                    "corps-md": ["Nunito Sans"],
+                    "bouton": ["Inter"],
+                    "titre-h2": ["Montserrat"]
+            },
+            "fontSize": {
+                    "titre-h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "corps-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "titre-h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "titre-h1-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "corps-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "bouton": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                    "titre-h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-filter {
+            background-color: #0c1b54;
+            color: #ffffff;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #0c1b54;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface-fond font-corps-md text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="bg-surface dark:bg-inverse-surface shadow-sm sticky top-0 z-50">
+<div class="flex justify-between items-center px-marge-page py-4 w-full max-w-[1200px] mx-auto">
+<div class="font-titre-h3 text-titre-h3 font-bold text-primary dark:text-primary-fixed-dim">
+                IFRI Mentorat
+            </div>
+<nav class="hidden md:flex gap-md items-center">
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Tableau de bord</a>
+<a class="text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 font-bold" href="#">Mentors</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Ressources</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Messages</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">settings</span>
+</button>
+<img alt="Photo de profil de l'étudiant" class="w-10 h-10 rounded-full border-2 border-primary-container object-cover" data-alt="A professional headshot of a young Beninese university student with a bright smile. She is wearing modern African print business casual attire. The background is a soft-focus academic setting with warm sunlight streaming through windows, aligning with the excellence-connected brand aesthetic. High-quality portrait photography with a professional finish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZfGy-IPE-48rirtSjTy6p7R1arfGQ_rI4IgGlHTwJxSRqLma_qnpOjnBuTYK2bKllby1o-sSjkdEKBGNBpLKOgnPLhZzhoolSxyQ3k5HHGZSfn6atwLNjWx8rNhHnb3PcuwwPhJK3lfy2hZ4e2IvPLZ9rMIQXuy3Vd_0_0FluVQtnHY1VD8IRVJ_jRQE2jDPJXCgMmvBgpGEB-1AL8yfT4kGnVSQZC4lj_JmnqeNeo3hZu36fRyAmKwbfvSOPV5qFtPKAuZ8xjXk"/>
+</div>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto px-marge-page py-lg space-y-lg">
+<!-- Search and Filter Section -->
+<section class="space-y-md">
+<div class="flex flex-col md:flex-row gap-md items-center justify-between">
+<h1 class="font-titre-h2 text-titre-h2 text-primary">Explorer les mentors</h1>
+<!-- Toggle Switch -->
+<div class="bg-surface-container p-1 rounded-xl flex items-center shadow-inner">
+<button class="px-6 py-2 rounded-lg bg-primary text-white font-bouton text-bouton transition-all duration-300" id="toggle-offres">Offres</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant font-bouton text-bouton transition-all duration-300" id="toggle-demandes">Demandes</button>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="relative w-full max-w-3xl mx-auto group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary">search</span>
+<input class="w-full pl-12 pr-4 py-4 rounded-xl border border-outline-variant bg-surface-carte focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition-all text-corps-md font-corps-md" placeholder="Rechercher une matière, un mentor (ex: Algorithmique, Koffi...)" type="text"/>
+</div>
+<!-- Filter Chips Row -->
+<div class="flex flex-wrap gap-sm justify-center">
+<button class="px-md py-2 rounded-full border border-outline-variant bg-surface-carte text-on-surface-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">book</span> Matière
+                </button>
+<button class="px-md py-2 rounded-full border border-outline-variant bg-surface-carte text-on-surface-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">videocam</span> Format
+                </button>
+<button class="px-md py-2 rounded-full border border-outline-variant bg-surface-carte text-on-surface-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">schedule</span> Horaire
+                </button>
+<button class="px-md py-2 rounded-full border border-outline-variant bg-surface-carte text-on-surface-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">school</span> Filière
+                </button>
+<button class="px-md py-2 rounded-full border border-outline-variant bg-surface-carte text-on-surface-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">bar_chart</span> Niveau
+                </button>
+</div>
+</section>
+<!-- Results Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-grille-gouttiere">
+<!-- Card 1 -->
+<div class="bg-surface-carte rounded-xl border border-outline-variant p-md shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-md">
+<img class="w-14 h-14 rounded-full object-cover border-2 border-primary-container" data-alt="A close-up portrait of a confident young African male student in a bright studio environment. He has a warm, professional expression, wearing a navy blue polo shirt. The lighting is crisp and modern, highlighting a clean, institutional academic atmosphere. The background is a soft gradient of light blues, maintaining the UI's professional and connected theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPctlMaplPECRB8inV7MpRzb4w6FNjDBJT4san1XhxerXmzMvgIZln9zgfd6mB8s55L0zOLSus3ujangA5ye9lQtm4zpI0aIIaWSoQGkSqzFCnPp-K4RrWu6OriDTve_d68abp6s3h1uHy9FKK1L7PwYNjcdA29tiWIRbQ2uFZ_LYcMBmwdGqSjMV3WuSS_ULGXMooNQyZ2dIce6hAGXASKiQhNBrsSEEcn35I3yOd8v3KaqnKdqR-ANbm6kAPEw--usDh8-4Mg3o"/>
+<div>
+<h3 class="font-titre-h3 text-corps-md font-bold text-primary">Koffi AGOSSOU</h3>
+<p class="text-label-caps font-label-caps text-secondary uppercase tracking-wider">Génie Logiciel (GL)</p>
+</div>
+</div>
+<div class="bg-succes/10 text-succes px-2 py-1 rounded-lg flex items-center gap-1 font-bold text-[12px]">
+<span class="material-symbols-outlined text-[14px]">bolt</span> 98% Match
+                    </div>
+</div>
+<div class="mb-4">
+<p class="text-on-surface-variant text-corps-md mb-2 line-clamp-2 italic">"Passionné par l'architecture logicielle et le Clean Code. Je peux t'aider sur Java et Spring Boot."</p>
+<div class="flex flex-wrap gap-xs">
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Java</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Architecture</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">SQL</span>
+</div>
+</div>
+<div class="mt-auto space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant text-[13px]">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>Disponible : Mercredi, Samedi</span>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-lg font-bouton text-bouton hover:bg-primary-container transition-colors transform active:scale-[0.98]">
+                        Voir le profil
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-carte rounded-xl border border-outline-variant p-md shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-md">
+<img class="w-14 h-14 rounded-full object-cover border-2 border-primary-container" data-alt="Portrait of a young Beninese woman with a thoughtful and intelligent gaze. She is in a contemporary office space with natural light coming from the side. Her style is modern minimalist with a touch of professional elegance. The mood is focused and academic, with soft shadows and high-end photographic quality, fitting the 'Excellence Connectée' theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB56Okjh1NxsrgxILfBl_9jthbgz9Z3Tl91x7PMWomOKRTR-msE7f75Wi2sTyT80IlQqfRhnJXl_4PeQESBCoKyqC-Y5UHwsYqETw_DGGDAjMDDttIdOD59x2fXU-gIajcSMwy9FjKvlUtyqsw-vwWtyKhoyJMPSY6eNMt_DtdcyuV5gFfcBHE1sxIw6a78aJ62rcwX4g8-RtaHsoE6DynkKGWAofqPiQ_-iH2aIVISBAx8exkwNfTasjqLrL7v2eeoXStOuTAgD5o"/>
+<div>
+<h3 class="font-titre-h3 text-corps-md font-bold text-primary">Sena HOUNTON</h3>
+<p class="text-label-caps font-label-caps text-secondary uppercase tracking-wider">Intelligence Artificielle (IA)</p>
+</div>
+</div>
+<div class="bg-succes/10 text-succes px-2 py-1 rounded-lg flex items-center gap-1 font-bold text-[12px]">
+<span class="material-symbols-outlined text-[14px]">bolt</span> 94% Match
+                    </div>
+</div>
+<div class="mb-4">
+<p class="text-on-surface-variant text-corps-md mb-2 line-clamp-2 italic">"Spécialiste Python et Data Science. Actuellement en Master, j'aide les L2/L3 à comprendre le Machine Learning."</p>
+<div class="flex flex-wrap gap-xs">
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Python</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Pandas</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Mathématiques</span>
+</div>
+</div>
+<div class="mt-auto space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant text-[13px]">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>Disponible : Soirs en semaine</span>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-lg font-bouton text-bouton hover:bg-primary-container transition-colors transform active:scale-[0.98]">
+                        Voir le profil
+                    </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-carte rounded-xl border border-outline-variant p-md shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-md">
+<img class="w-14 h-14 rounded-full object-cover border-2 border-primary-container" data-alt="Close-up of a smiling young African man in a brightly lit modern library. He is wearing a white collared shirt, looking relaxed and approachable. The aesthetic is academic yet vibrant, with bookshelves softly blurred in the background. High-key lighting emphasizes a clean, sophisticated atmosphere consistent with institutional excellence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcKr29q9nyRd1QIFW7sQwibJRmRNyRxK-oyowHEhv8lgSic8pwc9iQ7vmL6TI49cQcPJ4zqh9nyGw7g3TcX9UdV0sQ0QdaojQ-68ozX5xb46QoomC4cFMtLrhuPse3eI6iQbv5JmLCzV9xEClXsmQpgudXnaCtyb6wFy9PVSb_qK6GQHRtgLZjudDAQpW8cgBWot1z1p1yb50_XYfSBfD7J2RU0Hyu65CpQCojGrxcxS1k5qg0YKfW34sbDP7m-l4bRbATUg7ZG3Q"/>
+<div>
+<h3 class="font-titre-h3 text-corps-md font-bold text-primary">Modeste TOVIGNON</h3>
+<p class="text-label-caps font-label-caps text-secondary uppercase tracking-wider">Sécurité Informatique</p>
+</div>
+</div>
+<div class="bg-succes/10 text-succes px-2 py-1 rounded-lg flex items-center gap-1 font-bold text-[12px]">
+<span class="material-symbols-outlined text-[14px]">bolt</span> 89% Match
+                    </div>
+</div>
+<div class="mb-4">
+<p class="text-on-surface-variant text-corps-md mb-2 line-clamp-2 italic">"Besoin d'aide en Réseaux ou Cryptographie ? Je simplifie les concepts complexes pour vous."</p>
+<div class="flex flex-wrap gap-xs">
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Réseaux</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Linux</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Sécurité</span>
+</div>
+</div>
+<div class="mt-auto space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant text-[13px]">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>Disponible : Week-end uniquement</span>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-lg font-bouton text-bouton hover:bg-primary-container transition-colors transform active:scale-[0.98]">
+                        Voir le profil
+                    </button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-carte rounded-xl border border-outline-variant p-md shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-md">
+<img class="w-14 h-14 rounded-full object-cover border-2 border-primary-container" data-alt="A portrait of a young African woman with short hair and an engaging smile, wearing a professional mustard-colored blazer. She is standing in a clean, high-tech workspace with subtle digital screens in the background. The lighting is soft and flattering, creating a premium SaaS-style visual that communicates expertise and connection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClrStjK0ahoYutSyaj9Z7JcPFXrZpxTAV4flVTqqbpf9xY7HlJjBdzEFeAD5skKH28tEkJU6PTTK7DK6BZ95kM7ggwca6zcx_KPsbLa4Npt0spUcMgwUWaq256vbJwf8wD0td495CH4zfwFXqL3DQ9M-avrah5W1t_kfxJx8xWkMcGw-a3SmS4dM42vW7D3ba8OI4dYLsLwtnztwY_ELIof-lHiUzUBn_V2UwYZjPJpX_iLbtE-OrSWSogr74t_rwGGL3pAXkdV_A"/>
+<div>
+<h3 class="font-titre-h3 text-corps-md font-bold text-primary">Awa COULIBALY</h3>
+<p class="text-label-caps font-label-caps text-secondary uppercase tracking-wider">Web &amp; Mobile</p>
+</div>
+</div>
+<div class="bg-succes/10 text-succes px-2 py-1 rounded-lg flex items-center gap-1 font-bold text-[12px]">
+<span class="material-symbols-outlined text-[14px]">bolt</span> 87% Match
+                    </div>
+</div>
+<div class="mb-4">
+<p class="text-on-surface-variant text-corps-md mb-2 line-clamp-2 italic">"React, Tailwind et Flutter n'auront plus de secrets pour toi. On construit ton projet ensemble."</p>
+<div class="flex flex-wrap gap-xs">
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">React</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Tailwind</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Flutter</span>
+</div>
+</div>
+<div class="mt-auto space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant text-[13px]">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>Disponible : Flexible</span>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-lg font-bouton text-bouton hover:bg-primary-container transition-colors transform active:scale-[0.98]">
+                        Voir le profil
+                    </button>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-carte rounded-xl border border-outline-variant p-md shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-md">
+<img class="w-14 h-14 rounded-full object-cover border-2 border-primary-container" data-alt="Professional portrait of a young African man with glasses, looking directly at the camera with a helpful and friendly demeanor. He is wearing a grey sweater in a minimalist indoor environment with soft, ambient lighting. The composition is clean and focused, projecting a sense of academic reliability and modern mentorship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQzyckewNt04Chns61wKBr1tRkIU3rm5TYfRrSsCVYWWCOGZaSHIXb2dJIYotDPwryhubeLHHwt7G0Ycj8tj1wWq7BUVaxK5WgJ3KIjxPWxJZeqh9vm-BJ0qe-Tp8gNFO6hTggugpq6t9y0qSIyRXCaH64k16eB9k1f-QxnlPmRS0Vpa_srFhqun7GKAyLf7eVaPOw4BE_0zgK9SbDaq7ZO02it4zorE-sgtajtFu4EQ31a4kwY_63DyXgvMWnZDntpm8Y1Uw_Yhg"/>
+<div>
+<h3 class="font-titre-h3 text-corps-md font-bold text-primary">Didier AMOU</h3>
+<p class="text-label-caps font-label-caps text-secondary uppercase tracking-wider">Algorithmique</p>
+</div>
+</div>
+<div class="bg-succes/10 text-succes px-2 py-1 rounded-lg flex items-center gap-1 font-bold text-[12px]">
+<span class="material-symbols-outlined text-[14px]">bolt</span> 85% Match
+                    </div>
+</div>
+<div class="mb-4">
+<p class="text-on-surface-variant text-corps-md mb-2 line-clamp-2 italic">"Ancien lauréat du concours d'algo. Je t'aide à préparer tes examens et tes concours."</p>
+<div class="flex flex-wrap gap-xs">
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">C++</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Complexité</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Graphes</span>
+</div>
+</div>
+<div class="mt-auto space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant text-[13px]">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>Disponible : Mardi, Vendredi</span>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-lg font-bouton text-bouton hover:bg-primary-container transition-colors transform active:scale-[0.98]">
+                        Voir le profil
+                    </button>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="bg-surface-carte rounded-xl border border-outline-variant p-md shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 flex flex-col h-full">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-md">
+<img class="w-14 h-14 rounded-full object-cover border-2 border-primary-container" data-alt="Close-up of a young African woman with braided hair, smiling warmly. She is in a bright university courtyard with greenery softly out of focus in the distance. The lighting is warm and natural, creating an inviting and supportive atmosphere. The overall style is modern and professional, aligning with the IFRI mentorship brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR3e7PCLCnqnxCN-GYRCsYeNezGlSf-hlNGeGlke1HuVLCLJQdokvzDVPius36gnAFWrQ_NbnZW8rwY69UquC5hNnA2P80AQVyz3lh7elVT8D5DHMNWvJPvaGeTepZ73dCCJw8QFQ24duXiCiP1Qa0mi-K5t2fUeKi6RuNgj6qW_CnyXn1kwxcSFxZz9dkkhilf0Iz78NVseNZdnzTjmYg6NLAwyOlHYH-yyv7i9pmWRAHbviO4hxOsPyTULeCwhCLOgUrA8Jjn3Q"/>
+<div>
+<h3 class="font-titre-h3 text-corps-md font-bold text-primary">Grace ADEWALE</h3>
+<p class="text-label-caps font-label-caps text-secondary uppercase tracking-wider">Gestion de Projets</p>
+</div>
+</div>
+<div class="bg-succes/10 text-succes px-2 py-1 rounded-lg flex items-center gap-1 font-bold text-[12px]">
+<span class="material-symbols-outlined text-[14px]">bolt</span> 82% Match
+                    </div>
+</div>
+<div class="mb-4">
+<p class="text-on-surface-variant text-corps-md mb-2 line-clamp-2 italic">"Certifiée Scrum Master. Je peux t'aider à organiser ton projet de fin d'études avec Agile."</p>
+<div class="flex flex-wrap gap-xs">
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Agile</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Scrum</span>
+<span class="bg-primary/5 text-primary-container px-2 py-1 rounded-lg text-label-caps font-label-caps border border-primary/10">Trello</span>
+</div>
+</div>
+<div class="mt-auto space-y-3">
+<div class="flex items-center gap-2 text-on-surface-variant text-[13px]">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>Disponible : Lundi, Jeudi</span>
+</div>
+<button class="w-full py-3 bg-primary text-white rounded-lg font-bouton text-bouton hover:bg-primary-container transition-colors transform active:scale-[0.98]">
+                        Voir le profil
+                    </button>
+</div>
+</div>
+</section>
+<!-- Pagination -->
+<nav class="flex justify-center items-center gap-sm pt-lg">
+<button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors text-on-surface-variant disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex items-center gap-xs">
+<button class="w-10 h-10 rounded-lg bg-primary text-white font-bold flex items-center justify-center">1</button>
+<button class="w-10 h-10 rounded-lg hover:bg-surface-container-low text-on-surface-variant font-medium flex items-center justify-center">2</button>
+<button class="w-10 h-10 rounded-lg hover:bg-surface-container-low text-on-surface-variant font-medium flex items-center justify-center">3</button>
+<span class="px-2 text-outline">...</span>
+<button class="w-10 h-10 rounded-lg hover:bg-surface-container-low text-on-surface-variant font-medium flex items-center justify-center">8</button>
+</div>
+<button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</nav>
+</main>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-primary-container mt-xl">
+<div class="w-full py-lg px-marge-page flex flex-col md:flex-row justify-between items-center gap-md max-w-[1200px] mx-auto">
+<div class="flex flex-col items-center md:items-start gap-sm">
+<div class="font-titre-h3 text-titre-h3 font-bold text-on-primary">IFRI</div>
+<div class="font-label-caps text-label-caps text-on-primary/60">
+                    © 2024 IFRI - Université d'Abomey-Calavi. Tous droits réservés.
+                </div>
+</div>
+<div class="flex flex-wrap justify-center gap-md">
+<a class="font-corps-md text-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Guide Académique</a>
+<a class="font-corps-md text-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Bibliothèque</a>
+<a class="font-corps-md text-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Support</a>
+<a class="font-corps-md text-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Confidentialité</a>
+</div>
+</div>
+</footer>
+<script>
+        const btnOffres = document.getElementById('toggle-offres');
+        const btnDemandes = document.getElementById('toggle-demandes');
+
+        btnOffres.addEventListener('click', () => {
+            btnOffres.classList.add('bg-primary', 'text-white');
+            btnOffres.classList.remove('text-on-surface-variant');
+            btnDemandes.classList.remove('bg-primary', 'text-white');
+            btnDemandes.classList.add('text-on-surface-variant');
+        });
+
+        btnDemandes.addEventListener('click', () => {
+            btnDemandes.classList.add('bg-primary', 'text-white');
+            btnDemandes.classList.remove('text-on-surface-variant');
+            btnOffres.classList.remove('bg-primary', 'text-white');
+            btnOffres.classList.add('text-on-surface-variant');
+        });
+
+        // Hover effects for cards
+        document.querySelectorAll('.bg-surface-carte').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+        });
+    </script>
+</body></html>

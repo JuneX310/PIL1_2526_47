@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Nunito+Sans:wght@400;600&amp;family=Inter:wght@600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed-dim": "#ffb872",
+                    "on-primary-fixed": "#05154f",
+                    "surface-tint": "#4e5b96",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed": "#ffdcbe",
+                    "inverse-primary": "#b8c3ff",
+                    "on-tertiary-fixed-variant": "#70361d",
+                    "outline-variant": "#c6c5d1",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb598",
+                    "tertiary-container": "#401200",
+                    "surface-container": "#def1fd",
+                    "surface": "#f4faff",
+                    "background": "#f4faff",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d2e5f2",
+                    "primary-fixed-dim": "#b8c3ff",
+                    "primary-container": "#0c1b54",
+                    "inverse-on-surface": "#e2f3ff",
+                    "on-secondary-fixed-variant": "#6a3c00",
+                    "on-surface": "#0b1e27",
+                    "on-primary-fixed-variant": "#36437c",
+                    "inverse-surface": "#21333c",
+                    "tertiary": "#1a0400",
+                    "secondary": "#8b5000",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#d2e5f2",
+                    "primary-fixed": "#dde1ff",
+                    "surface-fond": "#F2F0EC",
+                    "on-secondary-container": "#6d3e00",
+                    "tertiary-fixed": "#ffdbce",
+                    "surface-container-high": "#d8ebf7",
+                    "on-tertiary": "#ffffff",
+                    "surface-carte": "#FFFFFF",
+                    "surface-container-low": "#e8f6ff",
+                    "primary": "#00052b",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#f4faff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-primary-container": "#7885c3",
+                    "surface-dim": "#cadde9",
+                    "on-secondary-fixed": "#2d1600",
+                    "on-background": "#0b1e27",
+                    "secondary-container": "#ffa441",
+                    "outline": "#767681",
+                    "on-tertiary-container": "#bf7658",
+                    "erreur": "#D90429",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#454650",
+                    "succes": "#2D6A4F"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "80px",
+                    "marge-page": "5%",
+                    "base": "8px",
+                    "grille-gouttiere": "24px",
+                    "lg": "48px",
+                    "grille-colonnes": "12",
+                    "sm": "12px",
+                    "md": "24px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "corps-lg": ["Nunito Sans"],
+                    "bouton": ["Inter"],
+                    "titre-h1": ["Montserrat"],
+                    "titre-h1-mobile": ["Montserrat"],
+                    "label-caps": ["Inter"],
+                    "corps-md": ["Nunito Sans"],
+                    "titre-h3": ["Montserrat"],
+                    "titre-h2": ["Montserrat"]
+            },
+            "fontSize": {
+                    "corps-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "bouton": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                    "titre-h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "titre-h1-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "corps-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "titre-h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "titre-h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F2F0EC;
+            background-image: radial-gradient(circle at 20% 30%, rgba(12, 27, 84, 0.02) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 70%, rgba(255, 164, 64, 0.03) 0%, transparent 40%);
+        }
+        .glass-effect {
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-corps-md text-on-background min-h-screen flex items-center justify-center p-md">
+<!-- Main Container -->
+<main class="w-full max-w-[440px] animate-in fade-in duration-700 slide-in-from-bottom-4">
+<!-- Brand Header (Simplified for focused task) -->
+<div class="text-center mb-lg">
+<h1 class="font-titre-h3 text-titre-h3 font-bold text-primary mb-2">IFRI_MentorLink</h1>
+<div class="h-1 w-12 bg-secondary-container mx-auto rounded-full"></div>
+</div>
+<!-- Auth Card -->
+<div class="bg-surface-carte rounded-[16px] shadow-[0px_4px_24px_rgba(12,27,84,0.06)] border border-outline-variant/30 overflow-hidden">
+<div class="p-lg md:p-xl flex flex-col items-center">
+<!-- Icon Header -->
+<div class="w-16 h-16 bg-surface-container-low rounded-full flex items-center justify-center mb-md group transition-all hover:bg-surface-container">
+<span class="material-symbols-outlined text-[32px] text-primary transition-transform group-hover:scale-110" data-icon="lock_reset">lock_reset</span>
+</div>
+<!-- Text Content -->
+<div class="text-center mb-lg">
+<h2 class="font-titre-h3 text-titre-h3 text-primary mb-2">Mot de passe oublié?</h2>
+<p class="font-corps-md text-on-surface-variant">Entrez votre email, on vous envoie un lien</p>
+</div>
+<!-- Form -->
+<form class="w-full space-y-md" onsubmit="return false;">
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-primary block ml-1" for="email">ADRESSE EMAIL</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]" data-icon="mail">mail</span>
+<input class="w-full pl-11 pr-4 py-3 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all font-corps-md placeholder:text-outline-variant" id="email" placeholder="exemple@uac.bj" type="email"/>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-bouton text-bouton py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-on-primary-fixed-variant active:scale-[0.98] transition-all shadow-md" type="submit">
+                        Envoyer le lien
+                        <span class="material-symbols-outlined text-[18px]" data-icon="send">send</span>
+</button>
+</form>
+<!-- Footer Link -->
+<div class="mt-lg">
+<a class="flex items-center gap-2 text-primary font-bouton text-bouton hover:text-secondary transition-colors group" href="#">
+<span class="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-1" data-icon="arrow_back">arrow_back</span>
+                        ← Retour à la connexion
+                    </a>
+</div>
+</div>
+<!-- Visual Decoration Footer -->
+<div class="h-1.5 w-full bg-gradient-to-r from-primary via-secondary-container to-primary/80"></div>
+</div>
+<!-- Academic Resource Teaser (Optional branding element) -->
+<div class="mt-lg text-center opacity-60">
+<p class="font-label-caps text-label-caps text-on-surface-variant flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[14px]" data-icon="school">school</span>
+                INSTITUT DE FORMATION ET DE RECHERCHE EN INFORMATIQUE
+            </p>
+</div>
+</main>
+<!-- Background Illustration Detail -->
+<div class="fixed top-0 right-0 w-1/3 h-full overflow-hidden pointer-events-none -z-10 opacity-20 md:opacity-40">
+<img alt="Academic background" class="w-full h-full object-cover mix-blend-multiply filter grayscale" data-alt="A professional academic setting at the IFRI university featuring modern architecture, students collaborating in the background with soft bokeh. The lighting is bright and airy, reflecting a high-end light-mode UI style. The color palette is dominated by deep blues and clean whites with subtle hints of warm wood and glass reflections, creating a mood of excellence and connection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFrNBJUqHtmt0554T938NbEZnrAtuSQ8dm22stUNOQlqC87Tqd2UhAFZMEtogd73SyCtF62urEllmDGesv8Zg2JmEtISVGnPkTnTTWDgRHU-EPUawqIeJGyCxcS-bZPNLyJQM2_o3n-dFfmYA99svr5r1uaGt88I7BYdz3v2KAb4cMrKSLtEMOkjJHkJYAJSxnjYlokz29i87POdaSUqvUEMce5WRL6C0emg56jxtGFcasUYlcmztRKlBvAFN0aukEkQzjLHgD05k"/>
+</div>
+<script>
+        // Simple micro-interaction for the send button
+        const form = document.querySelector('form');
+        const submitBtn = form.querySelector('button');
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const originalContent = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <span class="animate-spin material-symbols-outlined" data-icon="progress_activity">progress_activity</span>
+                Envoi en cours...
+            `;
+            
+            // Simulate API call
+            setTimeout(() => {
+                submitBtn.classList.remove('bg-primary');
+                submitBtn.classList.add('bg-succes');
+                submitBtn.innerHTML = `
+                    <span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                    Lien envoyé !
+                `;
+                
+                // Reset after 3 seconds
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('bg-succes');
+                    submitBtn.classList.add('bg-primary');
+                    submitBtn.innerHTML = originalContent;
+                }, 3000);
+            }, 1500);
+        });
+    </script>
+</body></html>

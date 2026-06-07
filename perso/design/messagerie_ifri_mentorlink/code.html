@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Messagerie | IFRI_MentorLink</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Nunito+Sans:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#ffb872",
+                        "on-primary-fixed": "#05154f",
+                        "surface-tint": "#4e5b96",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#ffdcbe",
+                        "inverse-primary": "#b8c3ff",
+                        "on-tertiary-fixed-variant": "#70361d",
+                        "outline-variant": "#c6c5d1",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb598",
+                        "tertiary-container": "#401200",
+                        "surface-container": "#def1fd",
+                        "surface": "#f4faff",
+                        "background": "#f4faff",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#d2e5f2",
+                        "primary-fixed-dim": "#b8c3ff",
+                        "primary-container": "#0c1b54",
+                        "inverse-on-surface": "#e2f3ff",
+                        "on-secondary-fixed-variant": "#6a3c00",
+                        "on-surface": "#0b1e27",
+                        "on-primary-fixed-variant": "#36437c",
+                        "inverse-surface": "#21333c",
+                        "tertiary": "#1a0400",
+                        "secondary": "#8b5000",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#d2e5f2",
+                        "primary-fixed": "#dde1ff",
+                        "surface-fond": "#F2F0EC",
+                        "on-secondary-container": "#6d3e00",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface-container-high": "#d8ebf7",
+                        "on-tertiary": "#ffffff",
+                        "surface-carte": "#FFFFFF",
+                        "surface-container-low": "#e8f6ff",
+                        "primary": "#00052b",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#f4faff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-primary-container": "#7885c3",
+                        "surface-dim": "#cadde9",
+                        "on-secondary-fixed": "#2d1600",
+                        "on-background": "#0b1e27",
+                        "secondary-container": "#ffa441",
+                        "outline": "#767681",
+                        "on-tertiary-container": "#bf7658",
+                        "erreur": "#D90429",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#454650",
+                        "succes": "#2D6A4F"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "80px",
+                        "marge-page": "5%",
+                        "base": "8px",
+                        "grille-gouttiere": "24px",
+                        "lg": "48px",
+                        "grille-colonnes": "12",
+                        "sm": "12px",
+                        "md": "24px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "corps-lg": ["Nunito Sans"],
+                        "bouton": ["Inter"],
+                        "titre-h1": ["Montserrat"],
+                        "titre-h1-mobile": ["Montserrat"],
+                        "label-caps": ["Inter"],
+                        "corps-md": ["Nunito Sans"],
+                        "titre-h3": ["Montserrat"],
+                        "titre-h2": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "corps-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "bouton": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                        "titre-h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "titre-h1-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "corps-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "titre-h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "titre-h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d2e5f2;
+            border-radius: 10px;
+        }
+        .chat-container {
+            height: calc(100vh - 160px);
+        }
+    </style>
+</head>
+<body class="bg-surface-fond font-corps-md text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-inverse-surface shadow-sm sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-marge-page h-20 max-w-7xl mx-auto">
+<div class="flex items-center gap-md">
+<span class="font-titre-h3 text-titre-h3 font-bold text-primary dark:text-inverse-primary">IFRI_MentorLink</span>
+<div class="hidden md:flex relative ml-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary-container w-64 text-corps-md" placeholder="Rechercher..." type="text"/>
+</div>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors font-corps-md text-corps-md" href="#">Accueil</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors font-corps-md text-corps-md" href="#">Explorer</a>
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary dark:border-inverse-primary pb-1 font-corps-md text-corps-md" href="#">Messagerie</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors font-corps-md text-corps-md" href="#">Mon Profil</a>
+</div>
+<div class="flex items-center gap-md">
+<button class="hidden md:block bg-secondary-container text-on-secondary-container px-md py-sm rounded-lg font-bouton text-bouton transition-transform scale-95 active:scale-90">Devenir Mentor</button>
+<img alt="Photo de profil de l'étudiant" class="w-10 h-10 rounded-full border-2 border-primary-fixed-dim object-cover" data-alt="A professional close-up headshot of a young Beninese university student with a warm smile, wearing a clean white polo shirt. The background is a blurred high-end university campus with soft natural lighting. The image style is sharp, modern, and optimistic, maintaining the light-mode institutional aesthetic of the IFRI portal with subtle blue and orange accents in the environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxlOEzaLYIK8yy_quXS4ys0vnSMd3mN7e2iT8pqVlu2ykIRTPE5nVBMs7RS5VtulQt8XMpMiy1Z32veBdgR8D7VX9uYgwbyyd9vvu7CkBqAiLDVQx6FcaTVMlwjG-88O3YpM7puu6WWDofTQQvpxCPViG_Yw2xITSQQ-Xd_DA4rsrGQkjP5cyctRWS5gumjYw_3OvJMkIgs9JOZaLMyi_j5wlqaJLOJf6q04RylE_ZcFBCPPSyDS1bKGFtIdoQUwWHptFlTEDprmI"/>
+</div>
+</nav>
+</header>
+<main class="max-w-7xl mx-auto px-marge-page py-md">
+<div class="grid grid-cols-12 gap-6 chat-container">
+<!-- Left Panel: Conversation List -->
+<aside class="col-span-12 md:col-span-4 bg-surface-carte rounded-xl shadow-sm border border-outline-variant/30 flex flex-col overflow-hidden">
+<div class="p-md border-b border-outline-variant/20">
+<h2 class="font-titre-h3 text-titre-h3 mb-md">Messages</h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-fond border-none rounded-lg text-sm focus:ring-1 focus:ring-primary-container" placeholder="Rechercher un mentor ou un étudiant..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<!-- Conversation Item (Active) -->
+<div class="p-md bg-surface-container flex gap-md cursor-pointer border-l-4 border-primary transition-colors">
+<div class="relative flex-shrink-0">
+<img alt="Avatar Mentor" class="w-12 h-12 rounded-full object-cover" data-alt="Close-up portrait of a senior Beninese software engineering professor with short hair and glasses, looking knowledgeable and friendly. The lighting is soft and professional. He is in a clean, modern office setting with tech elements in the background. The visual style is premium and institutional, using the IFRI blue and white color scheme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjLuCFLwvRk5COwIvjLqX64xMFBlVoN7sA-cv0Z69h-tjuj8YrAoOc6cA6-NWqMgmtIS7JOvw7BKhuFd-LhTWtWr8-Z5INHhSTdvk5IguBLOM5VM46c0btn2TGYLkMC6T_nkSGUNRkX5A9NqELH_Db2gyiJDnQew7qF9WQU0qGMtFAJFur9VKFUJx-U3yCbDpuCcpTeUEihHIkTaGva6Wecdo_RlfLoywEI5o2u6M0uAziJqelV9L_VXawAvbLPAr27_hpc5zYZFE"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-succes border-2 border-white rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<span class="font-bold text-on-surface truncate">Dr. Arnaud SOSSOU</span>
+<span class="text-xs text-on-surface-variant">14:20</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate font-bold">C'est clair pour la complexité O(n log n) ?</p>
+<div class="mt-xs">
+<span class="inline-block bg-primary-container/10 text-primary-container text-[10px] px-2 py-0.5 rounded-full font-bold">Algorithmique</span>
+</div>
+</div>
+</div>
+<!-- Conversation Item -->
+<div class="p-md hover:bg-surface-fond flex gap-md cursor-pointer transition-colors border-b border-outline-variant/10">
+<div class="relative flex-shrink-0">
+<img alt="Avatar Student" class="w-12 h-12 rounded-full object-cover" data-alt="A professional portrait of a young West African female computer science student with a focused expression. She is wearing a smart casual blazer. The background is a brightly lit, modern academic library with soft geometric patterns. The overall mood is serious yet accessible, following the connected excellence theme of the IFRI platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDitwRCm-vjumXWOBAm1dD8-aZbrna5vNs4rjpHtfB0_igpISzuvS5w0D-AQtLNDwmRYdxFVoLIS0FiCfOYe9tLCoTVzVayg6xlleOfahsh8QGl6J0vsk7vHU15QsPRBsS7cdq0w9EDYooG5n-HruG68W-iDViZcFX9fG7n12S_gFciyKel3LK5HUs19of0gReoOCJu3DTNyl6AfRON3VdtvyuBQxqEEnkpojEHdpnA7w4rhX8s0jEsbYdSajsosufX_5EgxBrcttM"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<span class="font-bold text-on-surface truncate">Merveille HOUNKPONOU</span>
+<span class="text-xs text-on-surface-variant">Hier</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate">Merci pour le PDF sur le Python.</p>
+</div>
+</div>
+<!-- Conversation Item -->
+<div class="p-md hover:bg-surface-fond flex gap-md cursor-pointer transition-colors border-b border-outline-variant/10">
+<div class="relative flex-shrink-0">
+<img alt="Avatar Mentor" class="w-12 h-12 rounded-full object-cover" data-alt="A high-end professional headshot of a middle-aged African man in a business suit, representing a mentor from the industry. He has an encouraging and authoritative presence. The lighting is studio-grade with cool highlights. The background is a minimal architectural space reflecting innovation and excellence, consistent with the IFRI design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwRi0yGlhahJBxHn_Kwah8da2Ywfvm_GhgjzQqwzcw-0POXfgXWrcCEr3TsoUpeyMLguxaoL8njH9MDgOZuogLNJgxoy5u0o5nTUoHBWONtBDIA6TP4hUxAkTHvP9UHByyQJFyL6yxhU2EPzlDGfUtmIcnCTNCR3O262dcuwJGr-DULZ4-6gCMiA91HSOjOJCunsyn93laSSVidRe1LOct5mM1wdAbDR2AmwcFgrmzaDDX-MdXqU3xHwiRKzLBNLHxcKJZ_oZInWQ"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<span class="font-bold text-on-surface truncate">Ing. Franck TOSSOU</span>
+<span class="text-xs text-on-surface-variant">02/10</span>
+</div>
+<p class="text-sm text-on-surface-variant truncate">Ton CV est prêt pour le stage ?</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Panel: Chat Interface -->
+<section class="hidden md:flex md:col-span-8 bg-surface-carte rounded-xl shadow-sm border border-outline-variant/30 flex-col overflow-hidden relative">
+<!-- Chat Top Bar -->
+<div class="p-md flex justify-between items-center border-b border-outline-variant/20">
+<div class="flex items-center gap-md">
+<img alt="Dr. Arnaud SOSSOU" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA93899ot7BGxbTHDiF7MsgQUtNMrV0yWc1Jp-xvwBIIF63LbL021LWy8nv33p2i4cuLz_CQQNu7lrfNUrNDgjO1XS6nQtVaSqJZNVQchZoLneX1OhH8SobiS6_LjhmChJO-vqtZZHQhe9Lk0D46TAFIUhop8P3eu3npuKuIwlwyktqPvwepFhAtzRjc8WlsQAfYCkYVIrv2R0YQ3FiHM8w0t3TW1F9X3BkDNR8AMOWW79YtGi-pfoCT2_I0Mj71c1Gjrt4MhZbo4"/>
+<div>
+<h3 class="font-bold text-on-surface">Dr. Arnaud SOSSOU</h3>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-succes rounded-full"></span>
+<span class="text-xs text-on-surface-variant">En ligne</span>
+</div>
+</div>
+</div>
+<div class="flex gap-md">
+<button class="p-2 hover:bg-surface-fond rounded-full text-primary transition-colors"><span class="material-symbols-outlined">call</span></button>
+<button class="p-2 hover:bg-surface-fond rounded-full text-primary transition-colors"><span class="material-symbols-outlined">videocam</span></button>
+<button class="p-2 hover:bg-surface-fond rounded-full text-primary transition-colors"><span class="material-symbols-outlined">info</span></button>
+</div>
+</div>
+<!-- Messages Area -->
+<div class="flex-1 overflow-y-auto p-md space-y-md bg-surface-fond/30" id="chat-messages">
+<div class="flex justify-center my-md">
+<span class="text-xs bg-outline-variant/30 text-on-surface-variant px-3 py-1 rounded-full font-label-caps">AUJOURD'HUI</span>
+</div>
+<!-- Received Message -->
+<div class="flex flex-col items-start max-w-[80%]">
+<div class="bg-surface p-md rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/20">
+<p class="text-sm text-on-surface">Bonjour ! J'ai bien reçu tes notes sur les tris récursifs. Est-ce que tu as des difficultés sur le Merge Sort (tri fusion) ?</p>
+</div>
+<span class="text-[10px] text-on-surface-variant mt-1 ml-1">14:05</span>
+</div>
+<!-- Sent Message -->
+<div class="flex flex-col items-end self-end max-w-[80%]">
+<div class="bg-primary-container p-md rounded-2xl rounded-tr-none shadow-md">
+<p class="text-sm text-on-primary-container">Bonjour Docteur. Oui, un peu au niveau de l'étape de division et de la fusion des sous-listes. J'ai du mal avec la complexité spatiale.</p>
+</div>
+<div class="flex items-center gap-1 mt-1 mr-1">
+<span class="text-[10px] text-on-surface-variant">14:12</span>
+<span class="material-symbols-outlined text-[12px] text-primary" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+<!-- Received Message -->
+<div class="flex flex-col items-start max-w-[80%]">
+<div class="bg-surface p-md rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/20">
+<p class="text-sm text-on-surface">C'est normal. Le Merge Sort nécessite un espace auxiliaire proportionnel à la taille de la liste. C'est pour ça qu'on dit que sa complexité spatiale est O(n).</p>
+</div>
+<span class="text-[10px] text-on-surface-variant mt-1 ml-1">14:18</span>
+</div>
+<!-- Received Message -->
+<div class="flex flex-col items-start max-w-[80%]">
+<div class="bg-surface p-md rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/20">
+<p class="text-sm text-on-surface font-bold">C'est clair pour la complexité O(n log n) au niveau du temps par contre ?</p>
+</div>
+<span class="text-[10px] text-on-surface-variant mt-1 ml-1">14:20</span>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-md bg-surface border-t border-outline-variant/20">
+<form class="flex items-center gap-md" onsubmit="event.preventDefault();">
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined">attach_file</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined">sentiment_satisfied</span></button>
+</div>
+<input class="flex-1 py-3 px-md bg-surface-fond border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-container outline-none" placeholder="Écrivez votre message..." type="text"/>
+<button class="bg-primary-container text-white p-3 rounded-xl hover:shadow-lg transition-all active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</form>
+</div>
+</section>
+</div>
+<!-- Empty State Preview (Mobile or Switchable via JS) -->
+<div class="hidden flex-col items-center justify-center h-full text-center py-20 px-md col-span-8 bg-surface-carte rounded-xl border border-dashed border-outline-variant" id="empty-state">
+<div class="w-24 h-24 bg-surface-fond rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant">forum</span>
+</div>
+<h3 class="font-titre-h3 text-titre-h3 text-on-surface mb-xs">Sélectionnez une conversation</h3>
+<p class="text-on-surface-variant max-w-sm">Choisissez un mentor ou un étudiant dans la liste pour commencer à échanger sur vos projets académiques.</p>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container mt-lg">
+<div class="w-full py-lg px-marge-page flex flex-col md:flex-row justify-between items-center gap-md max-w-7xl mx-auto">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-titre-h3 text-titre-h3 font-bold text-on-primary">IFRI_MentorLink</span>
+<p class="text-on-primary/80 dark:text-on-primary-container/80 text-sm max-w-xs text-center md:text-left">L'Excellence Connectée pour les étudiants de l'Institut de Formation et de Recherche en Informatique.</p>
+</div>
+<div class="flex gap-lg">
+<a class="text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-fixed-dim transition-colors underline-offset-4 hover:underline" href="#">À propos</a>
+<a class="text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-fixed-dim transition-colors underline-offset-4 hover:underline" href="#">Guide</a>
+<a class="text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-fixed-dim transition-colors underline-offset-4 hover:underline" href="#">Ressources</a>
+<a class="text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-fixed-dim transition-colors underline-offset-4 hover:underline" href="#">Contact</a>
+</div>
+<div class="text-center md:text-right">
+<p class="text-xs text-on-primary/60">© 2024 IFRI_MentorLink. Tous droits réservés.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for messaging list
+        const convItems = document.querySelectorAll('.flex-1.overflow-y-auto > div');
+        convItems.forEach(item => {
+            item.addEventListener('click', () => {
+                convItems.forEach(i => {
+                    i.classList.remove('bg-surface-container', 'border-l-4', 'border-primary');
+                    i.classList.add('hover:bg-surface-fond');
+                });
+                item.classList.add('bg-surface-container', 'border-l-4', 'border-primary');
+                item.classList.remove('hover:bg-surface-fond');
+            });
+        });
+
+        // Simple scroll to bottom of chat
+        const chatWindow = document.getElementById('chat-messages');
+        if(chatWindow) {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Add a slight hover animation to the send button
+        const sendBtn = document.querySelector('button .material-symbols-outlined[data-icon="send"]');
+        if(sendBtn) {
+            sendBtn.parentElement.addEventListener('mouseenter', () => {
+                sendBtn.style.transform = 'translateX(2px) translateY(-2px)';
+                sendBtn.style.transition = 'transform 0.2s ease';
+            });
+            sendBtn.parentElement.addEventListener('mouseleave', () => {
+                sendBtn.style.transform = 'none';
+            });
+        }
+    </script>
+</body></html>

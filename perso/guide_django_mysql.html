@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Technique — Django & MySQL (MentorLink)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #161b2c;
+            --bg-tertiary: #1f2641;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --accent-primary: #6366f1;
+            --accent-secondary: #a855f7;
+            --accent-tertiary: #ec4899;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: rgba(99, 102, 241, 0.2);
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Background animated blobs */
+        .blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--accent-primary) 0%, transparent 80%);
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 45vw;
+            height: 45vw;
+            background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 80%);
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 30px) scale(1.1); }
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+            background: rgba(22, 27, 44, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            aside {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .brand-logo {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .brand-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            background: linear-gradient(to right, #ffffff, #d1d5db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateX(4px);
+        }
+
+        .nav-link.active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Main Content */
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(22, 27, 44, 0.8), rgba(31, 38, 65, 0.8));
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-tertiary));
+            filter: blur(60px);
+            opacity: 0.2;
+        }
+
+        .project-tag {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #818cf8;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(to right, #ffffff, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Section Cards */
+        section {
+            background: rgba(22, 27, 44, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        section:hover {
+            border-color: rgba(99, 102, 241, 0.15);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #fff;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 24px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            border-radius: 3px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            font-size: 1.025rem;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Flowcharts / Visual schemas */
+        .diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            gap: 1rem;
+        }
+
+        .diagram-node {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            min-width: 140px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .diagram-node:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .diagram-node .node-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .diagram-node .node-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .diagram-arrow {
+            color: var(--accent-primary);
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 40px;
+        }
+
+        .diagram-arrow span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+            white-space: nowrap;
+        }
+
+        /* Code Block Styling */
+        .code-container {
+            margin: 1.5rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .code-header {
+            background: #111422;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .code-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-primary);
+            display: inline-block;
+        }
+
+        .code-lang {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        pre {
+            background: #0d0f18;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+        }
+
+        /* Highlight classes */
+        .hl-keyword { color: #f43f5e; font-weight: 500; }
+        .hl-string { color: #10b981; }
+        .hl-comment { color: #6b7280; font-style: italic; }
+        .hl-func { color: #6366f1; }
+        .hl-class { color: #38bdf8; font-weight: 500; }
+        .hl-number { color: #fb923c; }
+        .hl-decorator { color: #a855f7; }
+
+        /* Grid / Columns */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-card {
+            background: rgba(31, 38, 65, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            background: rgba(31, 38, 65, 0.6);
+            transform: translateY(-2px);
+            border-color: rgba(99, 102, 241, 0.1);
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card h3::before {
+            content: '❖';
+            color: var(--accent-secondary);
+            font-size: 0.9rem;
+        }
+
+        .info-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        li::before {
+            content: '➔';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .badge-sql { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .badge-py { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-js { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        /* Highlight box */
+        .alert-box {
+            background: rgba(99, 102, 241, 0.08);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 16px 16px 0;
+            margin: 1.5rem 0;
+        }
+
+        .alert-box p {
+            color: #d1d5db;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated blobs background -->
+    <div class="blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        
+        <!-- Sidebar -->
+        <aside>
+            <div class="brand">
+                <div class="brand-logo">ML</div>
+                <div class="brand-name">MentorLink Docs</div>
+            </div>
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#django-mtv" class="nav-link active">1. Architecture Django</a></li>
+                    <li class="nav-item"><a href="#frontend-backend" class="nav-link">2. Client-Serveur (API)</a></li>
+                    <li class="nav-item"><a href="#mysql-orm" class="nav-link">3. Base de données MySQL</a></li>
+                    <li class="nav-item"><a href="#mentorlink-flow" class="nav-link">4. Flux complet d'actions</a></li>
+                    <li class="nav-item"><a href="#lancer-projet" class="nav-link">5. Lancer l'application</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            
+            <header>
+                <span class="project-tag">PIL1_2526_47 — IFRI</span>
+                <h1>Guide d'Architecture de MentorLink</h1>
+                <p class="subtitle">Comprendre le fonctionnement global de Django, la communication Frontend-Backend et la gestion de MySQL.</p>
+            </header>
+
+            <!-- 1. ARCHITECTURE DJANGO (MTV) -->
+            <section id="django-mtv">
+                <h2>1. Le fonctionnement de Django (Le patron MTV)</h2>
+                <p>Django est basé sur le modèle de conception <strong>MTV (Model-Template-View)</strong>. C'est une variante du modèle MVC (Model-View-Controller) classique :</p>
+                
+                <div class="diagram">
+                    <div class="diagram-node">
+                        <div class="node-title">Requête HTTP</div>
+                        <div class="node-desc">Client (Navigateur)</div>
+                    </div>
+                    <div class="diagram-arrow">➔ <span>urls.py</span></div>
+                    <div class="diagram-node">
+                        <div class="node-title">URL router</div>
+                        <div class="node-desc">Aiguille l'URL</div>
+                    </div>
+                    <div class="diagram-arrow">➔ <span>Appelle</span></div>
+                    <div class="diagram-node" style="background: rgba(99, 102, 241, 0.1); border-color: var(--accent-primary);">
+                        <div class="node-title">Vue (View)</div>
+                        <div class="node-desc">Logique métier</div>
+                    </div>
+                    <div class="diagram-arrow">➔ <span>Rend / Utilise</span></div>
+                    <div class="diagram-node">
+                        <div class="node-title">Template & Modèle</div>
+                        <div class="node-desc">HTML / MySQL</div>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Model (M)</h3>
+                        <p>Il définit la structure des données sous forme de classes Python dans <code>models.py</code>. C'est l'interface avec la base de données (MySQL). Django se charge de traduire le code Python en requêtes SQL.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Template (T)</h3>
+                        <p>C'est la partie visuelle (HTML). Dans MentorLink, vos gabarits sont situés dans <code>frontend/templates/</code> (ex. <code>base.html</code>, <code>explorer.html</code>). Ils génèrent la structure HTML envoyée au navigateur.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>View (V)</h3>
+                        <p>C'est le contrôleur. Écrites dans <code>views.py</code>, les vues contiennent le code Python qui récupère les requêtes du client, interagit avec la base de données via les modèles, et renvoie soit une page HTML, soit du JSON.</p>
+                    </div>
+                </div>
+
+                <div class="alert-box">
+                    <p><strong>Dans votre projet :</strong> Lorsque vous visitez l'URL <code>/matching/explorer/</code>, le routeur (<code>urls.py</code>) appelle la fonction de vue <code>explorer()</code> dans <code>views.py</code>. Cette vue rend le template <code>groupe1/explorer.html</code>.</p>
+                </div>
+            </section>
+
+            <!-- 2. FRONTEND - BACKEND COMMUNICATION -->
+            <section id="frontend-backend">
+                <h2>2. La communication Frontend & Backend</h2>
+                <p>Pour le projet MentorLink, le frontend utilise <strong>Vue.js</strong> pour rendre la page dynamique, et communique avec le backend Django via des requêtes HTTP (AJAX).</p>
+                
+                <p>Prenons l'exemple de la page <strong>Publier</strong> (<code>publier.js</code>) où un utilisateur soumet une annonce :</p>
+
+                <!-- JS Code snippet -->
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">frontend/static/js/publier.js</div>
+                        <div class="code-lang">JavaScript <span class="badge badge-js">JS</span></div>
+                    </div>
+                    <pre><code><span class="hl-keyword">const</span> submitForm = () => {
+    isSubmitting.value = <span class="hl-keyword">true</span>;
+    
+    <span class="hl-comment">// 1. Récupération du jeton CSRF obligatoire pour sécuriser la requête POST</span>
+    <span class="hl-keyword">const</span> csrfToken = document.querySelector(<span class="hl-string">'[name=csrfmiddlewaretoken]'</span>).value;
+    
+    <span class="hl-comment">// 2. Envoi d'une requête HTTP POST asynchrone vers Django</span>
+    fetch(<span class="hl-string">'/matching/publier/'</span>, {
+        method: <span class="hl-string">'POST'</span>,
+        headers: {
+            <span class="hl-string">'Content-Type'</span>: <span class="hl-string">'application/json'</span>,
+            <span class="hl-string">'X-CSRFToken'</span>: csrfToken
+        },
+        body: JSON.stringify(formData.value) <span class="hl-comment">// Données du formulaire en JSON</span>
+    })
+    .then(response => response.json())
+    .then(data => {
+        isSubmitting.value = <span class="hl-keyword">false</span>;
+        <span class="hl-keyword">if</span> (data.status === <span class="hl-string">'success'</span>) {
+            showToast.value = <span class="hl-keyword">true</span>; <span class="hl-comment">// Affiche un message de succès</span>
+            <span class="hl-comment">// Réinitialisation...</span>
+        }
+    })
+    .catch(error => {
+        isSubmitting.value = <span class="hl-keyword">false</span>;
+        console.error(<span class="hl-string">'Erreur lors de la requête :'</span>, error);
+    });
+};</code></pre>
+                </div>
+
+                <p>Côté backend, Django intercepte cette requête POST, décode le JSON reçu et renvoie une réponse JSON (<code>JsonResponse</code>) :</p>
+
+                <!-- Python View snippet -->
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">backend/apps/matching/views.py</div>
+                        <div class="code-lang">Python <span class="badge badge-py">PY</span></div>
+                    </div>
+                    <pre><code><span class="hl-keyword">import</span> json
+<span class="hl-keyword">from</span> django.http <span class="hl-keyword">import</span> JsonResponse
+<span class="hl-keyword">from</span> django.shortcuts <span class="hl-keyword">import</span> render
+<span class="hl-keyword">from</span> .models <span class="hl-keyword">import</span> Annonce
+
+<span class="hl-keyword">def</span> <span class="hl-func">publier</span>(request):
+    <span class="hl-keyword">if</span> request.method == <span class="hl-string">'POST'</span>:
+        <span class="hl-keyword">try</span>:
+            <span class="hl-comment"># Décodage des données JSON envoyées par Vue.js</span>
+            data = json.loads(request.body)
+            
+            <span class="hl-comment"># Enregistrement dans la base MySQL grâce à l'ORM Django</span>
+            annonce = Annonce.objects.create(
+                type=data.get(<span class="hl-string">'type'</span>),
+                sujets=data.get(<span class="hl-string">'subjects'</span>),
+                format=data.get(<span class="hl-string">'format'</span>),
+                creneaux=data.get(<span class="hl-string">'slots'</span>),
+                description=data.get(<span class="hl-string">'description'</span>)
+            )
+            
+            <span class="hl-keyword">return</span> JsonResponse({<span class="hl-string">'status'</span>: <span class="hl-string">'success'</span>, <span class="hl-string">'message'</span>: <span class="hl-string">'Annonce créée avec succès !'</span>})
+        <span class="hl-keyword">except</span> Exception <span class="hl-keyword">as</span> e:
+            <span class="hl-keyword">return</span> JsonResponse({<span class="hl-string">'status'</span>: <span class="hl-string">'error'</span>, <span class="hl-string">'message'</span>: str(e)}, status=<span class="hl-number">400</span>)
+            
+    <span class="hl-comment"># Si c'est une requête GET, on affiche simplement le formulaire</span>
+    <span class="hl-keyword">return</span> render(request, <span class="hl-string">'groupe1/publier.html'</span>)</code></pre>
+                </div>
+            </section>
+
+            <!-- 3. MYSQL & ORM DJANGO -->
+            <section id="mysql-orm">
+                <h2>3. La création de tables dans MySQL (Django ORM)</h2>
+                <p>Dans un projet classique, on écrit du code SQL à la main pour créer des tables. Avec Django, on utilise un <strong>ORM (Object-Relational Mapper)</strong>. On décrit les tables en Python, et Django génère et exécute automatiquement les requêtes SQL MySQL.</p>
+
+                <p>Voici la démarche étape par étape de comment les tables sont configurées et créées :</p>
+
+                <h3>Étape A : Configuration de MySQL dans Django</h3>
+                <p>La connexion est définie dans <code>backend/config/settings.py</code> sous la variable <code>DATABASES</code>. Elle récupère les variables d'environnement configurées dans le fichier <code>.env</code> :</p>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">backend/.env</div>
+                        <div class="code-lang">Configuration <span class="badge badge-sql">ENV</span></div>
+                    </div>
+                    <pre><code>DB_NAME=mentorlink_db
+DB_USER=root
+DB_PASSWORD=ton_mot_de_passe
+DB_HOST=127.0.0.1
+DB_PORT=3306</code></pre>
+                </div>
+
+                <h3>Étape B : Déclaration du Modèle en Python</h3>
+                <p>Chaque table est déclarée sous forme de classe Python dans le fichier <code>models.py</code> de l'application correspondante.</p>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <div class="code-title">backend/apps/matching/models.py</div>
+                        <div class="code-lang">Python <span class="badge badge-py">PY</span></div>
+                    </div>
+                    <pre><code><span class="hl-keyword">from</span> django.db <span class="hl-keyword">import</span> models
+
+<span class="hl-keyword">class</span> <span class="hl-class">Annonce</span>(models.Model):
+    TYPE_CHOICES = [
+        (<span class="hl-string">'propose'</span>, <span class="hl-string">'Proposer du mentorat'</span>),
+        (<span class="hl-string">'cherche'</span>, <span class="hl-string">'Chercher un mentor'</span>),
+    ]
+    
+    <span class="hl-comment"># Définition des colonnes de la table MySQL</span>
+    type = models.CharField(max_length=<span class="hl-number">10</span>, choices=TYPE_CHOICES)
+    sujets = models.JSONField()            <span class="hl-comment"># Stocke les matières sélectionnées sous forme JSON</span>
+    format = models.CharField(max_length=<span class="hl-number">20</span>, default=<span class="hl-string">'présentiel'</span>)
+    creneaux = models.JSONField()          <span class="hl-comment"># Liste des créneaux sélectionnés</span>
+    description = models.TextField()       <span class="hl-comment"># Texte descriptif long</span>
+    cree_le = models.DateTimeField(auto_now_add=<span class="hl-keyword">True</span>) <span class="hl-comment"># Horodatage automatique</span>
+
+    <span class="hl-keyword">def</span> <span class="hl-func">__str__</span>(self):
+        <span class="hl-keyword">return</span> f<span class="hl-string">"{self.type} - {self.sujets}"</span></code></pre>
+                </div>
+
+                <h3>Étape C : Génération et Application des Migrations</h3>
+                <p>Une fois les classes écrites, on utilise les commandes de la console Django pour créer et appliquer les tables MySQL :</p>
+                
+                <ul>
+                    <li><strong><code>python manage.py makemigrations</code></strong> : Analyse le fichier <code>models.py</code> et génère un fichier de migration Python (dans le dossier <code>migrations/</code>). C'est un plan d'action qui liste les changements apportés aux modèles.</li>
+                    <li><strong><code>python manage.py migrate</code></strong> : Exécute concrètement les instructions SQL correspondantes sur la base MySQL configurée. C'est à cette étape que la table (par exemple <code>matching_annonce</code>) est créée dans MySQL.</li>
+                </ul>
+
+                <div class="alert-box" style="background: rgba(16, 185, 129, 0.05); border-left-color: var(--success);">
+                    <p><strong>Équivalence SQL générée automatiquement par Django :</strong></p>
+                    <pre style="background: transparent; padding: 0.5rem 0 0 0; font-size: 0.85rem;"><code style="color: #67e8f9;"><span class="hl-keyword">CREATE TABLE</span> matching_annonce (
+    id <span class="hl-keyword">INT AUTO_INCREMENT PRIMARY KEY</span>,
+    type <span class="hl-keyword">VARCHAR</span>(<span class="hl-number">10</span>) <span class="hl-keyword">NOT NULL</span>,
+    sujets <span class="hl-keyword">JSON NOT NULL</span>,
+    format <span class="hl-keyword">VARCHAR</span>(<span class="hl-number">20</span>) <span class="hl-keyword">DEFAULT</span> <span class="hl-string">'présentiel'</span>,
+    creneaux <span class="hl-keyword">JSON NOT NULL</span>,
+    description <span class="hl-keyword">TEXT NOT NULL</span>,
+    cree_le <span class="hl-keyword">DATETIME DEFAULT CURRENT_TIMESTAMP</span>
+);</code></pre>
+                </div>
+            </section>
+
+            <!-- 4. L'ENCHAÎNEMENT D'UNE ACTION (FLUX) -->
+            <section id="mentorlink-flow">
+                <h2>4. Cycle de vie d'une requête dans MentorLink</h2>
+                <p>Pour illustrer, voici comment se déroule l'interaction utilisateur de bout en bout lorsqu'un étudiant crée une annonce de mentorat :</p>
+
+                <ol>
+                    <li>
+                        <strong>L'utilisateur remplit le formulaire</strong> sur l'interface frontend (HTML rendu par le template Django <code>publier.html</code>) et clique sur <strong>Publier</strong>.
+                    </li>
+                    <li>
+                        Le script JavaScript <strong>Vue.js (<code>publier.js</code>)</strong> intercepte le clic, récupère les données de formulaire et le jeton <strong>CSRF</strong> généré par Django.
+                    </li>
+                    <li>
+                        Vue.js effectue une requête <strong>fetch()</strong> POST asynchrone contenant le corps en JSON vers <code>/matching/publier/</code>.
+                    </li>
+                    <li>
+                        Le serveur <strong>Django</strong> reçoit la requête :
+                        <ul>
+                            <li>Il vérifie la validité du jeton CSRF.</li>
+                            <li>La route <code>/matching/publier/</code> redirige vers la fonction <code>publier()</code> de <code>views.py</code>.</li>
+                            <li>La vue extrait les données JSON du corps de la requête.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        L'<strong>ORM Django</strong> instancie l'objet <code>Annonce</code> avec les données et exécute en arrière-plan la requête <code>INSERT INTO</code> sur le serveur <strong>MySQL</strong>.
+                    </li>
+                    <li>
+                        La base de données <strong>MySQL</strong> enregistre l'annonce et renvoie l'identifiant (ID) nouvellement créé.
+                    </li>
+                    <li>
+                        La vue Django renvoie une réponse JSON <code>JsonResponse({'status': 'success'})</code>.
+                    </li>
+                    <li>
+                        <strong>Vue.js</strong> reçoit la réponse du serveur, réinitialise le formulaire et affiche le Toast de confirmation à l'étudiant.
+                    </li>
+                </ol>
+            </section>
+
+            <!-- 5. LANCER LE PROJET -->
+            <section id="lancer-projet">
+                <h2>5. Comment lancer l'application</h2>
+                <p>Voici la procédure pas à pas pour exécuter l'application MentorLink sur votre machine locale (sous Windows) :</p>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Étape 1 : Ouvrir le terminal</h3>
+                        <p>Ouvrez PowerShell ou l'invite de commandes Windows, et placez-vous à la racine du projet :</p>
+                        <div class="code-container" style="margin-top: 0.5rem; margin-bottom: 0;">
+                            <pre style="padding: 0.75rem;"><code>cd "C:\Users\HP\Desktop\MY RESEARCH\PROJET-INTEGRATEUR-2025-2026-IFRI\CODE SOURCE\PIL1_2526_47"</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>Étape 2 : Activer le venv</h3>
+                        <p>Activez l'environnement virtuel Python pour charger les dépendances :</p>
+                        <div class="code-container" style="margin-top: 0.5rem; margin-bottom: 0;">
+                            <pre style="padding: 0.75rem;"><code>venv\Scripts\activate</code></pre>
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Un badge (venv) s'affiche au début de la ligne.</p>
+                    </div>
+                </div>
+
+                <div class="info-grid" style="margin-top: 1rem;">
+                    <div class="info-card">
+                        <h3>Étape 3 : Aller dans backend</h3>
+                        <p>Naviguez vers le dossier contenant le fichier <code>manage.py</code> :</p>
+                        <div class="code-container" style="margin-top: 0.5rem; margin-bottom: 0;">
+                            <pre style="padding: 0.75rem;"><code>cd backend</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Étape 4 : Lancer le serveur</h3>
+                        <p>Démarrez le serveur de développement de Django :</p>
+                        <div class="code-container" style="margin-top: 0.5rem; margin-bottom: 0;">
+                            <pre style="padding: 0.75rem;"><code>python manage.py runserver</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert-box" style="background: rgba(16, 185, 129, 0.05); border-left-color: var(--success);">
+                    <p>🌐 <strong>Accéder au projet :</strong> Une fois le serveur démarré, ouvrez votre navigateur et allez sur <strong><a href="http://127.0.0.1:8000" style="color: var(--success); text-decoration: underline;">http://127.0.0.1:8000</a></strong>.</p>
+                </div>
+            </section>
+
+            <footer>
+                <p>Projet Intégrateur 2025-2026 — IFRI | MentorLink (PIL1_2526_47)</p>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Script simple pour animer la navigation latérale -->
+    <script>
+        const links = document.querySelectorAll('.nav-link');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
