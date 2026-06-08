@@ -1,0 +1,215 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+}
+
+.page{
+    display:flex;
+    height:100vh;
+}
+
+/* =====================
+   LEFT
+===================== */
+
+.left-side{
+    width:65%;
+    background:#f3f1ee;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+
+.logo-section{
+    margin-bottom:40px;
+    text-align:center;
+}
+
+.logo-section h1{
+    color:#06092d;
+    font-size:32px;
+    font-weight:700;
+}
+
+.line{
+    display:block;
+    width:70px;
+    height:5px;
+    background:#f5a623;
+    border-radius:10px;
+    margin:12px auto 0;
+}
+
+/* =====================
+   CARD
+===================== */
+
+.card{
+    width:520px;
+    background:white;
+    border-radius:20px;
+    padding:50px;
+    text-align:center;
+    position:relative;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.08);
+}
+
+.icon-circle{
+    width:80px;
+    height:80px;
+    margin:auto;
+    border-radius:50%;
+    background:#e9f1fb;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.icon-circle i{
+    font-size:34px;
+    color:#06092d;
+}
+
+.card h2{
+    margin-top:30px;
+    color:#06092d;
+    font-size:28px;
+}
+
+.card p{
+    margin-top:15px;
+    color:#555;
+    line-height:1.6;
+}
+
+form{
+    margin-top:40px;
+}
+
+label{
+    display:block;
+    text-align:left;
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:10px;
+    color:#06092d;
+}
+
+.input-group{
+    display:flex;
+    align-items:center;
+
+    border:1px solid #d9d9e4;
+    border-radius:10px;
+
+    padding:16px;
+}
+
+.input-group i{
+    color:#666;
+    margin-right:12px;
+}
+
+.input-group input{
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    margin-top:25px;
+
+    padding:16px;
+
+    background:#02075e;
+    color:white;
+
+    border:none;
+    border-radius:10px;
+
+    cursor:pointer;
+    font-size:18px;
+    font-weight:600;
+}
+
+button i{
+    margin-left:10px;
+}
+
+.back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    margin-top:40px;
+
+    color:#111827;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.bottom-bar{
+    position:absolute;
+    left:0;
+    bottom:0;
+
+    width:100%;
+    height:6px;
+
+    background:linear-gradient(
+        to right,
+        #06092d,
+        #f5a623,
+        #06092d
+    );
+
+    border-radius:0 0 20px 20px;
+}
+
+/* =====================
+   FOOT TEXT
+===================== */
+
+.school{
+    position:absolute;
+    bottom:60px;
+
+    color:#8a8a8a;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+/* =====================
+   RIGHT
+===================== */
+
+.right-side{
+    width:35%;
+
+    background:url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1200')
+    center center/cover no-repeat;
+
+    position:relative;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,.55);
+}
+
