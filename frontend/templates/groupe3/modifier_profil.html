@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Modifier mon Profil — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profil.css' %}"/>
+<style>
+    .form-card {
+        background-color: #FFFFFF;
+        border: 1px solid #E0E0E0;
+        box-shadow: 0px 4px 20px rgba(12, 27, 84, 0.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-[1200px] mx-auto px-marge-page py-lg space-y-lg">
+    <!-- Header Section -->
+    <section class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+        <div>
+            <h1 class="font-titre-h1 text-titre-h1 text-primary">Modifier mon Profil</h1>
+            <p class="font-corps-lg text-corps-lg text-on-surface-variant mt-xs">Mettez à jour vos informations académiques et vos préférences de mentorat.</p>
+        </div>
+        <div class="flex items-center gap-md">
+            <a class="font-bouton text-bouton text-primary hover:underline px-md py-sm" href="/profiles/mon-profil/">Annuler</a>
+            <a href="/profiles/mon-profil/" class="bg-primary text-on-primary font-bouton text-bouton px-lg py-sm rounded-lg hover:bg-opacity-90 transition-all active:scale-95 text-center">Enregistrer les modifications</a>
+        </div>
+    </section>
+    
+    <form class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start" onsubmit="event.preventDefault(); window.location.href='/profiles/mon-profil/';">
+        <!-- Left Column: Media & Primary Info -->
+        <aside class="lg:col-span-4 space-y-md">
+            <div class="form-card rounded-xl p-md flex flex-col items-center text-center space-y-md">
+                <div class="relative group cursor-pointer">
+                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-surface-container shadow-md">
+                        <img class="w-full h-full object-cover" alt="Koffi Kouamé" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCN54N3U_JeFSlRvBog4y0iJKUCp8zYmAhB0tVG5zHygrZsFfm3jXwtZFRSfDOVcSe2lTEF48W8eJFhdW0xxttNWSRRFbZZl1xEedHpuIzBdIgKiGUWLOVbg2NkbyOZYSQBmpaQo-69bxaALDHt_aXvn6h2BKbODL5TloDe5bwEGW9wN9WB4Xkvu0h6ry4Y5WWdhODkK46j1BiIJAj9GT899sBYb5MpXe_Z47HuyEoNkf1OM7DxT8hq39RgI-iAHCv-0NUug9GM340"/>
+                    </div>
+                    <div class="absolute inset-0 bg-primary/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                        <span class="material-symbols-outlined text-on-primary text-3xl">photo_camera</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-titre-h3 text-titre-h3 text-primary">Koffi Kouamé</h3>
+                    <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Génie Logiciel (M1)</p>
+                </div>
+                <p class="font-corps-md text-corps-md text-on-surface-variant italic text-sm">Format recommandé : JPG ou PNG. Taille max. 5Mo.</p>
+                <button class="border border-primary text-primary font-bouton text-bouton px-md py-xs rounded-lg hover:bg-surface-container-low transition-colors" type="button">Changer la photo</button>
+            </div>
+            
+            <div class="form-card rounded-xl p-md space-y-md">
+                <h4 class="font-titre-h3 text-titre-h3 text-primary text-corps-md">Disponibilités Hebdomadaires</h4>
+                <div class="grid grid-cols-7 gap-xs">
+                    <!-- Simplified availability grid -->
+                    <div class="flex flex-col items-center gap-xs">
+                        <span class="text-[10px] font-bold text-on-surface-variant">L</span>
+                        <div class="w-full h-8 rounded bg-primary cursor-pointer hover:bg-primary-container" title="8h - 10h"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low cursor-pointer border border-outline-variant hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-primary cursor-pointer" title="16h - 18h"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-xs">
+                        <span class="text-[10px] font-bold text-on-surface-variant">M</span>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-primary cursor-pointer hover:bg-primary-container"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-xs">
+                        <span class="text-[10px] font-bold text-on-surface-variant">M</span>
+                        <div class="w-full h-8 rounded bg-primary cursor-pointer hover:bg-primary-container"></div>
+                        <div class="w-full h-8 rounded bg-primary cursor-pointer hover:bg-primary-container"></div>
+                        <div class="w-full h-8 rounded bg-primary cursor-pointer hover:bg-primary-container"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-xs">
+                        <span class="text-[10px] font-bold text-on-surface-variant">J</span>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-xs">
+                        <span class="text-[10px] font-bold text-on-surface-variant">V</span>
+                        <div class="w-full h-8 rounded bg-primary cursor-pointer hover:bg-primary-container"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-primary cursor-pointer hover:bg-primary-container"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-xs">
+                        <span class="text-[10px] font-bold text-on-surface-variant">S</span>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-xs">
+                        <span class="text-[10px] font-bold text-on-surface-variant">D</span>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                        <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed"></div>
+                    </div>
+                </div>
+                <p class="text-[12px] text-on-surface-variant text-center">Cliquez sur les créneaux pour modifier vos heures de mentorat.</p>
+            </div>
+        </aside>
+        
+        <!-- Right Column: Detailed Form -->
+        <div class="lg:col-span-8 space-y-md">
+            <div class="form-card rounded-xl p-md md:p-lg space-y-lg">
+                <!-- Personal Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Prénom</label>
+                        <input class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary" type="text" value="Koffi"/>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Nom</label>
+                        <input class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary" type="text" value="Kouamé"/>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Email Académique</label>
+                        <input class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary bg-surface-container-low" readonly="" type="email" value="koffi.kouame@ifri.uac.bj"/>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Téléphone</label>
+                        <input class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary" type="tel" value="+229 90 00 00 00"/>
+                    </div>
+                </div>
+                
+                <hr class="border-outline-variant opacity-20"/>
+                
+                <!-- Academic Path -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Filière</label>
+                        <select class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary appearance-none bg-white">
+                            <option selected="" value="GL">Génie Logiciel (GL)</option>
+                            <option value="IA">Intelligence Artificielle (IA)</option>
+                            <option value="SI">Systèmes d'Information (SI)</option>
+                            <option value="SEIOT">Sécurité et IoT (SE&amp;IoT)</option>
+                            <option value="IM">Internet et Multimédia (IM)</option>
+                        </select>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Niveau d'étude</label>
+                        <select class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary bg-white">
+                            <option value="L1">Licence 1</option>
+                            <option value="L2">Licence 2</option>
+                            <option value="L3">Licence 3</option>
+                            <option selected="" value="M1">Master 1</option>
+                            <option value="M2">Master 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="space-y-xs">
+                    <label class="font-Inter font-bold text-corps-md block">Bio / Présentation</label>
+                    <textarea class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary" placeholder="Décrivez votre parcours et ce que vous attendez du mentorat..." rows="4">Étudiant passionné par le développement web et l'IA. J'aime partager mes connaissances et apprendre des autres. Je cherche à approfondir mes compétences en Architecture Logicielle.</textarea>
+                </div>
+                
+                <hr class="border-outline-variant opacity-20"/>
+                
+                <!-- Skills & Tags -->
+                <div class="space-y-md">
+                    <div class="space-y-sm">
+                        <label class="font-Inter font-bold text-corps-md block">Points forts (Compétences à partager)</label>
+                        <div class="flex flex-wrap gap-sm">
+                            <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full font-bouton text-[12px] flex items-center gap-xs">
+                                React.js <button class="material-symbols-outlined text-[14px]" type="button">close</button>
+                            </span>
+                            <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full font-bouton text-[12px] flex items-center gap-xs">
+                                Algorithmique <button class="material-symbols-outlined text-[14px]" type="button">close</button>
+                            </span>
+                            <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full font-bouton text-[12px] flex items-center gap-xs">
+                                Python <button class="material-symbols-outlined text-[14px]" type="button">close</button>
+                            </span>
+                            <button class="border border-dashed border-outline-variant text-on-surface-variant px-3 py-1.5 rounded-full font-bouton text-[12px] hover:border-primary hover:text-primary transition-all" type="button">
+                                + Ajouter une compétence
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-sm">
+                        <label class="font-Inter font-bold text-corps-md block">Points faibles (Sujets d'apprentissage)</label>
+                        <div class="flex flex-wrap gap-sm">
+                            <span class="bg-secondary-container/20 text-on-secondary-container px-3 py-1.5 rounded-full font-bouton text-[12px] flex items-center gap-xs">
+                                DevOps <button class="material-symbols-outlined text-[14px]" type="button">close</button>
+                            </span>
+                            <span class="bg-secondary-container/20 text-on-secondary-container px-3 py-1.5 rounded-full font-bouton text-[12px] flex items-center gap-xs">
+                                Sécurité Web <button class="material-symbols-outlined text-[14px]" type="button">close</button>
+                            </span>
+                            <button class="border border-dashed border-outline-variant text-on-surface-variant px-3 py-1.5 rounded-full font-bouton text-[12px] hover:border-secondary hover:text-secondary transition-all" type="button">
+                                + Ajouter un sujet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions Bottom -->
+                <div class="pt-lg flex flex-col gap-sm">
+                    <button class="w-full bg-primary text-on-primary font-bouton text-bouton py-4 rounded-lg shadow-md hover:bg-opacity-95 transition-all active:scale-[0.98]" type="submit">
+                        Enregistrer les modifications
+                    </button>
+                    <a class="text-center font-bouton text-bouton text-on-surface-variant hover:text-primary transition-colors py-2" href="/profiles/mon-profil/">
+                        Annuler et revenir au profil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/modifier_profil.js' %}"></script>
+{% endblock %}

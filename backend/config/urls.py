@@ -9,12 +9,14 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
+from apps.accounts import views as account_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('apps.accounts.urls')),
     path('matching/', include('apps.matching.urls')),
-    # Rediriger la racine vers la page Explorer
-    path('', RedirectView.as_view(url='/matching/explorer/', permanent=False)),
+    path('profiles/', include('apps.profiles.urls')),
+    path('', account_views.landing_page, name='home'),
 ]
 
 # Servir les fichiers statiques en développement

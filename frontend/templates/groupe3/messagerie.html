@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Messagerie — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/messagerie.css' %}"/>
+{% endblock %}
+
+{% block content %}
+{% verbatim %}
+<div id="app" v-cloak class="max-w-7xl mx-auto px-marge-page py-md">
+    <div class="grid grid-cols-12 gap-6 chat-container">
+        <!-- Left Panel: Conversation List -->
+        <aside class="col-span-12 md:col-span-4 bg-surface-carte rounded-xl shadow-sm border border-outline-variant/30 flex flex-col overflow-hidden">
+            <div class="p-md border-b border-outline-variant/20">
+                <h2 class="font-titre-h3 text-titre-h3 mb-md">Messages</h2>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+                    <input class="w-full pl-10 pr-4 py-2 bg-surface-fond border-none rounded-lg text-sm focus:ring-1 focus:ring-primary-container" placeholder="Rechercher un mentor ou un étudiant..." type="text"/>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto">
+                <!-- Conversation Item (Active) -->
+                <div class="p-md bg-surface-container flex gap-md cursor-pointer border-l-4 border-primary transition-colors">
+                    <div class="relative flex-shrink-0">
+                        <img alt="Avatar Mentor" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjLuCFLwvRk5COwIvjLqX64xMFBlVoN7sA-cv0Z69h-tjuj8YrAoOc6cA6-NWqMgmtIS7JOvw7BKhuFd-LhTWtWr8-Z5INHhSTdvk5IguBLOM5VM46c0btn2TGYLkMC6T_nkSGUNRkX5A9NqELH_Db2gyiJDnQew7qF9WQU0qGMtFAJFur9VKFUJx-U3yCbDpuCcpTeUEihHIkTaGva6Wecdo_RlfLoywEI5o2u6M0uAziJqelV9L_VXawAvbLPAr27_hpc5zYZFE"/>
+                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-succes border-2 border-white rounded-full"></span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                            <span class="font-bold text-on-surface truncate">Dr. Arnaud SOSSOU</span>
+                            <span class="text-xs text-on-surface-variant">14:20</span>
+                        </div>
+                        <p class="text-sm text-on-surface-variant truncate font-bold">C'est clair pour la complexité O(n log n) ?</p>
+                        <div class="mt-xs">
+                            <span class="inline-block bg-primary-container/10 text-primary-container text-[10px] px-2 py-0.5 rounded-full font-bold">Algorithmique</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Conversation Item -->
+                <div class="p-md hover:bg-surface-fond flex gap-md cursor-pointer transition-colors border-b border-outline-variant/10">
+                    <div class="relative flex-shrink-0">
+                        <img alt="Avatar Student" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDitwRCm-vjumXWOBAm1dD8-aZbrna5vNs4rjpHtfB0_igpISzuvS5w0D-AQtLNDwmRYdxFVoLIS0FiCfOYe9tLCoTVzVayg6xlleOfahsh8QGl6J0vsk7vHU15QsPRBsS7cdq0w9EDYooG5n-HruG68W-iDViZcFX9fG7n12S_gFciyKel3LK5HUs19of0gReoOCJu3DTNyl6AfRON3VdtvyuBQxqEEnkpojEHdpnA7w4rhX8s0jEsbYdSajsosufX_5EgxBrcttM"/>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                            <span class="font-bold text-on-surface truncate">Merveille HOUNKPONOU</span>
+                            <span class="text-xs text-on-surface-variant">Hier</span>
+                        </div>
+                        <p class="text-sm text-on-surface-variant truncate">Merci pour le PDF sur le Python.</p>
+                    </div>
+                </div>
+                <!-- Conversation Item -->
+                <div class="p-md hover:bg-surface-fond flex gap-md cursor-pointer transition-colors border-b border-outline-variant/10">
+                    <div class="relative flex-shrink-0">
+                        <img alt="Avatar Mentor" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwRi0yGlhahJBxHn_Kwah8da2Ywfvm_GhgjzQqwzcw-0POXfgXWrcCEr3TsoUpeyMLguxaoL8njH9MDgOZuogLNJgxoy5u0o5nTUoHBWONtBDIA6TP4hUxAkTHvP9UHByyQJFyL6yxhU2EPzlDGfUtmIcnCTNCR3O262dcuwJGr-DULZ4-6gCMiA91HSOjOJCunsyn93laSSVidRe1LOct5mM1wdAbDR2AmwcFgrmzaDDX-MdXqU3xHwiRKzLBNLHxcKJZ_oZInWQ"/>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                            <span class="font-bold text-on-surface truncate">Ing. Franck TOSSOU</span>
+                            <span class="text-xs text-on-surface-variant">02/10</span>
+                        </div>
+                        <p class="text-sm text-on-surface-variant truncate">Ton CV est prêt pour le stage ?</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- Right Panel: Chat Interface -->
+        <section class="hidden md:flex md:col-span-8 bg-surface-carte rounded-xl shadow-sm border border-outline-variant/30 flex-col overflow-hidden relative">
+            <!-- Chat Top Bar -->
+            <div class="p-md flex justify-between items-center border-b border-outline-variant/20">
+                <div class="flex items-center gap-md">
+                    <img alt="Dr. Arnaud SOSSOU" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA93899ot7BGxbTHDiF7MsgQUtNMrV0yWc1Jp-xvwBIIF63LbL021LWy8nv33p2i4cuLz_CQQNu7lrfNUrNDgjO1XS6nQtVaSqJZNVQchZoLneX1OhH8SobiS6_LjhmChJO-vqtZZHQhe9Lk0D46TAFIUhop8P3eu3npuKuIwlwyktqPvwepFhAtzRjc8WlsQAfYCkYVIrv2R0YQ3FiHM8w0t3TW1F9X3BkDNR8AMOWW79YtGi-pfoCT2_I0Mj71c1Gjrt4MhZbo4"/>
+                    <div>
+                        <h3 class="font-bold text-on-surface">Dr. Arnaud SOSSOU</h3>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-succes rounded-full"></span>
+                            <span class="text-xs text-on-surface-variant">En ligne</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-md">
+                    <button class="p-2 hover:bg-surface-fond rounded-full text-primary transition-colors"><span class="material-symbols-outlined">call</span></button>
+                    <button class="p-2 hover:bg-surface-fond rounded-full text-primary transition-colors"><span class="material-symbols-outlined">videocam</span></button>
+                    <button class="p-2 hover:bg-surface-fond rounded-full text-primary transition-colors"><span class="material-symbols-outlined">info</span></button>
+                </div>
+            </div>
+            <!-- Messages Area -->
+            <div class="flex-1 overflow-y-auto p-md space-y-md bg-surface-fond/30" id="chat-messages">
+                <div class="flex justify-center my-md">
+                    <span class="text-xs bg-outline-variant/30 text-on-surface-variant px-3 py-1 rounded-full font-label-caps">AUJOURD'HUI</span>
+                </div>
+                <!-- Received Message -->
+                <div class="flex flex-col items-start max-w-[80%]">
+                    <div class="bg-surface p-md rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/20">
+                        <p class="text-sm text-on-surface">Bonjour ! J'ai bien reçu tes notes sur les tris récursifs. Est-ce que tu as des difficultés sur le Merge Sort (tri fusion) ?</p>
+                    </div>
+                    <span class="text-[10px] text-on-surface-variant mt-1 ml-1">14:05</span>
+                </div>
+                <!-- Sent Message -->
+                <div class="flex flex-col items-end self-end max-w-[80%]">
+                    <div class="bg-primary-container p-md rounded-2xl rounded-tr-none shadow-md">
+                        <p class="text-sm text-on-primary-container">Bonjour Docteur. Oui, un peu au niveau de l'étape de division et de la fusion des sous-listes. J'ai du mal avec la complexité spatiale.</p>
+                    </div>
+                    <div class="flex items-center gap-1 mt-1 mr-1">
+                        <span class="text-[10px] text-on-surface-variant">14:12</span>
+                        <span class="material-symbols-outlined text-[12px] text-primary" style="font-variation-settings: 'FILL' 1;">done_all</span>
+                    </div>
+                </div>
+                <!-- Received Message -->
+                <div class="flex flex-col items-start max-w-[80%]">
+                    <div class="bg-surface p-md rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/20">
+                        <p class="text-sm text-on-surface">C'est normal. Le Merge Sort nécessite un espace auxiliaire proportionnel à la taille de la liste. C'est pour ça qu'on dit que sa complexité spatiale est O(n).</p>
+                    </div>
+                    <span class="text-[10px] text-on-surface-variant mt-1 ml-1">14:18</span>
+                </div>
+                <!-- Received Message -->
+                <div class="flex flex-col items-start max-w-[80%]">
+                    <div class="bg-surface p-md rounded-2xl rounded-tl-none shadow-sm border border-outline-variant/20">
+                        <p class="text-sm text-on-surface font-bold">C'est clair pour la complexité O(n log n) au niveau du temps par contre ?</p>
+                    </div>
+                    <span class="text-[10px] text-on-surface-variant mt-1 ml-1">14:20</span>
+                </div>
+            </div>
+            <!-- Input Area -->
+            <div class="p-md bg-surface border-t border-outline-variant/20">
+                <form class="flex items-center gap-md" @submit.prevent="sendMessage">
+                    <div class="flex gap-2">
+                        <button class="p-2 text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined">attach_file</span></button>
+                        <button class="p-2 text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined">sentiment_satisfied</span></button>
+                    </div>
+                    <input class="flex-1 py-3 px-md bg-surface-fond border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-container outline-none" placeholder="Écrivez votre message..." type="text"/>
+                    <button type="submit" class="bg-primary-container text-white p-3 rounded-xl hover:shadow-lg transition-all active:scale-95 flex items-center justify-center">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+{% endverbatim %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/messagerie.js' %}"></script>
+{% endblock %}

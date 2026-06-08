@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tableau de bord — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}"/>
+{% endblock %}
+
+{% block content %}
+{% verbatim %}
+<div id="app" v-cloak class="max-w-[1200px] mx-auto px-marge-page py-lg space-y-lg">
+    <!-- Welcome Header -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+        <div>
+            <h1 class="font-titre-h1 text-titre-h2 text-primary">Bienvenue, Koffi !</h1>
+            <p class="font-corps-lg text-on-surface-variant">Voici un résumé de votre activité de mentorat pour cette semaine.</p>
+        </div>
+        <div class="flex items-center gap-sm">
+            <a href="/matching/publier/" class="bg-primary text-white font-bouton text-sm px-6 py-3 rounded-lg hover:bg-primary-container shadow-sm transition-all flex items-center gap-xs">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                Créer une annonce
+            </a>
+        </div>
+    </header>
+
+    <!-- Stats Cards Row -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+        <!-- Card 1 -->
+        <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm flex items-center gap-md hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">calendar_month</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-primary">3</p>
+                <p class="text-xs text-on-surface-variant font-label-caps">Sessions cette semaine</p>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm flex items-center gap-md hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-secondary-container/10 text-on-secondary-container rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">pending_actions</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-primary">2</p>
+                <p class="text-xs text-on-surface-variant font-label-caps">Demandes reçues</p>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm flex items-center gap-md hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-succes/10 text-succes rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">diversity_3</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-primary">95%</p>
+                <p class="text-xs text-on-surface-variant font-label-caps">Taux de réponse</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Dashboard Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+        <!-- Left 8 columns: Sessions & Recommandations -->
+        <div class="lg:col-span-8 space-y-lg">
+            <!-- Sessions list -->
+            <section class="bg-surface-carte rounded-2xl p-md md:p-lg border border-outline-variant/30 shadow-sm space-y-md">
+                <h3 class="font-titre-h3 text-primary">Prochaines Sessions de Mentorat</h3>
+                
+                <div class="space-y-sm">
+                    <!-- Session Item 1 -->
+                    <div class="p-md rounded-xl bg-surface-container-low border border-outline-variant/10 flex flex-col md:flex-row md:items-center justify-between gap-md">
+                        <div class="flex items-center gap-md">
+                            <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-primary">JD</div>
+                            <div>
+                                <h4 class="font-bold text-primary">Jean-Eudes D. (Mentoré)</h4>
+                                <p class="text-xs text-on-surface-variant">L2 Génie Logiciel • Algorithmique</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-md">
+                            <div class="text-left md:text-right">
+                                <p class="text-sm font-bold text-primary">Mardi 9 Juin</p>
+                                <p class="text-xs text-on-surface-variant">14:00 - 15:30</p>
+                            </div>
+                            <span class="bg-secondary-container/20 text-on-secondary-container px-2.5 py-1 rounded-lg text-xs font-bold">En ligne</span>
+                        </div>
+                    </div>
+
+                    <!-- Session Item 2 -->
+                    <div class="p-md rounded-xl bg-surface-container-low border border-outline-variant/10 flex flex-col md:flex-row md:items-center justify-between gap-md">
+                        <div class="flex items-center gap-md">
+                            <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center font-bold text-primary">AS</div>
+                            <div>
+                                <h4 class="font-bold text-primary">Aïcha S. (Mentor)</h4>
+                                <p class="text-xs text-on-surface-variant">Alumni • DevOps & Cloud</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-md">
+                            <div class="text-left md:text-right">
+                                <p class="text-sm font-bold text-primary">Jeudi 11 Juin</p>
+                                <p class="text-xs text-on-surface-variant">18:00 - 19:30</p>
+                            </div>
+                            <span class="bg-primary/5 text-primary-container px-2.5 py-1 rounded-lg text-xs font-bold">Présentiel</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recommanded Mentors -->
+            <section class="space-y-md">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-titre-h3 text-primary">Mentors Recommandés</h3>
+                    <a href="/matching/explorer/" class="text-sm font-bouton text-primary hover:underline flex items-center gap-xs">
+                        Voir tout
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <!-- Mentor card 1 -->
+                    <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-md mb-md">
+                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">AS</div>
+                            <div>
+                                <h4 class="font-bold text-primary">Aïcha SOSSOU</h4>
+                                <p class="text-xs text-on-surface-variant">Alumni • Génie Logiciel</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-on-surface-variant line-clamp-2 italic mb-md">"Développeuse Fullstack avec 2 ans d'expérience. Je peux vous aider à maîtriser React, Docker et Django."</p>
+                        <div class="flex justify-between items-center border-t border-outline-variant/10 pt-sm">
+                            <span class="text-succes text-xs font-bold flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[14px]">bolt</span>
+                                98% Match
+                            </span>
+                            <a href="/matching/profil/" class="text-xs font-bouton bg-primary text-white px-3 py-1.5 rounded-lg hover:bg-primary-container">Profil</a>
+                        </div>
+                    </div>
+
+                    <!-- Mentor card 2 -->
+                    <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-md mb-md">
+                            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">FT</div>
+                            <div>
+                                <h4 class="font-bold text-primary">Franck TOSSOU</h4>
+                                <p class="text-xs text-on-surface-variant">M2 • Sécurité Informatique</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-on-surface-variant line-clamp-2 italic mb-md">"Spécialiste de la cybersécurité. Dispo pour vous aider sur les réseaux et la cryptographie."</p>
+                        <div class="flex justify-between items-center border-t border-outline-variant/10 pt-sm">
+                            <span class="text-succes text-xs font-bold flex items-center gap-xs">
+                                <span class="material-symbols-outlined text-[14px]">bolt</span>
+                                92% Match
+                            </span>
+                            <a href="/matching/profil/" class="text-xs font-bouton bg-primary text-white px-3 py-1.5 rounded-lg hover:bg-primary-container">Profil</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Right 4 columns: Notifications & Quick Actions -->
+        <aside class="lg:col-span-4 space-y-lg">
+            <!-- Quick actions -->
+            <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm space-y-md">
+                <h4 class="font-Inter font-bold text-primary">Actions Rapides</h4>
+                <div class="flex flex-col gap-sm">
+                    <a href="/matching/explorer/" class="w-full py-3 bg-surface-container-low hover:bg-surface-container text-primary rounded-lg text-sm font-medium flex items-center gap-md px-md border border-outline-variant/10">
+                        <span class="material-symbols-outlined text-primary">search</span>
+                        Explorer les mentors
+                    </a>
+                    <a href="/matching/matchs/" class="w-full py-3 bg-surface-container-low hover:bg-surface-container text-primary rounded-lg text-sm font-medium flex items-center gap-md px-md border border-outline-variant/10">
+                        <span class="material-symbols-outlined text-primary">diversity_3</span>
+                        Voir mes matchs
+                    </a>
+                    <a href="/profiles/modifier-profil/" class="w-full py-3 bg-surface-container-low hover:bg-surface-container text-primary rounded-lg text-sm font-medium flex items-center gap-md px-md border border-outline-variant/10">
+                        <span class="material-symbols-outlined text-primary">settings</span>
+                        Modifier mon profil
+                    </a>
+                </div>
+            </div>
+
+            <!-- Notifications / Activity Feed -->
+            <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm space-y-md">
+                <h4 class="font-Inter font-bold text-primary">Dernières Notifications</h4>
+                <div class="space-y-md text-sm">
+                    <!-- Notification 1 -->
+                    <div class="flex gap-sm">
+                        <span class="material-symbols-outlined text-succes mt-0.5">check_circle</span>
+                        <div>
+                            <p class="text-on-surface font-semibold">Session validée !</p>
+                            <p class="text-xs text-on-surface-variant">Dr. Arnaud SOSSOU a accepté votre demande pour le mardi à 14h.</p>
+                            <span class="text-[10px] text-outline font-label-caps block mt-0.5">IL Y A 2 HEURES</span>
+                        </div>
+                    </div>
+                    <!-- Notification 2 -->
+                    <div class="flex gap-sm">
+                        <span class="material-symbols-outlined text-primary mt-0.5">chat_bubble</span>
+                        <div>
+                            <p class="text-on-surface font-semibold">Nouveau message</p>
+                            <p class="text-xs text-on-surface-variant">Jean-Eudes D. a envoyé un message concernant le TP d'algo.</p>
+                            <span class="text-[10px] text-outline font-label-caps block mt-0.5">IL Y A 4 HEURES</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endverbatim %}
+{% endblock %}

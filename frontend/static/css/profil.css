@@ -1,0 +1,7 @@
+/* Styles personnalisés pour la page Profil (Groupe 1) */
+
+.active-tab {
+    border-bottom: 2px solid #00052b !important;
+    color: #00052b !important;
+    font-weight: 600 !important;
+}

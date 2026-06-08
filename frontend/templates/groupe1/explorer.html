@@ -4,7 +4,7 @@
 {% block title %}Explorer les Mentors — IFRI MentorLink{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/groupe1.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/explorer.css' %}"/>
 {% endblock %}
 
 {% block content %}
@@ -114,10 +114,11 @@
     </section>
 
     <!-- Results Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-grille-gouttiere">
-        <div v-for="item in paginatedItems"
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+        <div v-for="(item, index) in paginatedItems"
              :key="item.id"
-             class="bg-surface-carte rounded-xl border border-outline-variant/30 p-md shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 flex flex-col h-full duration-300">
+             class="bg-surface-carte rounded-2xl shadow-[0px_4px_20px_rgba(12,27,84,0.05)] border border-outline-variant/30 p-lg hover:border-primary-fixed transition-all hover:-translate-y-1 animate-fade-in-up flex flex-col h-full duration-300"
+             :style="{ animationDelay: `${index * 100}ms` }">
             
             <div class="flex justify-between items-start mb-4">
                 <div class="flex items-center gap-md">

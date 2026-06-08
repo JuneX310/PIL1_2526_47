@@ -1,0 +1,5 @@
+/* Styles personnalisés pour la page des Matchs (Groupe 1) */
+
+.gauge-circle {
+    transition: stroke-dashoffset 0.8s ease-out;
+}

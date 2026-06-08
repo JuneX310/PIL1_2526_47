@@ -1,0 +1,7 @@
+/* Styles personnalisés pour la page d'exploration (Groupe 1) */
+
+.filter-btn-active {
+    background-color: #0c1b54 !important;
+    color: #ffffff !important;
+    border-color: #0c1b54 !important;
+}

@@ -1,0 +1,7 @@
+/* Styles pour la page de Connexion */
+
+.form-input-focus:focus {
+    outline: none;
+    border-color: #0c1b54;
+    box-shadow: 0 0 0 3px rgba(12, 27, 84, 0.1);
+}

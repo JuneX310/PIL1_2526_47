@@ -1,0 +1,7 @@
+/* Styles pour la Landing Page */
+
+.hero-pattern {
+    background-image: radial-gradient(#0c1b54 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+    opacity: 0.05;
+}

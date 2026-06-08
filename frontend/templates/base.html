@@ -136,6 +136,20 @@
         [v-cloak] {
             display: none !important;
         }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
@@ -149,11 +163,11 @@
             
             <!-- Desktop Links -->
             <div class="hidden md:flex items-center gap-md">
-                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="#">Dashboard</a>
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/profiles/dashboard/">Dashboard</a>
                 <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/explorer/">Explorer</a>
                 <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/matchs/">Matchs</a>
                 <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/publier/">Publier</a>
-                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/profil/">Mon Profil</a>
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/profiles/mon-profil/">Mon Profil</a>
             </div>
             
             <!-- Icons & Avatar -->
@@ -164,7 +178,7 @@
                 <button class="p-2 rounded-full hover:bg-surface-container-low transition-all active:scale-95 text-primary">
                     <span class="material-symbols-outlined" data-icon="settings">settings</span>
                 </button>
-                <a href="/matching/profil/" class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container block">
+                <a href="/profiles/mon-profil/" class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container block">
                     <img alt="Photo de profil" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgY_BPpDnVTVvD5Snsr_jhGz5oBUtVtaiunmwG5dNT1_FqKXDS4Irk8SFhCK80baetNTMgVzHKqgHa8dq1ARdG5bvnZpNv-kjQ01H5TZ4O_9IfiATvSw5PavaDh0QxMiLu2UIh-4aXkwWjnesRrcypTzVka8-GK6blsEcUwSklOzzIfdjAMM62glgt_2VlXN7r-g1-gabcgA6nPJRapOnBjI416mpNwiSBFstjdtEDtBKCOEmKBrk5G-vQ5oq5Xc2V0HpCWvV5TqU"/>
                 </a>
             </div>
