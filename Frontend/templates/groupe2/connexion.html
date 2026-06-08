@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IFRI_MentorLink – Connexion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="connexion.css" />
+</head>
+<body>
+
+  <div class="login-wrapper">
+
+    <!-- PANNEAU GAUCHE -->
+    <div class="left-panel">
+      <div class="left-image-box">
+        <!-- Remplace src par ta vraie image -->
+        <img src="img/login-visual.jpg" alt="Visuel mentorat" />
+      </div>
+      <h2>L'Excellence Connectée</h2>
+      <p>Rejoignez la communauté de mentorat de l'IFRI et propulsez votre carrière académique vers de nouveaux sommets.</p>
+    </div>
+
+    <!-- PANNEAU DROIT -->
+    <div class="right-panel">
+
+      <div class="logo-top">
+        <span class="logo-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </span>
+        <span>IFRI_MentorLink</span>
+      </div>
+
+      <div class="form-container">
+        <div class="form-header">
+          <h1>Bon retour <span class="wave">👋</span></h1>
+          <p>Connectez-vous pour continuer votre parcours de mentorat.</p>
+        </div>
+
+        <form class="login-form" id="loginForm">
+
+          <div class="field-group">
+            <label for="email">Email ou numéro de téléphone</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+              </span>
+              <input type="text" id="email" name="email" placeholder="nom@etudiant.ifri.bj" autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="label-row">
+              <label for="password">Mot de passe</label>
+              <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+            </div>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" />
+              <button type="button" class="toggle-pwd" id="togglePwd" aria-label="Afficher le mot de passe">
+                <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="remember-row">
+            <label class="checkbox-label">
+              <input type="checkbox" id="remember" />
+              <span class="checkmark"></span>
+              Se souvenir de moi
+            </label>
+          </div>
+
+          <button type="submit" class="btn-connect">
+            Se connecter
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+
+        </form>
+
+        <div class="divider">
+          <span>OU CONTINUER AVEC</span>
+        </div>
+
+        <div class="sso-buttons">
+          <button class="sso-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M22 12A10 10 0 1 1 12 2"/><path d="M22 2 12 12"/><path d="m15 2 7 7V2z"/>
+            </svg>
+            Google Edu
+          </button>
+          <button class="sso-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0v2"/>
+            </svg>
+            IFRI SSO
+          </button>
+        </div>
+
+        <p class="signup-link">
+          Nouveau sur la plateforme ? <a href="#">Créer un compte</a>
+        </p>
+
+        <p class="footer-copy">© 2024 IFRI_MENTORLINK • EXCELLENCE & INNOVATION</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script> 
+const togglePwd = document.getElementById('togglePwd');
+const passwordInput = document.getElementById('password');
+const eyeIcon = document.getElementById('eyeIcon');
+
+const eyeOpen = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+const eyeClosed = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+togglePwd.addEventListener('click', () => {
+  const isPassword = passwordInput.type === 'password';
+  passwordInput.type = isPassword ? 'text' : 'password';
+  eyeIcon.innerHTML = isPassword ? eyeClosed : eyeOpen;
+});
+
+
+const loginForm = document.getElementById('loginForm');
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const emailVal = document.getElementById('email').value.trim();
+  const passwordVal = document.getElementById('password').value;
+  let valid = true;
+
+  // Validation email/téléphone
+  const emailWrapper = document.getElementById('email').closest('.input-wrapper');
+  if (!emailVal) {
+    emailWrapper.classList.add('error');
+    emailWrapper.classList.remove('success');
+    valid = false;
+  } else {
+    emailWrapper.classList.remove('error');
+    emailWrapper.classList.add('success');
+  }
+
+  // Validation mot de passe
+  const pwdWrapper = document.getElementById('password').closest('.input-wrapper');
+  if (!passwordVal || passwordVal.length < 6) {
+    pwdWrapper.classList.add('error');
+    pwdWrapper.classList.remove('success');
+    valid = false;
+  } else {
+    pwdWrapper.classList.remove('error');
+    pwdWrapper.classList.add('success');
+  }
+
+  if (valid) {
+    // Simulation de connexion
+    const btn = loginForm.querySelector('.btn-connect');
+    btn.textContent = 'Connexion en cours…';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.textContent = '✓ Connecté !';
+      btn.style.background = '#22c55e';
+    }, 1500);
+  }
+});
+
+document.querySelectorAll('.input-wrapper input').forEach((input) => {
+  input.addEventListener('focus', () => {
+    input.closest('.input-wrapper').classList.remove('error', 'success');
+  });
+});" 
+</script>
+</body>
+</html>
