@@ -1,39 +1,57 @@
 const { createApp, ref, onMounted } = Vue;
 
-createApp({
-    setup() {
-        const activeTab = ref('bio');
-        const showToast = ref(false);
-        const toastMessage = ref('');
+try {
+    createApp({
+        setup() {
+            const activeTab = ref('bio');
+            const showToast = ref(false);
+            const toastMessage = ref('');
 
-        // Current User Profile
-        const profile = ref({
-            id: 99,
-            name: "Koffi Kouamé",
-            title: "Étudiant en M1 Génie Logiciel (IFRI)",
-            avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCN54N3U_JeFSlRvBog4y0iJKUCp8zYmAhB0tVG5zHygrZsFfm3jXwtZFRSfDOVcSe2lTEF48W8eJFhdW0xxttNWSRRFbZZl1xEedHpuIzBdIgKiGUWLOVbg2NkbyOZYSQBmpaQo-69bxaALDHt_aXvn6h2BKbODL5TloDe5bwEGW9wN9WB4Xkvu0h6ry4Y5WWdhODkK46j1BiIJAj9GT899sBYb5MpXe_Z47HuyEoNkf1OM7DxT8hq39RgI-iAHCv-0NUug9GM340",
-            location: "Abomey-Calavi, Bénin",
-            levelAndFiliere: "M1 - Génie Logiciel",
-            statsMentoring: "0",
-            statsProjects: "4",
-            bio: "Étudiant passionné par le développement web et l'IA. J'aime partager mes connaissances et apprendre des autres. Je cherche à approfondir mes compétences en Architecture Logicielle.",
-            skills: ["React.js", "Algorithmique", "Python"],
-            objectives: [
-                { icon: "school", title: "Soutien Académique", description: "Je recherche du soutien sur les patrons de conception (design patterns) et l'architecture logicielle propre." },
-                { icon: "work", title: "Projets Professionnels", description: "Collaborer sur des projets d'intégration pratiques et trouver des opportunités de stage." }
-            ],
-            reviews: [],
-            availability: "Lundi (8h-10h, 16h-18h), Mardi (12h-14h), Mercredi (8h-14h), Vendredi (8h-10h, 16h-18h)",
-            online: true,
-            badgeTitle: "Étudiant Mentoré",
-            badgeSub: "FILIÈRE GÉNIE LOGICIEL"
-        });
+            // Current User Profile
+            const profile = ref(window.DJANGO_PROFILE_DATA || {
+                id: 99,
+                name: "Nom inconnu",
+                title: "Étudiant",
+                avatar: "",
+                location: "",
+                levelAndFiliere: "",
+                statsMentoring: "0",
+                statsProjects: "0",
+                bio: "",
+                skills: [],
+                objectives: [],
+                reviews: [],
+                availability: "",
+                online: true,
+                badgeTitle: "",
+                badgeSub: ""
+            });
 
-        return {
-            activeTab,
-            profile,
-            showToast,
-            toastMessage
-        };
-    }
-}).mount('#app');
+            const hasAvailability = (day, slot) => {
+                const searchStr = `${day} ${slot}`;
+                return profile.value.disponibilites && profile.value.disponibilites.includes(searchStr);
+            };
+
+            return {
+                activeTab,
+                profile,
+                showToast,
+                toastMessage,
+                hasAvailability
+            };
+        }
+    }).mount('#app');
+} catch (e) {
+    console.error("Vue mounting error:", e);
+    const div = document.createElement('div');
+    div.style.position = 'fixed';
+    div.style.top = '0';
+    div.style.left = '0';
+    div.style.width = '100%';
+    div.style.background = '#d90429';
+    div.style.color = 'white';
+    div.style.padding = '20px';
+    div.style.zIndex = '99999';
+    div.innerText = "Vue Error: " + e.message + "\nStack: " + e.stack;
+    document.body.appendChild(div);
+}

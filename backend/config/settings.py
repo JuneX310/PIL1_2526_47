@@ -26,12 +26,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-hj&h_8@6s_*&e38@l0bxo8pgx%yt_nc7#b0b+7+#k_m&axqydb'
+# La clé secrète est chargée depuis le fichier .env (voir en haut du fichier)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '192.168.196.59',   # IP WiFi / réseau principal
+    '192.168.21.173',   # IP réseau secondaire
+    '*',                # Accepte toutes les IPs (pratique pour développement)
+]
 
 
 # Application definition
@@ -64,12 +70,13 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / '../frontend/templates'],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.profiles.context_processors.notifications_processor',
             ],
         },
     },
@@ -129,3 +136,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / '../frontend/static']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / '../media'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

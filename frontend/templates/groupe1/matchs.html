@@ -196,6 +196,7 @@
 {% block extra_js %}
 <script>
     window.MATCHS_DATA = {{ matchs_json|safe }};
+    window.USER_FILIERE_CODE = "{{ user_filiere_code|escapejs }}";
 </script>
 <script src="{% static 'js/matchs.js' %}"></script>
 {% endblock %}

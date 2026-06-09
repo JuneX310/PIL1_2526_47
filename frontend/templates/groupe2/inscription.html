@@ -11,8 +11,8 @@
 <nav class="bg-surface shadow-sm sticky top-0 z-50">
     <div class="flex justify-between items-center w-full px-marge-page h-20 max-w-7xl mx-auto">
         <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">school</span>
-            <span class="font-titre-h3 text-titre-h3 font-bold text-primary">IFRI_MentorLink</span>
+            <img src="{% static 'assets/logo.png' %}" alt="Logo" class="h-10 w-auto object-contain"/>
+            <span class="font-titre-h3 text-titre-h3 font-bold text-primary">IFRI MentorLink</span>
         </div>
         <div class="hidden md:flex items-center gap-md">
             <a class="text-on-surface-variant font-corps-md hover:text-secondary transition-colors" href="/">Accueil</a>
@@ -45,36 +45,62 @@
             </div>
         </div>
         
-        <form class="p-lg md:p-xl space-y-md" id="registration-form">
+        <form id="registration-form" class="p-lg md:p-xl space-y-md" method="POST" action="{% url 'accounts:inscription' %}">
+            {% csrf_token %}
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="p-4 rounded-lg bg-erreur text-white text-sm font-bold">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <input type="hidden" name="points_forts" id="hidden_points_forts" value="">
+            <input type="hidden" name="points_faibles" id="hidden_points_faibles" value="">
+            <input type="hidden" name="disponibilites" id="hidden_disponibilites" value="">
+            
             <!-- Step 1: Personal Info -->
             <div class="step-transition active-step" id="step-1">
                 <h2 class="font-titre-h3 text-titre-h3 text-primary mb-md">Informations Personnelles</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
                     <div class="flex flex-col gap-xs">
                         <label class="font-bouton text-label-caps text-on-surface-variant">Prénom</label>
-                        <input class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: Koffi" type="text" required/>
+                        <input name="first_name" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: Koffi" type="text" required/>
                     </div>
                     <div class="flex flex-col gap-xs">
                         <label class="font-bouton text-label-caps text-on-surface-variant">Nom</label>
-                        <input class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: Mensah" type="text" required/>
+                        <input name="last_name" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: Mensah" type="text" required/>
                     </div>
                     <div class="flex flex-col gap-xs md:col-span-2">
                         <label class="font-bouton text-label-caps text-on-surface-variant">Email Institutionnel (@ifri-uac.bj)</label>
-                        <input class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="koffi.mensah@ifri-uac.bj" type="email" required/>
+                        <input name="email" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="koffi.mensah@ifri-uac.bj" type="email" required/>
                     </div>
                     <div class="flex flex-col gap-xs">
                         <label class="font-bouton text-label-caps text-on-surface-variant">Téléphone (WhatsApp)</label>
-                        <input class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="+229 01 00 00 00 00" type="tel" required/>
+                        <input name="phone" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="+229 01 00 00 00 00" type="tel" required/>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Genre</label>
+                        <div class="flex flex-wrap gap-sm mt-xs h-full items-center">
+                            <label class="flex-1 cursor-pointer">
+                                <input class="hidden peer" name="sexe" type="radio" value="M" checked/>
+                                <div class="text-center p-[10px] border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors text-sm">Homme</div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input class="hidden peer" name="sexe" type="radio" value="F"/>
+                                <div class="text-center p-[10px] border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors text-sm">Femme</div>
+                            </label>
+                        </div>
                     </div>
                     <div class="flex flex-col gap-xs">
                         <label class="font-bouton text-label-caps text-on-surface-variant">Filière</label>
-                        <select class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all bg-white" required>
+                        <select name="filiere" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all bg-white" required>
                             <option disabled="" selected="" value="">Choisir une filière</option>
-                            <option>Intelligence Artificielle (IA)</option>
-                            <option>Génie Logiciel (GL)</option>
-                            <option>Sécurité Informatique (SI)</option>
-                            <option>Systèmes Embarqués & IoT (SE&IoT)</option>
-                            <option>Internet et Multimédia (IM)</option>
+                            <option value="IA">Intelligence Artificielle (IA)</option>
+                            <option value="GL">Génie Logiciel (GL)</option>
+                            <option value="SI">Sécurité Informatique (SI)</option>
+                            <option value="IM">Internet et Multimédia (IM)</option>
                         </select>
                     </div>
                     <div class="flex flex-col gap-xs md:col-span-2">
@@ -102,6 +128,11 @@
                             </label>
                         </div>
                     </div>
+                    
+                    <div class="flex flex-col gap-xs md:col-span-2">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Mot de passe</label>
+                        <input name="password" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="••••••••" type="password" minlength="6" required/>
+                    </div>
                 </div>
             </div>
 
@@ -110,32 +141,44 @@
                 <h2 class="font-titre-h3 text-titre-h3 text-primary mb-2">Compétences</h2>
                 <p class="text-on-surface-variant font-corps-md mb-md">Aidez-nous à faire correspondre les profils en indiquant vos forces et les domaines où vous souhaitez progresser.</p>
                 <div class="space-y-lg">
+                    <!-- Points forts -->
                     <div>
                         <h3 class="font-bouton text-label-caps text-succes mb-sm flex items-center gap-2 font-bold">
                             <span class="material-symbols-outlined text-sm">thumb_up</span> VOS POINTS FORTS
                         </h3>
-                        <div class="flex flex-wrap gap-sm">
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">Python <span class="material-symbols-outlined text-sm">add</span></button>
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">React/Vue <span class="material-symbols-outlined text-sm">add</span></button>
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">SQL/NoSQL <span class="material-symbols-outlined text-sm">add</span></button>
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">Cybersecurity <span class="material-symbols-outlined text-sm">add</span></button>
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">Algorithmique <span class="material-symbols-outlined text-sm">add</span></button>
-                        </div>
+                        <p class="text-xs text-on-surface-variant mb-sm">Matières dans lesquelles vous excellez et pouvez aider les autres.</p>
+                        <!-- Bouton trigger -->
+                        <button id="insc-strength-btn"
+                                class="flex items-center gap-xs px-md py-sm rounded-xl border-2 border-dashed border-succes/50 text-succes font-bouton text-bouton hover:bg-succes/5 hover:border-succes transition-all duration-200 w-full justify-center"
+                                type="button">
+                            <span class="material-symbols-outlined text-[18px]">school</span>
+                            <span id="insc-strength-label">Choisir mes points forts</span>
+                            <span class="material-symbols-outlined text-[16px] ml-auto text-on-surface-variant">expand_more</span>
+                        </button>
+                        <!-- Tags sélectionnés -->
+                        <div id="insc-strength-tags" class="flex flex-wrap gap-xs mt-sm"></div>
                     </div>
+
+                    <!-- Points faibles -->
                     <div>
                         <h3 class="font-bouton text-label-caps text-secondary mb-sm flex items-center gap-2 font-bold">
                             <span class="material-symbols-outlined text-sm">lightbulb</span> BESOINS DE SOUTIEN
                         </h3>
-                        <div class="flex flex-wrap gap-sm">
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">Mathématiques <span class="material-symbols-outlined text-sm">add</span></button>
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">Java/Spring <span class="material-symbols-outlined text-sm">add</span></button>
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">Cloud/Docker <span class="material-symbols-outlined text-sm">add</span></button>
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">UI/UX Design <span class="material-symbols-outlined text-sm">add</span></button>
-                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">Gestion Projet <span class="material-symbols-outlined text-sm">add</span></button>
-                        </div>
+                        <p class="text-xs text-on-surface-variant mb-sm">Matières sur lesquelles vous souhaitez progresser et être accompagné.</p>
+                        <!-- Bouton trigger -->
+                        <button id="insc-weakness-btn"
+                                class="flex items-center gap-xs px-md py-sm rounded-xl border-2 border-dashed border-secondary/50 text-secondary font-bouton text-bouton hover:bg-secondary/5 hover:border-secondary transition-all duration-200 w-full justify-center"
+                                type="button">
+                            <span class="material-symbols-outlined text-[18px]">lightbulb</span>
+                            <span id="insc-weakness-label">Choisir mes besoins</span>
+                            <span class="material-symbols-outlined text-[16px] ml-auto text-on-surface-variant">expand_more</span>
+                        </button>
+                        <!-- Tags sélectionnés -->
+                        <div id="insc-weakness-tags" class="flex flex-wrap gap-xs mt-sm"></div>
                     </div>
                 </div>
             </div>
+
 
             <!-- Step 3: Availability Grid -->
             <div class="step-transition hidden-step" id="step-3">

@@ -38,3 +38,6 @@ Desktop.ini
 .env
 .env.local
 .env.production
+
+# ==== Dossiers personnels ====
+perso/

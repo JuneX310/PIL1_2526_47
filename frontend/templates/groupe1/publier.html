@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+<input type="hidden" id="csrf_token" value="{{ csrf_token }}">
 {% verbatim %}
 <div id="app" v-cloak class="min-h-[calc(100vh-160px)] py-xl px-marge-page">
     <div class="max-w-[720px] mx-auto">
@@ -18,10 +19,9 @@
         </div>
 
         <!-- Main Form Card -->
-        <div class="bg-white rounded-[16px] p-md md:p-lg border border-outline-variant/30 shadow-md">
+        <div class="bg-white rounded-[16px] p-md md:p-lg border border-outline-variant/30 shadow-sm">
             <form @submit.prevent="submitForm" class="space-y-lg">
-                {% csrf_token %}
-                <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+
                 <!-- Toggle Switch (Je propose vs Je cherche) -->
                 <div class="flex p-1 bg-surface-container-low rounded-xl border border-outline-variant/10">
                     <label class="flex-1 cursor-pointer">
@@ -38,38 +38,30 @@
                     </label>
                 </div>
 
-                <!-- Tag Selector: Matières -->
+                <!-- Matières — Bouton Picker -->
                 <div class="space-y-sm">
                     <label class="font-titre-h3 text-[16px] block text-primary font-bold">Matières concernées</label>
-                    <div class="flex flex-wrap gap-sm">
-                        <label v-for="subject in availableSubjects" :key="subject.id" class="cursor-pointer group">
-                            <input v-model="formData.subjects" :value="subject.name" class="sr-only peer" type="checkbox"/>
-                            <span class="px-4 py-2 rounded-full border border-outline-variant bg-white text-on-surface-variant font-bouton text-bouton peer-checked:bg-primary-container peer-checked:text-white peer-checked:border-primary-container transition-all block">
-                                {{ subject.name }}
-                            </span>
-                        </label>
-                        
-                        <!-- Add Custom Subject Button / Input -->
-                        <div v-if="showCustomInput" class="flex items-center gap-xs">
-                            <input v-model="newSubjectName" 
-                                   ref="customInput"
-                                   @keyup.enter="addCustomSubject" 
-                                   class="px-sm py-1.5 border border-outline-variant rounded-full text-xs font-bouton outline-none focus:ring-1 focus:ring-primary w-32" 
-                                   placeholder="Nouvelle matière..." 
-                                   type="text"/>
-                            <button @click="addCustomSubject" type="button" class="p-1.5 bg-primary text-white rounded-full hover:bg-primary-container">
-                                <span class="material-symbols-outlined text-[14px]">check</span>
-                            </button>
-                            <button @click="showCustomInput = false" type="button" class="p-1.5 bg-erreur/10 text-erreur rounded-full hover:bg-erreur hover:text-white">
-                                <span class="material-symbols-outlined text-[14px]">close</span>
-                            </button>
-                        </div>
-                        
-                        <button v-else @click="openCustomInput" class="flex items-center gap-xs px-4 py-2 rounded-full border border-dashed border-outline text-primary font-bouton text-bouton hover:bg-surface-container transition-colors" type="button">
-                            <span class="material-symbols-outlined text-[18px]">add</span> Ajouter une matière
-                        </button>
+                    
+                    <!-- Bouton trigger du dropdown -->
+                    <button id="picker-subject-btn" type="button"
+                            class="flex items-center gap-xs px-md py-sm rounded-xl border-2 border-dashed border-outline text-primary font-bouton text-bouton hover:bg-primary-fixed/10 hover:border-primary transition-all duration-200 w-full justify-center">
+                        <span class="material-symbols-outlined text-[20px]">library_books</span>
+                        <span id="picker-subject-label">Choisir les matières</span>
+                        <span class="material-symbols-outlined text-[16px] ml-auto text-on-surface-variant">expand_more</span>
+                    </button>
+                    
+                    <!-- Tags des matières sélectionnées -->
+                    <div v-if="selectedSubjects.length > 0" class="flex flex-wrap gap-xs mt-xs">
+                        <span v-for="subj in selectedSubjects" :key="subj"
+                              class="flex items-center gap-xs px-sm py-1.5 rounded-full bg-primary-container text-on-primary font-bouton text-[12px]">
+                            {{ subj }}
+                            <button @click="removeSubject(subj)" type="button"
+                                    class="material-symbols-outlined text-[14px] hover:text-secondary-container transition-colors">close</button>
+                        </span>
                     </div>
+                    <p v-else class="text-xs text-on-surface-variant italic">Aucune matière sélectionnée — cliquez sur le bouton ci-dessus.</p>
                 </div>
+
 
                 <!-- Radio Buttons with Icons: Format -->
                 <div class="space-y-sm">

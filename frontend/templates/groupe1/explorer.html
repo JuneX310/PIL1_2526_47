@@ -4,7 +4,7 @@
 {% block title %}Explorer les Mentors — IFRI MentorLink{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/explorer.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/explorer.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -14,17 +14,18 @@
     <section class="space-y-md">
         <div class="flex flex-col md:flex-row gap-md items-center justify-between">
             <h1 class="font-titre-h2 text-titre-h2 text-primary">Explorer les annonces</h1>
-            
+
             <!-- Toggle Switch -->
-            <div class="bg-surface-container p-1 rounded-xl flex items-center shadow-inner border border-outline-variant/20">
+            <div
+                class="bg-surface-container p-1 rounded-xl flex items-center shadow-inner border border-outline-variant/20">
                 <button @click="currentTab = 'offres'"
-                        :class="currentTab === 'offres' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:bg-white/50'"
-                        class="px-6 py-2 rounded-lg font-bouton text-bouton transition-all duration-300">
+                    :class="currentTab === 'offres' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:bg-white/50'"
+                    class="px-6 py-2 rounded-lg font-bouton text-bouton transition-all duration-300">
                     Offres
                 </button>
                 <button @click="currentTab = 'demandes'"
-                        :class="currentTab === 'demandes' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:bg-white/50'"
-                        class="px-6 py-2 rounded-lg font-bouton text-bouton transition-all duration-300">
+                    :class="currentTab === 'demandes' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:bg-white/50'"
+                    class="px-6 py-2 rounded-lg font-bouton text-bouton transition-all duration-300">
                     Demandes
                 </button>
             </div>
@@ -32,11 +33,11 @@
 
         <!-- Search Bar -->
         <div class="relative w-full max-w-3xl mx-auto group">
-            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary">search</span>
+            <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary">search</span>
             <input v-model="searchQuery"
-                   class="w-full pl-12 pr-4 py-4 rounded-xl border border-outline-variant bg-surface-carte focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition-all text-corps-md font-corps-md" 
-                   placeholder="Rechercher une matière, un étudiant (ex: Algorithmique, Koffi...)" 
-                   type="text"/>
+                class="w-full pl-12 pr-4 py-4 rounded-xl border border-outline-variant bg-surface-carte focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition-all text-corps-md font-corps-md"
+                placeholder="Rechercher une matière, un étudiant (ex: Algorithmique, Koffi...)" type="text" />
         </div>
 
         <!-- Filter Chips Row -->
@@ -44,68 +45,68 @@
             <div class="flex flex-wrap gap-sm justify-center">
                 <!-- Subject Filter Button -->
                 <button @click="toggleFilterMenu('subject')"
-                        :class="activeFilters.subject ? 'filter-btn-active' : 'bg-surface-carte text-on-surface-variant'"
-                        class="px-md py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2 text-sm font-medium">
-                    <span class="material-symbols-outlined text-[18px]">book</span> 
+                    :class="activeFilters.subject ? 'filter-btn-active' : 'bg-surface-carte text-on-surface-variant'"
+                    class="px-md py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2 text-sm font-medium">
+                    <span class="material-symbols-outlined text-[18px]">book</span>
                     Matière: {{ activeFilters.subject || 'Toutes' }}
                 </button>
 
                 <!-- Format Filter Button -->
                 <button @click="toggleFilterMenu('format')"
-                        :class="activeFilters.format ? 'filter-btn-active' : 'bg-surface-carte text-on-surface-variant'"
-                        class="px-md py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2 text-sm font-medium">
-                    <span class="material-symbols-outlined text-[18px]">videocam</span> 
+                    :class="activeFilters.format ? 'filter-btn-active' : 'bg-surface-carte text-on-surface-variant'"
+                    class="px-md py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2 text-sm font-medium">
+                    <span class="material-symbols-outlined text-[18px]">videocam</span>
                     Format: {{ activeFilters.format || 'Tous' }}
                 </button>
 
                 <!-- Filiere Filter Button -->
                 <button @click="toggleFilterMenu('filiere')"
-                        :class="activeFilters.filiere ? 'filter-btn-active' : 'bg-surface-carte text-on-surface-variant'"
-                        class="px-md py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2 text-sm font-medium">
-                    <span class="material-symbols-outlined text-[18px]">school</span> 
+                    :class="activeFilters.filiere ? 'filter-btn-active' : 'bg-surface-carte text-on-surface-variant'"
+                    class="px-md py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2 text-sm font-medium">
+                    <span class="material-symbols-outlined text-[18px]">school</span>
                     Filière: {{ activeFilters.filiere || 'Toutes' }}
                 </button>
 
                 <!-- Level Filter Button -->
                 <button @click="toggleFilterMenu('level')"
-                        :class="activeFilters.level ? 'filter-btn-active' : 'bg-surface-carte text-on-surface-variant'"
-                        class="px-md py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2 text-sm font-medium">
-                    <span class="material-symbols-outlined text-[18px]">bar_chart</span> 
+                    :class="activeFilters.level ? 'filter-btn-active' : 'bg-surface-carte text-on-surface-variant'"
+                    class="px-md py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-all flex items-center gap-2 text-sm font-medium">
+                    <span class="material-symbols-outlined text-[18px]">bar_chart</span>
                     Niveau: {{ activeFilters.level || 'Tous' }}
                 </button>
 
                 <!-- Clear Filters Button -->
-                <button v-if="hasActiveFilters" 
-                        @click="clearAllFilters"
-                        class="px-md py-2 rounded-full border border-erreur/30 bg-erreur/10 text-erreur hover:bg-erreur hover:text-white transition-all flex items-center gap-1 text-sm font-medium">
+                <button v-if="hasActiveFilters" @click="clearAllFilters"
+                    class="px-md py-2 rounded-full border border-erreur/30 bg-erreur/10 text-erreur hover:bg-erreur hover:text-white transition-all flex items-center gap-1 text-sm font-medium">
                     <span class="material-symbols-outlined text-[18px]">filter_alt_off</span>
                     Réinitialiser
                 </button>
             </div>
 
             <!-- Expanding Filter Selection Menus -->
-            <div v-if="openedMenu" class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-inner max-w-2xl mx-auto w-full transition-all duration-300">
+            <div v-if="openedMenu"
+                class="bg-white border border-outline-variant/30 rounded-xl p-md shadow-inner max-w-2xl mx-auto w-full transition-all duration-300">
                 <div class="flex justify-between items-center mb-sm border-b border-outline-variant/20 pb-xs">
-                    <span class="font-bold text-xs uppercase tracking-wider text-primary">Filtrer par {{ openedMenuLabel }}</span>
+                    <span class="font-bold text-xs uppercase tracking-wider text-primary">Filtrer par {{ openedMenuLabel
+                        }}</span>
                     <button @click="openedMenu = null" class="text-on-surface-variant hover:text-erreur">
                         <span class="material-symbols-outlined text-[18px]">close</span>
                     </button>
                 </div>
-                
+
                 <!-- Choices Grid -->
                 <div class="flex flex-wrap gap-xs">
                     <!-- Default choice -->
                     <button @click="setFilter(openedMenu, null)"
-                            :class="!activeFilters[openedMenu] ? 'bg-primary text-white' : 'bg-surface-container-low hover:bg-surface-container-high'"
-                            class="px-sm py-1.5 rounded-lg text-xs font-bouton transition-all">
+                        :class="!activeFilters[openedMenu] ? 'bg-primary text-white' : 'bg-surface-container-low hover:bg-surface-container-high'"
+                        class="px-sm py-1.5 rounded-lg text-xs font-bouton transition-all">
                         Tout voir
                     </button>
                     <!-- Custom choices -->
-                    <button v-for="choice in filterChoices[openedMenu]"
-                            :key="choice"
-                            @click="setFilter(openedMenu, choice)"
-                            :class="activeFilters[openedMenu] === choice ? 'bg-primary text-white' : 'bg-surface-container-low hover:bg-surface-container-high'"
-                            class="px-sm py-1.5 rounded-lg text-xs font-bouton transition-all">
+                    <button v-for="choice in filterChoices[openedMenu]" :key="choice"
+                        @click="setFilter(openedMenu, choice)"
+                        :class="activeFilters[openedMenu] === choice ? 'bg-primary text-white' : 'bg-surface-container-low hover:bg-surface-container-high'"
+                        class="px-sm py-1.5 rounded-lg text-xs font-bouton transition-all">
                         {{ choice }}
                     </button>
                 </div>
@@ -115,40 +116,39 @@
 
     <!-- Results Grid -->
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
-        <div v-for="(item, index) in paginatedItems"
-             :key="item.id"
-             class="bg-surface-carte rounded-2xl shadow-[0px_4px_20px_rgba(12,27,84,0.05)] border border-outline-variant/30 p-lg hover:border-primary-fixed transition-all hover:-translate-y-1 animate-fade-in-up flex flex-col h-full duration-300"
-             :style="{ animationDelay: `${index * 100}ms` }">
-            
+        <div v-for="(item, index) in paginatedItems" :key="item.id"
+            class="bg-surface-carte rounded-2xl shadow-[0px_4px_20px_rgba(12,27,84,0.05)] border border-outline-variant/30 p-lg hover:border-primary-fixed transition-all hover:-translate-y-1 animate-fade-in-up flex flex-col h-full duration-300"
+            :style="{ animationDelay: `${index * 100}ms` }">
+
             <div class="flex justify-between items-start mb-4">
                 <div class="flex items-center gap-md">
-                    <img :src="item.avatar"
-                         :alt="item.name" 
-                         class="w-14 h-14 rounded-full object-cover border-2 border-primary-container shadow-sm"/>
+                    <img :src="item.avatar" :alt="item.name"
+                        class="w-14 h-14 rounded-full object-cover border-2 border-primary-container shadow-sm" />
                     <div>
                         <h3 class="font-titre-h3 text-corps-md font-bold text-primary">{{ item.name }}</h3>
-                        <p class="text-label-caps font-label-caps text-secondary uppercase tracking-wider text-[11px]">{{ item.filiere }} ({{ item.niveau }})</p>
+                        <p class="text-label-caps font-label-caps text-secondary uppercase tracking-wider text-[11px]">
+                            {{ item.filiere }} ({{ item.niveau }})</p>
                     </div>
                 </div>
-                <div class="bg-succes/10 text-succes px-2 py-1 rounded-lg flex items-center gap-0.5 font-bold text-[11px]">
+                <div
+                    class="bg-succes/10 text-succes px-2 py-1 rounded-lg flex items-center gap-0.5 font-bold text-[11px]">
                     <span class="material-symbols-outlined text-[13px]">bolt</span>
                     {{ item.matchScore }}% Match
                 </div>
             </div>
-            
+
             <div class="mb-4 flex-grow">
                 <p class="text-on-surface-variant text-sm mb-3 line-clamp-3 italic">
                     "{{ item.description }}"
                 </p>
                 <div class="flex flex-wrap gap-xs">
-                    <span v-for="subject in item.subjects" 
-                          :key="subject"
-                          class="bg-primary/5 text-primary-container px-2.5 py-1 rounded-lg text-[11px] font-label-caps border border-primary/10">
+                    <span v-for="subject in item.subjects" :key="subject"
+                        class="bg-primary/5 text-primary-container px-2.5 py-1 rounded-lg text-[11px] font-label-caps border border-primary/10">
                         {{ subject }}
                     </span>
                 </div>
             </div>
-            
+
             <div class="mt-auto space-y-3 pt-md border-t border-outline-variant/10">
                 <div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
                     <span class="material-symbols-outlined text-[18px]">calendar_month</span>
@@ -158,8 +158,8 @@
                     <span class="material-symbols-outlined text-[18px]">videocam</span>
                     <span>Format : {{ item.format }}</span>
                 </div>
-                <a :href="'/matching/profil/?id=' + item.id" 
-                   class="w-full py-2.5 bg-primary text-white rounded-lg font-bouton text-sm hover:bg-primary-container transition-colors transform active:scale-[0.98] block text-center mt-2 shadow-sm">
+                <a :href="'/matching/profil/?id=' + item.id"
+                    class="w-full py-2.5 bg-primary text-white rounded-lg font-bouton text-sm hover:bg-primary-container transition-colors transform active:scale-[0.98] block text-center mt-2 shadow-sm">
                     Voir le profil
                 </a>
             </div>
@@ -167,30 +167,28 @@
     </section>
 
     <!-- Empty State -->
-    <div v-if="filteredItems.length === 0" class="text-center py-xl bg-white rounded-xl border border-outline-variant/30">
+    <div v-if="filteredItems.length === 0"
+        class="text-center py-xl bg-white rounded-xl border border-outline-variant/30">
         <span class="material-symbols-outlined text-[48px] text-on-surface-variant mb-2">find_in_page</span>
-        <p class="text-corps-lg text-on-surface-variant">Aucune annonce ne correspond à votre recherche ou vos filtres.</p>
+        <p class="text-corps-lg text-on-surface-variant">Aucune annonce ne correspond à votre recherche ou vos filtres.
+        </p>
     </div>
 
     <!-- Pagination -->
     <nav v-if="totalPages > 1" class="flex justify-center items-center gap-sm pt-lg">
-        <button @click="currentPage > 1 ? currentPage-- : null"
-                :disabled="currentPage === 1"
-                class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors text-on-surface-variant disabled:opacity-30">
+        <button @click="currentPage > 1 ? currentPage-- : null" :disabled="currentPage === 1"
+            class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors text-on-surface-variant disabled:opacity-30">
             <span class="material-symbols-outlined">chevron_left</span>
         </button>
         <div class="flex items-center gap-xs">
-            <button v-for="page in totalPages" 
-                    :key="page"
-                    @click="currentPage = page"
-                    :class="currentPage === page ? 'bg-primary text-white font-bold' : 'hover:bg-surface-container-low text-on-surface-variant font-medium'"
-                    class="w-10 h-10 rounded-lg flex items-center justify-center text-sm transition-all">
+            <button v-for="page in totalPages" :key="page" @click="currentPage = page"
+                :class="currentPage === page ? 'bg-primary text-white font-bold' : 'hover:bg-surface-container-low text-on-surface-variant font-medium'"
+                class="w-10 h-10 rounded-lg flex items-center justify-center text-sm transition-all">
                 {{ page }}
             </button>
         </div>
-        <button @click="currentPage < totalPages ? currentPage++ : null"
-                :disabled="currentPage === totalPages"
-                class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors text-on-surface-variant disabled:opacity-30">
+        <button @click="currentPage < totalPages ? currentPage++ : null" :disabled="currentPage === totalPages"
+            class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-colors text-on-surface-variant disabled:opacity-30">
             <span class="material-symbols-outlined">chevron_right</span>
         </button>
     </nav>
@@ -201,7 +199,7 @@
 {% block extra_js %}
 <script>
     // Injection des données réelles depuis Django
-    window.DJANGO_DATA = {{ annonces_json|safe }};
+    window.DJANGO_DATA = {{ annonces_json | safe }};
 </script>
 <script src="{% static 'js/explorer.js' %}"></script>
 {% endblock %}

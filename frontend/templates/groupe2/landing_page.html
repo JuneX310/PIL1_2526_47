@@ -10,7 +10,10 @@
 {% block header %}
 <nav class="bg-surface dark:bg-inverse-surface shadow-sm sticky top-0 z-50">
     <div class="flex justify-between items-center px-marge-page py-4 w-full max-w-[1200px] mx-auto">
-        <a href="/" class="font-titre-h3 text-titre-h3 font-bold text-primary dark:text-primary-fixed-dim hover:opacity-90">IFRI MentorLink</a>
+        <a href="/" class="flex items-center gap-2 font-titre-h3 text-titre-h3 font-bold text-primary dark:text-primary-fixed-dim hover:opacity-90">
+            <img src="{% static 'assets/logo.png' %}" alt="Logo" class="h-8 w-auto object-contain"/>
+            <span>IFRI MentorLink</span>
+        </a>
         
         <!-- Desktop Links -->
         <div class="hidden md:flex items-center gap-md">
@@ -56,7 +59,7 @@
             </div>
             <div class="lg:col-span-5 hidden lg:block">
                 <div class="relative bg-surface-carte rounded-[32px] p-6 shadow-xl border border-outline-variant/30 overflow-hidden transform rotate-2 hover:rotate-0 transition-all duration-500">
-                    <img alt="Mentorat Académique" class="w-full h-auto rounded-2xl object-cover aspect-video shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgY_BPpDnVTVvD5Snsr_jhGz5oBUtVtaiunmwG5dNT1_FqKXDS4Irk8SFhCK80baetNTMgVzHKqgHa8dq1ARdG5bvnZpNv-kjQ01H5TZ4O_9IfiATvSw5PavaDh0QxMiLu2UIh-4aXkwWjnesRrcypTzVka8-GK6blsEcUwSklOzzIfdjAMM62glgt_2VlXN7r-g1-gabcgA6nPJRapOnBjI416mpNwiSBFstjdtEDtBKCOEmKBrk5G-vQ5oq5Xc2V0HpCWvV5TqU"/>
+                    <img alt="Mentorat Académique" class="w-full h-auto rounded-2xl object-cover aspect-video shadow-sm" src="{% static 'assets/illustration_mentorat.png' %}"/>
                 </div>
             </div>
         </div>

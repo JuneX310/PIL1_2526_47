@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Historique des Notifications — IFRI MentorLink{% endblock %}
+
+{% block content %}
+{% verbatim %}
+<div id="app" v-cloak class="max-w-[800px] mx-auto px-marge-page py-lg space-y-lg">
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md border-b border-outline-variant/20 pb-md">
+        <div>
+            <h1 class="font-titre-h1 text-titre-h2 text-primary flex items-center gap-sm">
+                <span class="material-symbols-outlined text-3xl">notifications</span>
+                Notifications
+            </h1>
+            <p class="font-corps-lg text-on-surface-variant text-sm">Consultez l'historique complet de vos alertes, demandes de match et messages.</p>
+        </div>
+        
+        <!-- Quick stats / Clear button -->
+        <span v-if="unreadCount > 0" class="px-3 py-1 bg-erreur/10 text-erreur rounded-full text-xs font-bold font-label-caps">
+            {{ unreadCount }} non lue(s)
+        </span>
+    </header>
+
+    <!-- Filter Bar & Search -->
+    <div class="bg-surface-carte rounded-xl p-md shadow-sm border border-outline-variant/30 flex flex-col sm:flex-row gap-md items-center justify-between">
+        <!-- Filter Tabs -->
+        <div class="flex bg-surface-container p-1 rounded-lg border border-outline-variant/10 w-full sm:w-auto">
+            <button @click="currentTab = 'all'"
+                    :class="currentTab === 'all' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:bg-white/50'"
+                    class="flex-1 sm:flex-initial px-4 py-1.5 rounded-md text-xs font-bold transition-all">
+                Toutes
+            </button>
+            <button @click="currentTab = 'match'"
+                    :class="currentTab === 'match' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:bg-white/50'"
+                    class="flex-1 sm:flex-initial px-4 py-1.5 rounded-md text-xs font-bold transition-all">
+                Matchs
+            </button>
+            <button @click="currentTab = 'message'"
+                    :class="currentTab === 'message' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:bg-white/50'"
+                    class="flex-1 sm:flex-initial px-4 py-1.5 rounded-md text-xs font-bold transition-all">
+                Messages
+            </button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-64">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+            <input v-model="searchQuery" 
+                   type="text"
+                   class="w-full pl-9 pr-4 py-1.5 border border-outline-variant rounded-lg bg-surface focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-xs font-corps-md outline-none transition-all"
+                   placeholder="Rechercher une notification..."/>
+        </div>
+    </div>
+
+    <!-- Notification Cards List -->
+    <div class="space-y-sm">
+        <div v-for="(notif, index) in filteredNotifications"
+             :key="index"
+             :class="[
+                 notif.is_read ? 'bg-surface-carte opacity-80 border-outline-variant/20' : 'bg-surface-container-lowest border-primary/20 shadow-sm border-l-4 border-l-primary',
+                 'p-md rounded-xl border hover:shadow-md transition-all duration-300 flex items-start gap-md relative group'
+             ]">
+            
+            <!-- Icon Indicator -->
+            <div :class="[
+                notif.icon_color.includes('primary') ? 'bg-primary/10 text-primary' : '',
+                notif.icon_color.includes('secondary') ? 'bg-secondary-container/10 text-on-secondary-container' : '',
+                notif.icon_color.includes('succes') ? 'bg-succes/10 text-succes' : '',
+                notif.icon_color.includes('erreur') ? 'bg-erreur/10 text-erreur' : '',
+                notif.icon_color.includes('outline') ? 'bg-surface-container-high text-on-surface-variant' : '',
+                'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0'
+            ]">
+                <span class="material-symbols-outlined text-lg">{{ notif.icon }}</span>
+            </div>
+
+            <!-- Content -->
+            <div class="flex-grow space-y-xs pr-6">
+                <div class="flex flex-wrap items-center gap-xs">
+                    <h4 class="font-bold text-primary text-sm">{{ notif.title }}</h4>
+                    <span class="text-[10px] bg-surface-container-high px-2 py-0.5 rounded-full font-label-caps text-on-surface-variant">
+                        {{ notif.type === 'match' ? 'Match' : 'Message' }}
+                    </span>
+                    <span v-if="notif.status" 
+                          :class="[
+                              notif.status.includes('attente') ? 'bg-secondary-container/10 text-on-secondary-container' : '',
+                              notif.status.includes('Accepté') || notif.status.includes('Accepte') ? 'bg-succes/10 text-succes' : '',
+                              notif.status.includes('Refusé') || notif.status.includes('Refuse') ? 'bg-erreur/10 text-erreur' : '',
+                              'text-[9px] px-2 py-0.5 rounded-full font-label-caps'
+                          ]">
+                        {{ notif.status }}
+                    </span>
+                </div>
+                
+                <p class="text-on-surface text-sm">{{ notif.text }}</p>
+                <span class="text-[10px] text-outline font-label-caps block">{{ notif.time_diff }}</span>
+            </div>
+
+            <!-- Actions / Navigation Link -->
+            <a :href="notif.link" 
+               class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-surface-container-low hover:bg-primary hover:text-white transition-all text-on-surface-variant flex items-center justify-center opacity-0 group-hover:opacity-100 shadow-sm active:scale-95"
+               title="Ouvrir">
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+        </div>
+
+        <!-- Empty State -->
+        <div v-if="filteredNotifications.length === 0" 
+             class="text-center py-xl bg-surface-carte rounded-xl border border-outline-variant/30 shadow-inner flex flex-col items-center justify-center gap-xs">
+            <span class="material-symbols-outlined text-[48px] text-on-surface-variant mb-2">notifications_off</span>
+            <p class="text-corps-lg text-on-surface-variant font-bold text-sm">Aucune notification trouvée</p>
+            <p class="text-xs text-outline">Vos nouvelles alertes et messages apparaîtront ici.</p>
+        </div>
+    </div>
+</div>
+{% endverbatim %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const { createApp, ref, computed } = Vue;
+
+    createApp({
+        setup() {
+            const notifications = ref({{ notifications|safe }});
+            const currentTab = ref('all');
+            const searchQuery = ref('');
+
+            // Calcul du nombre de non lues
+            const unreadCount = computed(() => {
+                return notifications.value.filter(n => !n.is_read).length;
+            });
+
+            // Filtrage dynamique
+            const filteredNotifications = computed(() => {
+                return notifications.value.filter(n => {
+                    // Onglet
+                    if (currentTab.value !== 'all' && n.type !== currentTab.value) {
+                        return false;
+                    }
+                    // Recherche
+                    if (searchQuery.value) {
+                        const query = searchQuery.value.toLowerCase().trim();
+                        const matchesSearch = n.title.toLowerCase().includes(query) || 
+                                              n.text.toLowerCase().includes(query) ||
+                                              (n.status && n.status.toLowerCase().includes(query));
+                        if (!matchesSearch) return false;
+                    }
+                    return true;
+                });
+            });
+
+            return {
+                notifications,
+                currentTab,
+                searchQuery,
+                unreadCount,
+                filteredNotifications
+            };
+        }
+    }).mount('#app');
+</script>
+{% endblock %}

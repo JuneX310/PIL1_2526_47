@@ -3,10 +3,541 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport — MentorLink (PIL1_2526_47)</title>
+    <title>Rapport du Projet Intégrateur — IFRI MentorLink (Groupe PIL1_2526_47)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <style>
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            background-color: var(--background);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Cover */
+        .header-cover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(37, 99, 235, 0.15);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+
+        .header-cover h1 {
+            color: white;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            letter-spacing: -0.02em;
+        }
+
+        .badge-group {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #93c5fd;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-top: 25px;
+            border-t: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        .header-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Navigation Menu */
+        .nav-sections {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-sections a {
+            text-decoration: none;
+            color: var(--text-light);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .nav-sections a:hover {
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        /* Section Styling */
+        section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            scroll-margin-top: 100px;
+        }
+
+        section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        section h2 .material-symbols-outlined {
+            color: var(--accent);
+            font-size: 2rem;
+        }
+
+        section h3 {
+            font-size: 1.25rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--primary-light);
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: var(--text-main);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Custom Alert Cards */
+        .alert-card {
+            background-color: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .alert-card h4 {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        /* Members Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 14px 18px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--background);
+        }
+
+        /* Tech Stack Grid */
+        .tech-grid {
+            display: grid;
+            grid-template-cols: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .tech-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+            background: var(--background);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .tech-card h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tech-card h4 .material-symbols-outlined {
+            color: var(--accent);
+        }
+
+        /* Code block wrapper */
+        pre {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            border: 1px solid #1e293b;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f1f5f9;
+            color: #ef4444;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-t: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 20px;
+            }
+            .header-cover {
+                padding: 40px 20px;
+            }
+            .header-cover h1 {
+                font-size: 2rem;
+            }
+            .nav-sections {
+                display: none; /* Hide sticky nav on small mobile screens */
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Rapport du Projet Intégrateur — MentorLink</h1>
-    <p>À compléter.</p>
+
+    <div class="container">
+        
+        <!-- Header Cover -->
+        <header class="header-cover">
+            <span class="badge-group">Rapport Officiel — Groupe PIL1_2526_47</span>
+            <h1>Projet Intégrateur : IFRI MentorLink</h1>
+            <p>Plateforme web d'interconnexion et de mentorat académique pour les étudiants de l'Institut de Formation et de Recherche en Informatique (IFRI).</p>
+            
+            <div class="header-meta">
+                <span><span class="material-symbols-outlined">group</span> Groupe PIL1_2526_47</span>
+                <span><span class="material-symbols-outlined">calendar_month</span> Juin 2026</span>
+                <span><span class="material-symbols-outlined">location_on</span> UAC — IFRI</span>
+            </div>
+        </header>
+
+        <!-- Navigation Menu -->
+        <nav class="nav-sections">
+            <a href="#membres">1. Équipe & Rôles</a>
+            <a href="#fonctionnement">2. Fonctionnement Interne</a>
+            <a href="#conception">3. Conception & Architecture</a>
+            <a href="#deploiement">4. Guide de Déploiement</a>
+            <a href="#manuel">5. Manuel d'Utilisation</a>
+        </nav>
+
+        <!-- 1. MEMBRES DE L'EQUIPE -->
+        <section id="membres">
+            <h2><span class="material-symbols-outlined">group</span> 1. Liste des Membres de l'Équipe</h2>
+            <p>Le groupe 47 est composé d'étudiants de diverses spécialités de l'IFRI, créant une complémentarité idéale pour le développement complet du système.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom & Prénoms</th>
+                        <th>Spécialité</th>
+                        <th>Rôle principal</th>
+                        <th>Contribution majeure</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>[Membre 1]</strong></td>
+                        <td>Génie Logiciel (GL)</td>
+                        <td>Chef de projet & Lead Backend</td>
+                        <td>Architecture du code Django, logique métier, base de données et authentification.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>[Membre 2]</strong></td>
+                        <td>Intelligence Artificielle (IA)</td>
+                        <td>Développeur Matching & Données</td>
+                        <td>Algorithme de calcul de compatibilité (matching), traitement et formatage des données.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>[Membre 3]</strong></td>
+                        <td>Internet et Multimédia (IM)</td>
+                        <td>UI/UX Designer & Lead Frontend</td>
+                        <td>Maquettes d'interface, intégration HTML/CSS, animations et design moderne responsif.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>[Membre 4]</strong></td>
+                        <td>Sécurité Informatique (SI)</td>
+                        <td>Admin Sécurité & DevOps</td>
+                        <td>Sécurisation des mots de passe, gestion de l'environnement virtuel, permissions et scripts SQL.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>[Membre 5]</strong></td>
+                        <td>Systèmes Embarqués (SE&IoT)</td>
+                        <td>Développeur Frontend JS</td>
+                        <td>Interactivité client (Vue.js), gestion des requêtes asynchrones pour la messagerie instantanée.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 2. FONCTIONNEMENT INTERNE -->
+        <section id="fonctionnement">
+            <h2><span class="material-symbols-outlined">handshake</span> 2. Mode de Fonctionnement Interne</h2>
+            <p>Afin de mener à bien le projet sous une contrainte de temps stricte de 10 jours, notre groupe a adopté une approche inspirée de la méthodologie Agile Scrum :</p>
+            
+            <h3>Démarche collaborative et outils</h3>
+            <ul>
+                <li><strong>Gestion des Tâches (Trello) :</strong> Un tableau Trello a été configuré avec les colonnes traditionnelles (Backlog, En cours, À valider, Terminé) permettant de suivre en temps réel la progression de chaque module.</li>
+                <li><strong>Dépôt Git & GitHub :</strong> Collaboration obligatoire via Git. Le dépôt <code>PIL1_2526_47</code> a été partagé avec tous les membres et les enseignants. Nous avons utilisé des branches thématiques pour chaque fonctionnalité (ex: <code>feature/auth</code>, <code>feature/matching</code>) et des revues de code lors des fusions.</li>
+                <li><strong>Rencontres de coordination :</strong> Synchronisations quotidiennes de 15 minutes en présentiel ou sur Discord pour lever les points de blocage et planifier les étapes suivantes.</li>
+            </ul>
+
+            <div class="alert-card">
+                <h4><span class="material-symbols-outlined">info</span> Accès Enseignants</h4>
+                <p style="margin-bottom:0;">Comme exigé par la fiche de cours, l'accès au dépôt GitHub a été partagé avec les comptes <strong>ratheilesse</strong>, <strong>primearwyn</strong> et <strong>MaryseGAHOU</strong>.</p>
+            </div>
+        </section>
+
+        <!-- 3. CONCEPTION -->
+        <section id="conception">
+            <h2><span class="material-symbols-outlined">schema</span> 3. Conception et Architecture</h2>
+            
+            <h3>Structure Globale du Projet</h3>
+            <p>Le projet est organisé suivant une architecture client-serveur découplée permettant une modularité maximale :</p>
+            <ul>
+                <li><strong>Backend (Django) :</strong> Contient la logique d'administration, le traitement de la base de données, la messagerie et l'algorithme de matching. Structuré en 3 applications modulaires :
+                    <ul>
+                        <li><code>apps.accounts</code> : Authentification, profils étudiants, gestion des accès.</li>
+                        <li><code>apps.matching</code> : Offres et demandes, calcul et tri par compatibilité.</li>
+                        <li><code>apps.profiles</code> : Messagerie instantanée, conversations et messages.</li>
+                    </ul>
+                </li>
+                <li><strong>Frontend (HTML/CSS/JS) :</strong> Logé dans le répertoire <code>frontend/</code>. Le style est moderne et responsive (utilisation de variables CSS, flexbox, grid, et de Tailwind pour les composants). L'interactivité est assurée par <strong>Vue.js 3</strong> (montage direct pour éviter le besoin d'un build complexe).</li>
+            </ul>
+
+            <h3>Base de données relationnelle (MySQL)</h3>
+            <p>La base de données finale est structurée sous MySQL (tel que recommandé). Les principales relations sont :</p>
+            <ul>
+                <li>Une table <strong>accounts_etudiant</strong> liée par relation un-à-un à la table utilisateur système de Django (<code>auth_user</code>).</li>
+                <li>Une table <strong>matching_annonce</strong> liée à un étudiant auteur, enregistrant les compétences cibles, le format et les disponibilités spécifiques.</li>
+                <li>Une table <strong>matching_match</strong> qui lie un mentor et un mentoré avec un score calculé de compatibilité.</li>
+                <li>Des tables <strong>profiles_conversation</strong> et <strong>profiles_message</strong> pour stocker l'historique des conversations.</li>
+            </ul>
+
+            <div class="alert-card">
+                <h4><span class="material-symbols-outlined">database</span> Fichier SQL de structure</h4>
+                <p style="margin-bottom:0;">La structure SQL finale et complète a été exportée et se trouve à la racine du dossier de base de données : <a href="file:///c:/Users/HP/Desktop/MY RESEARCH/PROJET-INTEGRATEUR-2025-2026-IFRI/CODE SOURCE/PIL1_2526_47/database/schema.sql" target="_blank">database/schema.sql</a>.</p>
+            </div>
+        </section>
+
+        <!-- 4. GUIDE DE DEPLOIEMENT -->
+        <section id="deploiement">
+            <h2><span class="material-symbols-outlined">terminal</span> 4. Guide de Déploiement</h2>
+            <p>Suivez les étapes ci-dessous pour déployer l'application localement en utilisant l'environnement virtuel inclus dans le backend.</p>
+
+            <h3>1. Cloner le dépôt et se placer dans le projet</h3>
+            <pre><code>git clone https://github.com/votre-compte/PIL1_2526_47.git
+cd PIL1_2526_47</code></pre>
+
+            <h3>2. Configuration de l'environnement</h3>
+            <p>Un environnement virtuel est déjà configuré dans le dossier <code>backend/venv/</code>. Pour l'activer :</p>
+            <pre><code># Sur Windows (PowerShell)
+cd backend
+.\venv\Scripts\activate
+
+# Sur Linux / macOS
+cd backend
+source venv/bin/activate</code></pre>
+
+            <h3>3. Installation des dépendances</h3>
+            <pre><code>pip install -r ../requirements.txt</code></pre>
+
+            <h3>4. Configuration des variables d'environnement (Base de données)</h3>
+            <p>Créez un fichier <code>.env</code> dans le dossier <code>backend/</code> inspiré de <code>.env.example</code> :</p>
+            <pre><code>SECRET_KEY=votre_cle_secrete
+DB_NAME=mentorlink_db
+DB_USER=votre_utilisateur_mysql
+DB_PASSWORD=votre_mot_de_passe
+DB_HOST=localhost
+DB_PORT=3306</code></pre>
+
+            <h3>5. Application des migrations et lancement</h3>
+            <pre><code># Appliquer les schémas à MySQL
+python manage.py migrate
+
+# Lancer le serveur de développement
+python manage.py runserver</code></pre>
+            <p>L'application sera accessible à l'adresse suivante : <code>http://127.0.0.1:8000/</code></p>
+        </section>
+
+        <!-- 5. MANUEL D'UTILISATION -->
+        <section id="manuel">
+            <h2><span class="material-symbols-outlined">menu_book</span> 5. Manuel d'Utilisation</h2>
+            
+            <h3>1. Inscription et Création de Profil</h3>
+            <p>Rendez-vous sur la page d'inscription. Vous devez remplir un formulaire en 3 étapes :</p>
+            <ol>
+                <li><strong>Étape 1 :</strong> Saisissez votre prénom, nom, numéro de téléphone (WhatsApp), genre, filière d'étude à l'IFRI (GL, IA, SI, IM) et votre niveau (L1 à M2). <em>Note: Seuls les emails finissant par @ifri-uac.bj sont acceptés pour valider l'authenticité de l'étudiant.</em></li>
+                <li><strong>Étape 2 :</strong> Sélectionnez graphiquement vos points forts (compétences acquises) et vos besoins de soutien (points faibles).</li>
+                <li><strong>Étape 3 :</strong> Renseignez vos plages horaires de disponibilité habituelles dans une grille interactive (Matin, Après-midi, Soir du Lundi au Samedi).</li>
+            </ol>
+
+            <h3>2. Connexion</h3>
+            <p>Connectez-vous via l'écran d'accueil avec vos identifiants. Vous pouvez utiliser indifféremment votre <strong>adresse email institutionnelle</strong> ou votre <strong>numéro de téléphone</strong> pour vous connecter.</p>
+
+            <h3>3. Exploration des offres et demandes</h3>
+            <p>L'onglet <strong>"Explorer"</strong> liste toutes les annonces de la communauté. Vous pouvez :</p>
+            <ul>
+                <li>Basculer entre les onglets "Je propose du mentorat" (Offres) et "Je recherche du mentorat" (Demandes).</li>
+                <li>Rechercher par texte libre (nom d'étudiant, descriptif ou compétence).</li>
+                <li>Filtrer instantanément par matière/compétence, par format (présentiel, en ligne), par filière ou par niveau d'étude.</li>
+            </ul>
+
+            <h3>4. Matching Automatique (Vos Matchs)</h3>
+            <p>L'onglet <strong>"Mes Matchs"</strong> calcule et trie les profils compatibles avec le vôtre. L'algorithme analyse vos points faibles par rapport aux points forts des autres, vos proximités académiques et vos horaires. Un indicateur circulaire affiche votre score de compatibilité en pourcentage pour chaque étudiant.</p>
+
+            <h3>5. Messagerie Instantanée</h3>
+            <p>Depuis le profil d'un étudiant ou la liste des matchs, cliquez sur <strong>"Contacter"</strong> pour lui envoyer un message d'introduction. La messagerie intégrée permet d'échanger en temps réel (actualisation automatique toutes les 10 secondes) et de conserver l'historique des conversations pour planifier vos sessions.</p>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© 2026 IFRI MentorLink — Projet de groupe (PIL1_2526_47). Tous droits réservés.</p>
+    </footer>
+
 </body>
 </html>

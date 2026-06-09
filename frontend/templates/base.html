@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html class="light" lang="fr">
 <head>
@@ -152,6 +153,8 @@
         }
     </style>
     {% block extra_css %}{% endblock %}
+    <!-- MatierePicker Component -->
+    <link rel="stylesheet" href="{% static 'css/matiere_picker.css' %}"/>
 </head>
 <body class="bg-surface-fond font-corps-md text-on-surface">
 
@@ -159,28 +162,72 @@
     {% block header %}
     <nav class="bg-surface dark:bg-inverse-surface shadow-sm sticky top-0 z-50">
         <div class="flex justify-between items-center px-marge-page py-4 w-full max-w-[1200px] mx-auto">
-            <a href="/matching/explorer/" class="font-titre-h3 text-titre-h3 font-bold text-primary dark:text-primary-fixed-dim hover:opacity-90">IFRI MentorLink</a>
+            <a href="/matching/explorer/" class="flex items-center gap-2 font-titre-h3 text-titre-h3 font-bold text-primary dark:text-primary-fixed-dim hover:opacity-90">
+                <img src="{% static 'assets/logo.png' %}" alt="Logo" class="h-8 w-auto object-contain"/>
+                <span>IFRI MentorLink</span>
+            </a>
             
             <!-- Desktop Links -->
             <div class="hidden md:flex items-center gap-md">
-                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/profiles/dashboard/">Dashboard</a>
-                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/explorer/">Explorer</a>
-                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/matchs/">Matchs</a>
-                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/publier/">Publier</a>
-                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/profiles/mon-profil/">Mon Profil</a>
+                <a class="{% if '/profiles/dashboard/' in request.path %}bg-primary text-white dark:bg-primary-fixed dark:text-on-primary-fixed font-bold{% else %}text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low{% endif %} transition-colors px-3 py-1.5 rounded-lg text-sm" href="/profiles/dashboard/">Dashboard</a>
+                <a class="{% if '/matching/explorer/' in request.path or '/matching/profil/' in request.path %}bg-primary text-white dark:bg-primary-fixed dark:text-on-primary-fixed font-bold{% else %}text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low{% endif %} transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/explorer/">Explorer</a>
+                <a class="{% if '/matching/matchs/' in request.path %}bg-primary text-white dark:bg-primary-fixed dark:text-on-primary-fixed font-bold{% else %}text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low{% endif %} transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/matchs/">Matchs</a>
+                <a class="{% if '/matching/publier/' in request.path %}bg-primary text-white dark:bg-primary-fixed dark:text-on-primary-fixed font-bold{% else %}text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low{% endif %} transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/publier/">Publier</a>
             </div>
             
             <!-- Icons & Avatar -->
             <div class="flex items-center gap-sm">
-                <button class="p-2 rounded-full hover:bg-surface-container-low transition-all active:scale-95 text-primary">
-                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-                </button>
-                <button class="p-2 rounded-full hover:bg-surface-container-low transition-all active:scale-95 text-primary">
-                    <span class="material-symbols-outlined" data-icon="settings">settings</span>
-                </button>
-                <a href="/profiles/mon-profil/" class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container block">
-                    <img alt="Photo de profil" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgY_BPpDnVTVvD5Snsr_jhGz5oBUtVtaiunmwG5dNT1_FqKXDS4Irk8SFhCK80baetNTMgVzHKqgHa8dq1ARdG5bvnZpNv-kjQ01H5TZ4O_9IfiATvSw5PavaDh0QxMiLu2UIh-4aXkwWjnesRrcypTzVka8-GK6blsEcUwSklOzzIfdjAMM62glgt_2VlXN7r-g1-gabcgA6nPJRapOnBjI416mpNwiSBFstjdtEDtBKCOEmKBrk5G-vQ5oq5Xc2V0HpCWvV5TqU"/>
+                <a href="/profiles/messagerie/" class="p-2 rounded-full {% if '/profiles/messagerie/' in request.path %}bg-surface-container-high text-primary font-bold{% else %}hover:bg-surface-container-low text-primary{% endif %} transition-all active:scale-95" title="Messagerie">
+                    <span class="material-symbols-outlined" data-icon="chat">chat</span>
                 </a>
+                <a href="/profiles/notifications/" class="p-2 rounded-full {% if '/profiles/notifications/' in request.path %}bg-surface-container-high text-primary font-bold{% else %}hover:bg-surface-container-low text-primary{% endif %} transition-all active:scale-95 text-primary relative" title="Notifications">
+                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                    {% if unread_notifications_count > 0 %}
+                    <span class="absolute top-1 right-1 w-5 h-5 bg-erreur text-white rounded-full text-[10px] font-bold flex items-center justify-center border-2 border-surface">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </a>
+                <a href="/profiles/modifier-profil/" class="p-2 rounded-full {% if '/profiles/modifier-profil/' in request.path %}bg-surface-container-high text-primary font-bold{% else %}hover:bg-surface-container-low text-primary{% endif %} transition-all active:scale-95 text-primary" title="Paramètres">
+                    <span class="material-symbols-outlined" data-icon="settings">settings</span>
+                </a>
+                <div class="relative group">
+                    <button class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container block hover:scale-105 active:scale-95 transition-all focus:outline-none">
+                        <img alt="Photo de profil" class="w-full h-full object-cover" src="{% if request.user.is_authenticated and request.user.etudiant and request.user.etudiant.photo_profil %}{{ request.user.etudiant.photo_profil.url }}{% elif request.user.is_authenticated and request.user.etudiant and request.user.etudiant.avatar %}{{ request.user.etudiant.avatar }}{% else %}https://ui-avatars.com/api/?name={{ request.user.first_name }}+{{ request.user.last_name }}&background=random{% endif %}"/>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block hover:block z-50">
+                        <div class="bg-surface-carte dark:bg-inverse-surface rounded-xl shadow-lg py-2 border border-outline-variant/30">
+                            <a href="/profiles/mon-profil/" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined text-lg">person</span>
+                                Mon Profil
+                            </a>
+                            <a href="/profiles/modifier-profil/" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined text-lg">edit</span>
+                                Modifier profil
+                            </a>
+                            <hr class="border-outline-variant/20 my-1">
+                            <a href="{% url 'accounts:deconnexion' %}" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-error hover:bg-error-container/20 transition-colors">
+                                <span class="material-symbols-outlined text-lg text-error">logout</span>
+                                Se déconnecter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Burger Button (Mobile) -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-full hover:bg-surface-container-low transition-all active:scale-95 text-primary focus:outline-none" title="Menu">
+                    <span class="material-symbols-outlined text-[28px]" id="burger-icon">menu</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface dark:bg-inverse-surface border-t border-outline-variant/20 shadow-md">
+            <div class="flex flex-col px-marge-page py-4 gap-sm">
+                <a class="{% if '/profiles/dashboard/' in request.path %}bg-primary text-white font-bold{% else %}text-on-surface-variant dark:text-surface-variant font-medium hover:bg-surface-container-low{% endif %} px-4 py-3 rounded-lg text-sm transition-all" href="/profiles/dashboard/">Dashboard</a>
+                <a class="{% if '/matching/explorer/' in request.path or '/matching/profil/' in request.path %}bg-primary text-white font-bold{% else %}text-on-surface-variant dark:text-surface-variant font-medium hover:bg-surface-container-low{% endif %} px-4 py-3 rounded-lg text-sm transition-all" href="/matching/explorer/">Explorer</a>
+                <a class="{% if '/matching/matchs/' in request.path %}bg-primary text-white font-bold{% else %}text-on-surface-variant dark:text-surface-variant font-medium hover:bg-surface-container-low{% endif %} px-4 py-3 rounded-lg text-sm transition-all" href="/matching/matchs/">Matchs</a>
+                <a class="{% if '/matching/publier/' in request.path %}bg-primary text-white font-bold{% else %}text-on-surface-variant dark:text-surface-variant font-medium hover:bg-surface-container-low{% endif %} px-4 py-3 rounded-lg text-sm transition-all" href="/matching/publier/">Publier</a>
             </div>
         </div>
     </nav>
@@ -196,7 +243,10 @@
     <footer class="w-full py-lg px-marge-page bg-primary dark:bg-primary-container text-on-primary mt-xl">
         <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
             <div class="flex flex-col gap-xs items-center md:items-start">
-                <div class="font-titre-h3 text-titre-h3 font-bold text-on-primary">IFRI MentorLink</div>
+                <div class="flex items-center gap-2 font-titre-h3 text-titre-h3 font-bold text-on-primary">
+                    <img src="{% static 'assets/logo.png' %}" alt="Logo" class="h-8 w-auto object-contain brightness-0 invert"/>
+                    <span>IFRI MentorLink</span>
+                </div>
                 <div class="font-label-caps text-label-caps text-on-primary/60 text-xs">© 2026 IFRI - Université d'Abomey-Calavi. Tous droits réservés.</div>
             </div>
             <div class="flex flex-wrap justify-center gap-md text-sm">
@@ -209,7 +259,33 @@
     </footer>
     {% endblock %}
 
+    <!-- MatierePicker shared data + component -->
+    <script src="{% static 'js/matieres_ifri.js' %}"></script>
+    <script src="{% static 'js/matiere_picker.js' %}"></script>
+
     <!-- Custom Scripts -->
     {% block extra_js %}{% endblock %}
+    
+    <!-- Hamburger Menu Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('burger-icon');
+            
+            if (menuBtn && mobileMenu && icon) {
+                menuBtn.addEventListener('click', () => {
+                    const isHidden = mobileMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        mobileMenu.classList.remove('hidden');
+                        icon.textContent = 'close';
+                    } else {
+                        mobileMenu.classList.add('hidden');
+                        icon.textContent = 'menu';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

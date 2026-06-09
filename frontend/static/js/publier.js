@@ -1,48 +1,38 @@
-const { createApp, ref, computed, nextTick } = Vue;
+const { createApp, ref, computed } = Vue;
 
 createApp({
     setup() {
         const isSubmitting = ref(false);
-        const showToast = ref(false);
-        
-        // Custom Subject Input state
-        const showCustomInput = ref(false);
-        const newSubjectName = ref('');
-        const customInput = ref(null);
+        const showToast    = ref(false);
 
         const days = ["LUN", "MAR", "MER", "JEU", "VEN", "SAM"];
         const timeSlots = [
-            { id: "matin", label: "MATIN" },
-            { id: "apresmidi", label: "APRÈS-M" },
-            { id: "soir", label: "SOIR" }
+            { id: "matin",      label: "MATIN"    },
+            { id: "apresmidi",  label: "APRÈS-M"  },
+            { id: "soir",       label: "SOIR"     }
         ];
 
-        const availableSubjects = ref([
-            { id: 1, name: "Algorithmique" },
-            { id: 2, name: "Réseaux Informatiques" },
-            { id: 3, name: "Développement Web" },
-            { id: 4, name: "Data Science" },
-            { id: 5, name: "Cybersécurité" }
-        ]);
+        // Tableau des matières sélectionnées (mis à jour par MatierePicker via mounted)
+        const selectedSubjects = ref([]);
 
         const formData = ref({
-            type: 'propose', // propose vs cherche
-            subjects: [],
-            format: 'présentiel',
-            slots: [], // holds items like "LUN_matin", "MAR_soir"
+            type:        'propose',
+            subjects:    [],
+            format:      'présentiel',
+            slots:       [],
             description: ''
         });
 
-        // Placeholder changes dynamically
-        const descriptionPlaceholder = computed(() => {
-            return formData.value.type === 'cherche'
+        // Placeholder dynamique
+        const descriptionPlaceholder = computed(() =>
+            formData.value.type === 'cherche'
                 ? "Décrivez vos difficultés actuelles, ce que vous souhaitez comprendre et vos objectifs d'apprentissage..."
-                : "Décrivez vos compétences clés, votre filière, vos points forts et comment vous pouvez aider vos camarades...";
-        });
+                : "Décrivez vos compétences clés, votre filière, vos points forts et comment vous pouvez aider vos camarades..."
+        );
 
-        // Availability Grid logic
+        // Grille de disponibilités
         const toggleSlot = (day, timeSlotId) => {
-            const key = `${day}_${timeSlotId}`;
+            const key   = `${day}_${timeSlotId}`;
             const index = formData.value.slots.indexOf(key);
             if (index > -1) {
                 formData.value.slots.splice(index, 1);
@@ -51,71 +41,103 @@ createApp({
             }
         };
 
-        const isSlotSelected = (day, timeSlotId) => {
-            return formData.value.slots.includes(`${day}_${timeSlotId}`);
+        const isSlotSelected = (day, timeSlotId) =>
+            formData.value.slots.includes(`${day}_${timeSlotId}`);
+
+        // Retire une matière du tag cloud Vue
+        const removeSubject = (name) => {
+            const idx = selectedSubjects.value.indexOf(name);
+            if (idx > -1) selectedSubjects.value.splice(idx, 1);
+            formData.value.subjects = [...selectedSubjects.value];
+            _updatePickerLabel(selectedSubjects.value);
         };
 
-        // Custom Subject creation
-        const openCustomInput = async () => {
-            showCustomInput.value = true;
-            await nextTick();
-            customInput.value.focus();
-        };
-
-        const addCustomSubject = () => {
-            const name = newSubjectName.value.trim();
-            if (name) {
-                // Check if already exists
-                if (!availableSubjects.value.some(s => s.name.toLowerCase() === name.toLowerCase())) {
-                    const newId = availableSubjects.value.length + 1;
-                    availableSubjects.value.push({ id: newId, name: name });
-                }
-                // Auto select it
-                if (!formData.value.subjects.includes(name)) {
-                    formData.value.subjects.push(name);
-                }
+        const _updatePickerLabel = (list) => {
+            const label = document.getElementById('picker-subject-label');
+            if (label) {
+                label.textContent = list.length === 0
+                    ? 'Choisir les matières'
+                    : `${list.length} matière${list.length > 1 ? 's' : ''} choisie${list.length > 1 ? 's' : ''}`;
             }
-            newSubjectName.value = '';
-            showCustomInput.value = false;
         };
 
-        // Form Submit logic
-        const submitForm = () => {
+        const getCookie = (name) => {
+            let value = null;
+            if (document.cookie && document.cookie !== '') {
+                document.cookie.split(';').forEach(c => {
+                    const cookie = c.trim();
+                    if (cookie.startsWith(name + '=')) {
+                        value = decodeURIComponent(cookie.substring(name.length + 1));
+                    }
+                });
+            }
+            return value;
+        };
+
+        const submitForm = async () => {
             isSubmitting.value = true;
-            
-            // Simulate backend request
-            setTimeout(() => {
+            formData.value.subjects = [...selectedSubjects.value];
+
+            try {
+                let csrfToken = getCookie('csrftoken');
+                if (!csrfToken) {
+                    const el = document.getElementById('csrf_token');
+                    csrfToken = el ? el.value : '';
+                }
+
+                const response = await fetch('/matching/publier/', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+                    body:    JSON.stringify(formData.value)
+                });
+
+                if (response.ok) {
+                    showToast.value = true;
+                    // Réinitialiser
+                    selectedSubjects.value.splice(0);
+                    formData.value.subjects     = [];
+                    formData.value.slots        = [];
+                    formData.value.description  = '';
+                    _updatePickerLabel([]);
+
+                    setTimeout(() => {
+                        showToast.value = false;
+                        window.location.href = '/matching/matchs/';
+                    }, 2000);
+                } else {
+                    console.error('Erreur publication', await response.json());
+                }
+            } catch (err) {
+                console.error('Erreur réseau', err);
+            } finally {
                 isSubmitting.value = false;
-                showToast.value = true;
-                
-                // Reset form fields
-                formData.value.subjects = [];
-                formData.value.slots = [];
-                formData.value.description = '';
-                
-                // Hide toast after 3s
-                setTimeout(() => {
-                    showToast.value = false;
-                }, 3000);
-            }, 1500);
+            }
         };
 
         return {
-            isSubmitting,
-            showToast,
-            showCustomInput,
-            newSubjectName,
-            customInput,
-            days,
-            timeSlots,
-            availableSubjects,
-            formData,
+            isSubmitting, showToast,
+            days, timeSlots,
+            selectedSubjects, formData,
             descriptionPlaceholder,
-            toggleSlot,
-            isSlotSelected,
-            openCustomInput,
-            addCustomSubject,
-            submitForm
+            toggleSlot, isSlotSelected,
+            removeSubject, submitForm,
+            _updatePickerLabel
         };
+    },
+
+    mounted() {
+        // Initialiser MatierePicker après le montage du composant Vue
+        const triggerBtn = document.getElementById('picker-subject-btn');
+        if (triggerBtn && window.MatierePicker) {
+            new window.MatierePicker({
+                triggerEl:    triggerBtn,
+                selectedList: this.selectedSubjects,
+                accentColor:  'subject',
+                onChange: (list) => {
+                    this.formData.subjects = [...list];
+                    this._updatePickerLabel(list);
+                }
+            });
+        }
     }
 }).mount('#app');

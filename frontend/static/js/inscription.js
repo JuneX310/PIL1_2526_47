@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const stepLabel = document.getElementById('step-label');
     const progressPercent = document.getElementById('progress-percent');
 
+    // Listes de compétences gérées par MatierePicker
+    const strengths = [];
+    const weaknesses = [];
+
+    // ── Navigation entre étapes ───────────────────────────────────────────────
     function updateUI() {
         steps.forEach((stepId, index) => {
             const element = document.getElementById(stepId);
@@ -51,7 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-            if (currentStep < steps.length - 1) {
+            const currentStepEl = document.getElementById(steps[currentStep]);
+            const inputs = currentStepEl.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    isValid = false;
+                }
+            });
+
+            if (isValid && currentStep < steps.length - 1) {
                 currentStep++;
                 updateUI();
             }
@@ -67,33 +82,114 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Skill tag interaction
-    document.querySelectorAll('.skill-tag').forEach(tag => {
-        tag.addEventListener('click', () => {
-            const type = tag.dataset.type;
-            const isSelected = tag.classList.contains('bg-succes') || tag.classList.contains('bg-secondary');
-            
-            if (isSelected) {
-                tag.classList.remove('bg-succes', 'bg-secondary', 'text-white', 'border-transparent');
-                tag.classList.add('bg-surface-container', 'border-outline-variant');
-                const span = tag.querySelector('span');
-                if (span) span.textContent = 'add';
-            } else {
-                const colorClass = type === 'strength' ? 'bg-succes' : 'bg-secondary';
-                tag.classList.add('text-white', colorClass, 'border-transparent');
-                tag.classList.remove('bg-surface-container', 'border-outline-variant');
-                const span = tag.querySelector('span');
-                if (span) span.textContent = 'check';
+    // ── MatierePicker : Points forts ──────────────────────────────────────────
+    function renderStrengthTags() {
+        const container = document.getElementById('insc-strength-tags');
+        if (!container) return;
+        container.innerHTML = '';
+        strengths.forEach(skill => {
+            const tag = document.createElement('span');
+            tag.className = 'flex items-center gap-xs px-sm py-1.5 rounded-full bg-succes/15 text-succes font-bouton text-[12px] border border-succes/30';
+            tag.innerHTML = `${skill} <button class="material-symbols-outlined text-[13px] cursor-pointer hover:text-erreur" type="button">close</button>`;
+            tag.querySelector('button').addEventListener('click', () => {
+                const idx = strengths.indexOf(skill);
+                if (idx > -1) strengths.splice(idx, 1);
+                renderStrengthTags();
+                updateStrengthLabel();
+            });
+            container.appendChild(tag);
+        });
+    }
+
+    function updateStrengthLabel() {
+        const label = document.getElementById('insc-strength-label');
+        if (label) {
+            label.textContent = strengths.length === 0
+                ? 'Choisir mes points forts'
+                : `${strengths.length} matière${strengths.length > 1 ? 's' : ''} sélectionnée${strengths.length > 1 ? 's' : ''}`;
+        }
+    }
+
+    const strengthBtn = document.getElementById('insc-strength-btn');
+    if (strengthBtn && window.MatierePicker) {
+        new window.MatierePicker({
+            triggerEl:    strengthBtn,
+            selectedList: strengths,
+            accentColor:  'strength',
+            onChange: () => {
+                renderStrengthTags();
+                updateStrengthLabel();
             }
         });
-    });
+    }
 
+    // ── MatierePicker : Points faibles ────────────────────────────────────────
+    function renderWeaknessTags() {
+        const container = document.getElementById('insc-weakness-tags');
+        if (!container) return;
+        container.innerHTML = '';
+        weaknesses.forEach(subject => {
+            const tag = document.createElement('span');
+            tag.className = 'flex items-center gap-xs px-sm py-1.5 rounded-full bg-secondary/10 text-secondary font-bouton text-[12px] border border-secondary/30';
+            tag.innerHTML = `${subject} <button class="material-symbols-outlined text-[13px] cursor-pointer hover:text-erreur" type="button">close</button>`;
+            tag.querySelector('button').addEventListener('click', () => {
+                const idx = weaknesses.indexOf(subject);
+                if (idx > -1) weaknesses.splice(idx, 1);
+                renderWeaknessTags();
+                updateWeaknessLabel();
+            });
+            container.appendChild(tag);
+        });
+    }
+
+    function updateWeaknessLabel() {
+        const label = document.getElementById('insc-weakness-label');
+        if (label) {
+            label.textContent = weaknesses.length === 0
+                ? 'Choisir mes besoins'
+                : `${weaknesses.length} matière${weaknesses.length > 1 ? 's' : ''} sélectionnée${weaknesses.length > 1 ? 's' : ''}`;
+        }
+    }
+
+    const weaknessBtn = document.getElementById('insc-weakness-btn');
+    if (weaknessBtn && window.MatierePicker) {
+        new window.MatierePicker({
+            triggerEl:    weaknessBtn,
+            selectedList: weaknesses,
+            accentColor:  'weakness',
+            onChange: () => {
+                renderWeaknessTags();
+                updateWeaknessLabel();
+            }
+        });
+    }
+
+    // ── Soumission du formulaire ──────────────────────────────────────────────
     const form = document.getElementById('registration-form');
     if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Inscription réussie ! Redirection vers votre tableau de bord...');
-            window.location.href = "/accounts/dashboard/";
+        form.addEventListener('submit', () => {
+            // Sérialiser les listes de compétences dans les champs cachés
+            document.getElementById('hidden_points_forts').value = JSON.stringify(strengths);
+            document.getElementById('hidden_points_faibles').value = JSON.stringify(weaknesses);
+
+            // Collecter les disponibilités depuis la grille de cases
+            const disponibilites = [];
+            const rows = document.querySelectorAll('tbody tr');
+            const days = ['LUN', 'MAR', 'MER', 'JEU', 'VEN', 'SAM'];
+
+            rows.forEach(row => {
+                const firstCell = row.querySelector('td:first-child');
+                if (!firstCell) return;
+                const timeStr = firstCell.textContent.trim();
+                const checkboxes = row.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach((cb, index) => {
+                    if (cb.checked && days[index]) {
+                        disponibilites.push(`${days[index]} ${timeStr}`);
+                    }
+                });
+            });
+            document.getElementById('hidden_disponibilites').value = JSON.stringify(disponibilites);
+            // Le formulaire se soumet normalement
         });
     }
 });
