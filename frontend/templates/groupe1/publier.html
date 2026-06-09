@@ -20,6 +20,8 @@
         <!-- Main Form Card -->
         <div class="bg-white rounded-[16px] p-md md:p-lg border border-outline-variant/30 shadow-md">
             <form @submit.prevent="submitForm" class="space-y-lg">
+                {% csrf_token %}
+                <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
                 <!-- Toggle Switch (Je propose vs Je cherche) -->
                 <div class="flex p-1 bg-surface-container-low rounded-xl border border-outline-variant/10">
                     <label class="flex-1 cursor-pointer">

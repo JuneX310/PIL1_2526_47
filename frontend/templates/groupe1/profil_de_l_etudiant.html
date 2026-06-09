@@ -8,9 +8,11 @@
 {% endblock %}
 
 {% block content %}
+{% csrf_token %}
+<input type="hidden" id="csrf_token" value="{{ csrf_token }}">
 {% verbatim %}
-<div id="app" v-cloak class="max-w-7xl mx-auto px-marge-page py-xl">
-    <!-- Back Button -->
+<div id="app" v-cloak class="max-w-[1200px] mx-auto px-marge-page py-lg relative">
+    <!-- Back button -->
     <div class="mb-md">
         <a href="/matching/explorer/" class="inline-flex items-center gap-xs text-primary font-bold hover:underline">
             <span class="material-symbols-outlined">arrow_back</span>
@@ -264,5 +266,8 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+    window.DJANGO_PROFILE_DATA = {{ profile_json|safe }};
+</script>
 <script src="{% static 'js/profil.js' %}"></script>
 {% endblock %}

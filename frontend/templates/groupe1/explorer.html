@@ -199,5 +199,9 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+    // Injection des données réelles depuis Django
+    window.DJANGO_DATA = {{ annonces_json|safe }};
+</script>
 <script src="{% static 'js/explorer.js' %}"></script>
 {% endblock %}

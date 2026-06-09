@@ -8,6 +8,8 @@
 {% endblock %}
 
 {% block content %}
+{% csrf_token %}
+<input type="hidden" id="csrf_token" value="{{ csrf_token }}">
 {% verbatim %}
 <div id="app" v-cloak class="max-w-[1200px] mx-auto px-marge-page py-lg">
     <!-- Header Section -->
@@ -192,5 +194,8 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+    window.MATCHS_DATA = {{ matchs_json|safe }};
+</script>
 <script src="{% static 'js/matchs.js' %}"></script>
 {% endblock %}
