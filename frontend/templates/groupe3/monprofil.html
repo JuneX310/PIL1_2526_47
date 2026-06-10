@@ -1,0 +1,211 @@
+% extends "base.html" %}
+{% load static %}
+
+{% block title %}Mon Profil — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profil.css' %}"/>
+{% endblock %}
+
+{% block content %}
+{% verbatim %}
+<div id="app" v-cloak class="max-w-7xl mx-auto px-marge-page py-xl">
+    <!-- Back Button -->
+    <div class="mb-md">
+        <a href="/profiles/dashboard/" class="inline-flex items-center gap-xs text-primary font-bold hover:underline">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Retour au Tableau de bord
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+        <!-- Left Column: Identity Card -->
+        <aside class="lg:col-span-4 space-y-md">
+            <div class="bg-surface-carte rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden">
+                <div class="h-32 bg-primary relative bg-cover bg-center" :style="profile.photo_couverture ? 'background-image: url(' + profile.photo_couverture + ')' : ''">
+                    <div class="absolute -bottom-12 left-1/2 -translate-x-1/2">
+                        <div class="w-24 h-24 rounded-full border-4 border-surface-carte overflow-hidden shadow-md bg-surface-carte">
+                            <img :src="profile.avatar" :alt="profile.name" class="w-full h-full object-cover"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-16 pb-8 px-md text-center">
+                    <h1 class="font-titre-h2 text-titre-h2 text-primary">{{ profile.name }}</h1>
+                    <p class="text-on-surface-variant font-corps-md">{{ profile.title }}</p>
+                    
+                    <div class="mt-lg flex flex-col gap-sm">
+                        <!-- Custom CTA for user profile -->
+                        <a href="/profiles/modifier-profil/" class="w-full bg-secondary-container text-on-secondary-container font-bouton text-bouton py-4 rounded-lg flex items-center justify-center gap-2 hover:brightness-105 transition-all active:scale-[0.98]">
+                            <span class="material-symbols-outlined text-white">edit</span>
+                            Modifier mon profil
+                        </a>
+                        <!-- Se déconnecter -->
+                        <a href="/accounts/deconnexion/" class="w-full border border-outline-variant hover:border-error hover:text-error hover:bg-error-container/20 text-on-surface-variant font-bouton text-bouton py-4 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+                            <span class="material-symbols-outlined">logout</span>
+                            Se déconnecter
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="border-t border-outline-variant/20 px-md py-md space-y-md">
+                    <div>
+                        <h4 class="font-label-caps text-label-caps text-on-surface-variant mb-2 text-xs">COORDONNÉES</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 text-on-surface/80 text-sm">
+                                <span class="material-symbols-outlined text-primary text-[18px]">location_on</span>
+                                <span>{{ profile.location }}</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-on-surface/80 text-sm">
+                                <span class="material-symbols-outlined text-primary text-[18px]">school</span>
+                                <span>{{ profile.levelAndFiliere }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Card -->
+            <div class="bg-surface-carte rounded-2xl p-md border border-outline-variant/30 grid grid-cols-2 gap-md text-center">
+                <div>
+                    <p class="text-titre-h3 font-bold text-primary">{{ profile.statsMentoring }}</p>
+                    <p class="text-label-caps text-on-surface-variant text-[10px]">MENTORATS</p>
+                </div>
+                <div>
+                    <p class="text-titre-h3 font-bold text-primary">{{ profile.statsProjects }}</p>
+                    <p class="text-label-caps text-on-surface-variant text-[10px]">PROJETS</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Column: Details & Content -->
+        <div class="lg:col-span-8 space-y-md">
+            <!-- Tabs Navigation -->
+            <div class="bg-surface-carte rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden">
+                <div class="flex border-b border-outline-variant/20 px-md overflow-x-auto no-scrollbar">
+                    <button @click="activeTab = 'bio'"
+                            :class="activeTab === 'bio' ? 'active-tab' : 'text-on-surface-variant hover:text-primary'"
+                            class="px-md py-4 font-bouton text-bouton whitespace-nowrap">
+                        Parcours & Bio
+                    </button>
+                    <button @click="activeTab = 'skills'"
+                            :class="activeTab === 'skills' ? 'active-tab' : 'text-on-surface-variant hover:text-primary'"
+                            class="px-md py-4 font-bouton text-bouton whitespace-nowrap">
+                        Compétences
+                    </button>
+                    <button @click="activeTab = 'objectives'"
+                            :class="activeTab === 'objectives' ? 'active-tab' : 'text-on-surface-variant hover:text-primary'"
+                            class="px-md py-4 font-bouton text-bouton whitespace-nowrap">
+                        Objectifs
+                    </button>
+                </div>
+                
+                <div class="p-lg">
+                    <!-- Bio Tab -->
+                    <section v-if="activeTab === 'bio'" class="space-y-md">
+                        <h3 class="font-titre-h3 text-titre-h3 text-primary">À propos de moi</h3>
+                        <p class="text-corps-lg text-on-surface-variant leading-relaxed text-sm">
+                            {{ profile.bio }}
+                        </p>
+                    </section>
+
+                    <!-- Skills Tab -->
+                    <section v-if="activeTab === 'skills'" class="space-y-md">
+                        <h3 class="font-titre-h3 text-titre-h3 text-primary mb-md">Compétences techniques</h3>
+                        <div class="flex flex-wrap gap-sm">
+                            <span v-for="skill in profile.skills"
+                                  :key="skill"
+                                  class="bg-primary/5 text-primary px-4 py-2 rounded-full font-label-caps border border-primary/10 text-xs uppercase">
+                                {{ skill }}
+                            </span>
+                        </div>
+                    </section>
+
+                    <!-- Objectives Tab -->
+                    <section v-if="activeTab === 'objectives'" class="space-y-md">
+                        <h3 class="font-titre-h3 text-titre-h3 text-primary mb-md">Objectifs de Mentorat</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                            <div v-for="obj in profile.objectives"
+                                 :key="obj.title"
+                                 class="p-md rounded-xl bg-surface-container-low border border-primary-container/10 flex gap-md">
+                                <span class="material-symbols-outlined text-secondary-container" data-weight="fill">{{ obj.icon }}</span>
+                                <div>
+                                    <p class="font-bold text-primary text-sm">{{ obj.title }}</p>
+                                    <p class="text-on-surface-variant text-xs mt-1">{{ obj.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Bento Grid Extra Info -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+                <div class="md:col-span-2 bg-surface-carte p-lg rounded-2xl border border-outline-variant/30 shadow-sm flex flex-col gap-sm">
+                    <div>
+                        <h4 class="font-titre-h3 text-titre-h3 text-primary mb-md">Disponibilité Hebdomadaire</h4>
+                        <div class="overflow-x-auto border border-outline-variant rounded-xl bg-white">
+                            <table class="w-full text-center border-collapse">
+                                <thead>
+                                    <tr class="bg-surface-container-low border-b border-outline-variant">
+                                        <th class="p-sm font-bouton text-label-caps text-on-surface-variant border-r border-outline-variant">Heure</th>
+                                        <th class="p-sm font-bouton text-label-caps text-on-surface-variant">LUN</th>
+                                        <th class="p-sm font-bouton text-label-caps text-on-surface-variant">MAR</th>
+                                        <th class="p-sm font-bouton text-label-caps text-on-surface-variant">MER</th>
+                                        <th class="p-sm font-bouton text-label-caps text-on-surface-variant">JEU</th>
+                                        <th class="p-sm font-bouton text-label-caps text-on-surface-variant">VEN</th>
+                                        <th class="p-sm font-bouton text-label-caps text-on-surface-variant">SAM</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm">
+                                    <tr class="border-b border-outline-variant/30">
+                                        <td class="p-sm font-bouton text-xs border-r border-outline-variant bg-surface-container-lowest">08:00 - 12:00</td>
+                                        <td class="p-0"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('LUN', '08:00 - 12:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('MAR', '08:00 - 12:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('MER', '08:00 - 12:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('JEU', '08:00 - 12:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('VEN', '08:00 - 12:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('SAM', '08:00 - 12:00')"/></td>
+                                    </tr>
+                                    <tr class="border-b border-outline-variant/30">
+                                        <td class="p-sm font-bouton text-xs border-r border-outline-variant bg-surface-container-lowest">14:00 - 17:00</td>
+                                        <td class="p-0"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('LUN', '14:00 - 17:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('MAR', '14:00 - 17:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('MER', '14:00 - 17:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('JEU', '14:00 - 17:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('VEN', '14:00 - 17:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('SAM', '14:00 - 17:00')"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-sm font-bouton text-xs border-r border-outline-variant bg-surface-container-lowest">18:00 - 21:00</td>
+                                        <td class="p-0"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('LUN', '18:00 - 21:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('MAR', '18:00 - 21:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('MER', '18:00 - 21:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('JEU', '18:00 - 21:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('VEN', '18:00 - 21:00')"/></td>
+                                        <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none pointer-events-none checked:bg-succes transition-colors" type="checkbox" :checked="hasAvailability('SAM', '18:00 - 21:00')"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-surface-carte p-lg rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2 shadow-sm">
+                    <span class="material-symbols-outlined text-[48px] text-secondary-container">military_tech</span>
+                    <p class="font-bold text-primary text-sm">{{ profile.badgeTitle }}</p>
+                    <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">{{ profile.badgeSub }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endverbatim %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Inject profile data from Django backend
+    window.DJANGO_PROFILE_DATA = {{ profile_json|safe }};
+</script>
+<script src="{% static 'js/mon_profil.js' %}"></script>
+{% endblock %}

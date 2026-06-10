@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Modifier mon Profil — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profil.css' %}"/>
+<style>
+    .form-card {
+        background-color: #FFFFFF;
+        border: 1px solid #E0E0E0;
+        box-shadow: 0px 4px 20px rgba(12, 27, 84, 0.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-[1200px] mx-auto px-marge-page py-lg space-y-lg">
+    <!-- Header Section -->
+    <section class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+        <div>
+            <h1 class="font-titre-h1 text-titre-h1 text-primary">Modifier mon Profil</h1>
+            <p class="font-corps-lg text-corps-lg text-on-surface-variant mt-xs">Mettez à jour vos informations académiques et vos préférences de mentorat.</p>
+        </div>
+        <div class="flex items-center gap-md">
+            <a class="font-bouton text-bouton text-primary hover:underline px-md py-sm" href="/profiles/mon-profil/">Annuler</a>
+            <button type="submit" form="profile-form" class="bg-primary text-on-primary font-bouton text-bouton px-lg py-sm rounded-lg hover:bg-opacity-90 transition-all active:scale-95 text-center">Enregistrer les modifications</button>
+        </div>
+    </section>
+
+    {% if messages %}
+    <div class="space-y-sm">
+        {% for message in messages %}
+            <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-succes text-white{% else %}bg-erreur text-white{% endif %} text-sm font-bold flex items-center gap-xs shadow-sm">
+                <span class="material-symbols-outlined text-white">{% if message.tags == 'success' %}check_circle{% else %}error{% endif %}</span>
+                <span>{{ message }}</span>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <form id="profile-form" method="POST" action="{% url 'profiles:modifier_profil' %}" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+        {% csrf_token %}
+        <!-- Left Column: Media & Primary Info -->
+        <aside class="lg:col-span-4 space-y-md">
+            <!-- Identity & Media Card -->
+            <div class="form-card rounded-xl overflow-hidden text-center pb-md border border-outline-variant/30">
+                <!-- Couverture -->
+                <div class="w-full h-32 bg-surface-container relative group">
+                    <img id="preview-couverture" class="w-full h-full object-cover {% if not etudiant.photo_couverture %}hidden{% endif %}" src="{% if etudiant.photo_couverture %}{{ etudiant.photo_couverture.url }}{% endif %}" alt="Couverture"/>
+                    {% if not etudiant.photo_couverture %}
+                    <div id="placeholder-couverture" class="w-full h-full bg-primary flex items-center justify-center text-on-primary">
+                        <span class="material-symbols-outlined text-4xl opacity-50">wallpaper</span>
+                    </div>
+                    {% endif %}
+                    <label class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer" title="Changer la photo de couverture">
+                        <span class="material-symbols-outlined text-on-primary text-3xl">add_photo_alternate</span>
+                        <input type="file" name="photo_couverture" class="hidden" accept="image/*"/>
+                    </label>
+                </div>
+
+                <!-- Avatar -->
+                <div class="relative group cursor-pointer w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white shadow-md mx-auto -mt-12 bg-white">
+                    <img id="preview-avatar" class="w-full h-full object-cover" alt="{{ user.first_name }} {{ user.last_name }}" src="{% if etudiant.photo_profil %}{{ etudiant.photo_profil.url }}{% elif etudiant.avatar %}{{ etudiant.avatar }}{% else %}https://ui-avatars.com/api/?name={{ user.first_name }}+{{ user.last_name }}&background=random{% endif %}"/>
+                    <label class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer" title="Changer la photo de profil">
+                        <span class="material-symbols-outlined text-on-primary text-3xl">photo_camera</span>
+                        <input type="file" name="photo_profil" class="hidden" accept="image/*"/>
+                    </label>
+                </div>
+
+                <!-- Info -->
+                <div class="mt-sm px-md">
+                    <h3 class="font-titre-h3 text-titre-h3 text-primary">{{ user.first_name }} {{ user.last_name }}</h3>
+                    <p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-1">{{ etudiant.get_filiere_display }} ({{ etudiant.get_niveau_display }})</p>
+                    <p class="font-corps-md text-[10px] text-on-surface-variant italic">Format recommandé : JPG ou PNG. Taille max. 5Mo.</p>
+                </div>
+            </div>
+            
+            <div class="form-card rounded-xl p-md space-y-md">
+                <h4 class="font-titre-h3 text-titre-h3 text-primary text-corps-md">Disponibilités Hebdomadaires</h4>
+                <div class="flex gap-md items-start">
+                    <!-- Labels (Y-axis) -->
+                    <div class="flex flex-col justify-end gap-xs pb-1 text-[10px] font-bold text-on-surface-variant text-right mt-6">
+                        <div class="h-8 flex items-center justify-end">Matin</div>
+                        <div class="h-8 flex items-center justify-end">Aprem</div>
+                        <div class="h-8 flex items-center justify-end">Soir</div>
+                    </div>
+                    <!-- Grid -->
+                    <div class="grid grid-cols-7 gap-xs flex-1">
+                        <div class="flex flex-col items-center gap-xs">
+                            <span class="text-[10px] font-bold text-on-surface-variant">LUN</span>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Lundi 08:00 - 12:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Lundi 14:00 - 17:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Lundi 18:00 - 21:00"></div>
+                        </div>
+                        <div class="flex flex-col items-center gap-xs">
+                            <span class="text-[10px] font-bold text-on-surface-variant">MAR</span>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Mardi 08:00 - 12:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Mardi 14:00 - 17:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Mardi 18:00 - 21:00"></div>
+                        </div>
+                        <div class="flex flex-col items-center gap-xs">
+                            <span class="text-[10px] font-bold text-on-surface-variant">MER</span>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Mercredi 08:00 - 12:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Mercredi 14:00 - 17:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Mercredi 18:00 - 21:00"></div>
+                        </div>
+                        <div class="flex flex-col items-center gap-xs">
+                            <span class="text-[10px] font-bold text-on-surface-variant">JEU</span>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Jeudi 08:00 - 12:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Jeudi 14:00 - 17:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Jeudi 18:00 - 21:00"></div>
+                        </div>
+                        <div class="flex flex-col items-center gap-xs">
+                            <span class="text-[10px] font-bold text-on-surface-variant">VEN</span>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Vendredi 08:00 - 12:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Vendredi 14:00 - 17:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Vendredi 18:00 - 21:00"></div>
+                        </div>
+                        <div class="flex flex-col items-center gap-xs">
+                            <span class="text-[10px] font-bold text-on-surface-variant">SAM</span>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Samedi 08:00 - 12:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Samedi 14:00 - 17:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Samedi 18:00 - 21:00"></div>
+                        </div>
+                        <div class="flex flex-col items-center gap-xs">
+                            <span class="text-[10px] font-bold text-on-surface-variant">DIM</span>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Dimanche 08:00 - 12:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Dimanche 14:00 - 17:00"></div>
+                            <div class="w-full h-8 rounded bg-surface-container-low border border-outline-variant cursor-pointer hover:bg-primary-fixed" title="Dimanche 18:00 - 21:00"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-[12px] text-on-surface-variant text-center mt-4">Légende : Matin (08h-12h), Aprem (14h-17h), Soir (18h-21h)</p>
+            </div>
+        </aside>
+        
+        <!-- Right Column: Detailed Form -->
+        <div class="lg:col-span-8 space-y-md">
+            <div class="form-card rounded-xl p-md md:p-lg space-y-lg">
+                <!-- Personal Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Prénom</label>
+                        <input name="first_name" class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary" type="text" value="{{ user.first_name }}"/>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Nom</label>
+                        <input name="last_name" class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary" type="text" value="{{ user.last_name }}"/>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Email Académique</label>
+                        <input class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary bg-surface-container-low" readonly="" type="email" value="{{ user.email }}"/>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Téléphone</label>
+                        <input name="phone" class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary" type="tel" value="{{ etudiant.telephone }}"/>
+                    </div>
+                </div>
+                
+                <hr class="border-outline-variant opacity-20"/>
+                
+                <!-- Academic Path -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Filière</label>
+                        <select name="filiere" class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary appearance-none bg-white">
+                            <option value="GL" {% if etudiant.filiere == 'GL' %}selected{% endif %}>Génie Logiciel (GL)</option>
+                            <option value="IA" {% if etudiant.filiere == 'IA' %}selected{% endif %}>Intelligence Artificielle (IA)</option>
+                            <option value="SI" {% if etudiant.filiere == 'SI' %}selected{% endif %}>Sécurité Informatique (SI)</option>
+                            <option value="IM" {% if etudiant.filiere == 'IM' %}selected{% endif %}>Internet et Multimédia (IM)</option>
+                        </select>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Niveau d'étude</label>
+                        <select name="niveau" class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary bg-white">
+                            <option value="L1" {% if etudiant.niveau == 'L1' %}selected{% endif %}>Licence 1</option>
+                            <option value="L2" {% if etudiant.niveau == 'L2' %}selected{% endif %}>Licence 2</option>
+                            <option value="L3" {% if etudiant.niveau == 'L3' %}selected{% endif %}>Licence 3</option>
+                            <option value="M1" {% if etudiant.niveau == 'M1' %}selected{% endif %}>Master 1</option>
+                            <option value="M2" {% if etudiant.niveau == 'M2' %}selected{% endif %}>Master 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="space-y-xs">
+                    <label class="font-Inter font-bold text-corps-md block">Bio / Présentation</label>
+                    <textarea name="bio" class="w-full p-3 rounded-lg border-outline-variant focus:ring-primary focus:border-primary" placeholder="Décrivez votre parcours et ce que vous attendez du mentorat..." rows="4">{{ etudiant.bio }}</textarea>
+                </div>
+                
+                <hr class="border-outline-variant opacity-20"/>
+                
+                <!-- Security / Password Update -->
+                <div class="space-y-xs">
+                    <h4 class="font-titre-h3 text-titre-h3 text-primary text-corps-md">Sécurité & Mot de passe</h4>
+                    <p class="text-xs text-on-surface-variant">Laissez ces champs vides si vous ne souhaitez pas modifier votre mot de passe.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Nouveau mot de passe</label>
+                        <input name="password" class="w-full p-3 rounded-lg border border-outline-variant focus:ring-primary focus:border-primary outline-none" type="password" placeholder="••••••••" minlength="6"/>
+                    </div>
+                    <div class="space-y-xs">
+                        <label class="font-Inter font-bold text-corps-md block">Confirmer le mot de passe</label>
+                        <input name="confirm_password" class="w-full p-3 rounded-lg border border-outline-variant focus:ring-primary focus:border-primary outline-none" type="password" placeholder="••••••••" minlength="6"/>
+                    </div>
+                </div>
+                
+                <hr class="border-outline-variant opacity-20"/>
+                
+                <!-- Hidden inputs for skills -->
+                <input type="hidden" name="points_forts" id="hidden_points_forts" value="">
+                <input type="hidden" name="points_faibles" id="hidden_points_faibles" value="">
+                
+                <!-- Skills & Tags -->
+                <div class="space-y-md">
+                    <div class="space-y-sm">
+                        <label class="font-Inter font-bold text-corps-md block">Points forts (Compétences à partager)</label>
+                        <div id="container-points-forts" class="flex flex-wrap gap-sm">
+                            <button id="add-strength-btn" class="border border-dashed border-outline-variant text-on-surface-variant px-3 py-1.5 rounded-full font-bouton text-[12px] hover:border-primary hover:text-primary transition-all" type="button">
+                                + Ajouter une compétence
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-sm">
+                        <label class="font-Inter font-bold text-corps-md block">Points faibles (Sujets d'apprentissage)</label>
+                        <div id="container-points-faibles" class="flex flex-wrap gap-sm">
+                            <button id="add-weakness-btn" class="border border-dashed border-outline-variant text-on-surface-variant px-3 py-1.5 rounded-full font-bouton text-[12px] hover:border-secondary hover:text-secondary transition-all" type="button">
+                                + Ajouter un sujet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions Bottom -->
+                <div class="pt-lg flex flex-col gap-sm">
+                    <button class="w-full bg-primary text-on-primary font-bouton text-bouton py-4 rounded-lg shadow-md hover:bg-opacity-95 transition-all active:scale-[0.98]" type="submit">
+                        Enregistrer les modifications
+                    </button>
+                    <a class="text-center font-bouton text-bouton text-on-surface-variant hover:text-primary transition-colors py-2" href="/profiles/mon-profil/">
+                        Annuler et revenir au profil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window.USER_DISPONIBILITES = {{ dispo_json|safe }};
+    window.USER_POINTS_FORTS = {{ strengths_json|safe }};
+    window.USER_POINTS_FAIBLES = {{ weaknesses_json|safe }};
+</script>
+<script src="{% static 'js/modifier_profil.js' %}"></script>
+{% endblock %}
