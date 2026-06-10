@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inscription — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/inscription.css' %}"/>
+{% endblock %}
+
+{% block header %}
+<nav class="bg-surface shadow-sm sticky top-0 z-50">
+    <div class="flex justify-between items-center w-full px-marge-page h-20 max-w-7xl mx-auto">
+        <div class="flex items-center gap-2">
+            <img src="{% static 'assets/logo.png' %}" alt="Logo" class="h-10 w-auto object-contain"/>
+            <span class="font-titre-h3 text-titre-h3 font-bold text-primary">IFRI MentorLink</span>
+        </div>
+        <div class="hidden md:flex items-center gap-md">
+            <a class="text-on-surface-variant font-corps-md hover:text-secondary transition-colors" href="/">Accueil</a>
+            <a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Inscription</a>
+        </div>
+        <a href="/accounts/connexion/" class="bg-primary text-white font-bouton text-sm px-4 py-2 rounded-lg hover:bg-primary-container transition-all active:scale-95">
+            Se connecter
+        </a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<main class="flex-grow flex items-center justify-center py-xl px-marge-page">
+    <div class="w-full max-w-3xl bg-surface-carte rounded-2xl shadow-[0px_4px_20px_rgba(12,27,84,0.05)] border border-outline-variant/30 overflow-hidden">
+        <div class="bg-primary-container p-lg text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
+                <span class="material-symbols-outlined text-[200px]">edit_note</span>
+            </div>
+            <h1 class="font-titre-h2 text-titre-h2 mb-2 relative z-10 text-white">Créer votre profil</h1>
+            <p class="font-corps-md opacity-80 relative z-10 text-white">Rejoignez la plus grande communauté de mentorat académique de l'IFRI au Bénin.</p>
+            <div class="mt-lg relative z-10">
+                <div class="flex justify-between mb-2">
+                    <span class="text-label-caps font-label-caps uppercase text-white" id="step-label">Étape 1 sur 3</span>
+                    <span class="text-label-caps font-label-caps text-white" id="progress-percent">33%</span>
+                </div>
+                <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+                    <div class="bg-secondary-container h-full transition-all duration-500" id="progress-bar" style="width: 33.33%;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <form id="registration-form" class="p-lg md:p-xl space-y-md" method="POST" action="{% url 'accounts:inscription' %}">
+            {% csrf_token %}
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="p-4 rounded-lg bg-erreur text-white text-sm font-bold">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <input type="hidden" name="points_forts" id="hidden_points_forts" value="">
+            <input type="hidden" name="points_faibles" id="hidden_points_faibles" value="">
+            <input type="hidden" name="disponibilites" id="hidden_disponibilites" value="">
+            
+            <!-- Step 1: Personal Info -->
+            <div class="step-transition active-step" id="step-1">
+                <h2 class="font-titre-h3 text-titre-h3 text-primary mb-md">Informations Personnelles</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Prénom</label>
+                        <input name="first_name" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: Koffi" type="text" required/>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Nom</label>
+                        <input name="last_name" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: Mensah" type="text" required/>
+                    </div>
+                    <div class="flex flex-col gap-xs md:col-span-2">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Email Institutionnel (@ifri-uac.bj)</label>
+                        <input name="email" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="koffi.mensah@ifri-uac.bj" type="email" required/>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Téléphone (WhatsApp)</label>
+                        <input name="phone" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="+229 01 00 00 00 00" type="tel" required/>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Genre</label>
+                        <div class="flex flex-wrap gap-sm mt-xs h-full items-center">
+                            <label class="flex-1 cursor-pointer">
+                                <input class="hidden peer" name="sexe" type="radio" value="M" checked/>
+                                <div class="text-center p-[10px] border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors text-sm">Homme</div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input class="hidden peer" name="sexe" type="radio" value="F"/>
+                                <div class="text-center p-[10px] border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors text-sm">Femme</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-xs">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Filière</label>
+                        <select name="filiere" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all bg-white" required>
+                            <option disabled="" selected="" value="">Choisir une filière</option>
+                            <option value="IA">Intelligence Artificielle (IA)</option>
+                            <option value="GL">Génie Logiciel (GL)</option>
+                            <option value="SI">Sécurité Informatique (SI)</option>
+                            <option value="IM">Internet et Multimédia (IM)</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-xs md:col-span-2">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Niveau d'étude</label>
+                        <div class="flex flex-wrap gap-sm mt-xs">
+                            <label class="flex-1 min-w-[80px] cursor-pointer">
+                                <input class="hidden peer" name="level" type="radio" value="L1" checked/>
+                                <div class="text-center p-sm border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors">L1</div>
+                            </label>
+                            <label class="flex-1 min-w-[80px] cursor-pointer">
+                                <input class="hidden peer" name="level" type="radio" value="L2"/>
+                                <div class="text-center p-sm border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors">L2</div>
+                            </label>
+                            <label class="flex-1 min-w-[80px] cursor-pointer">
+                                <input class="hidden peer" name="level" type="radio" value="L3"/>
+                                <div class="text-center p-sm border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors">L3</div>
+                            </label>
+                            <label class="flex-1 min-w-[80px] cursor-pointer">
+                                <input class="hidden peer" name="level" type="radio" value="M1"/>
+                                <div class="text-center p-sm border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors">M1</div>
+                            </label>
+                            <label class="flex-1 min-w-[80px] cursor-pointer">
+                                <input class="hidden peer" name="level" type="radio" value="M2"/>
+                                <div class="text-center p-sm border border-outline-variant rounded-lg peer-checked:bg-primary-fixed peer-checked:border-primary peer-checked:text-primary hover:bg-surface-container-low transition-colors">M2</div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-xs md:col-span-2">
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Mot de passe</label>
+                        <input name="password" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="••••••••" type="password" minlength="6" required/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Skills Selection -->
+            <div class="step-transition hidden-step" id="step-2">
+                <h2 class="font-titre-h3 text-titre-h3 text-primary mb-2">Compétences</h2>
+                <p class="text-on-surface-variant font-corps-md mb-md">Aidez-nous à faire correspondre les profils en indiquant vos forces et les domaines où vous souhaitez progresser.</p>
+                <div class="space-y-lg">
+                    <div>
+                        <h3 class="font-bouton text-label-caps text-succes mb-sm flex items-center gap-2 font-bold">
+                            <span class="material-symbols-outlined text-sm">thumb_up</span> VOS POINTS FORTS
+                        </h3>
+                        <div class="flex flex-wrap gap-sm">
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">Python <span class="material-symbols-outlined text-sm">add</span></button>
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">React/Vue <span class="material-symbols-outlined text-sm">add</span></button>
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">SQL/NoSQL <span class="material-symbols-outlined text-sm">add</span></button>
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">Cybersecurity <span class="material-symbols-outlined text-sm">add</span></button>
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-succes transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="strength" type="button">Algorithmique <span class="material-symbols-outlined text-sm">add</span></button>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bouton text-label-caps text-secondary mb-sm flex items-center gap-2 font-bold">
+                            <span class="material-symbols-outlined text-sm">lightbulb</span> BESOINS DE SOUTIEN
+                        </h3>
+                        <div class="flex flex-wrap gap-sm">
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">Mathématiques <span class="material-symbols-outlined text-sm">add</span></button>
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">Java/Spring <span class="material-symbols-outlined text-sm">add</span></button>
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">Cloud/Docker <span class="material-symbols-outlined text-sm">add</span></button>
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">UI/UX Design <span class="material-symbols-outlined text-sm">add</span></button>
+                            <button class="px-md py-sm rounded-full border border-outline-variant bg-surface-container hover:border-secondary transition-all flex items-center gap-2 text-on-surface font-corps-md skill-tag" data-type="weakness" type="button">Gestion Projet <span class="material-symbols-outlined text-sm">add</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Availability Grid -->
+            <div class="step-transition hidden-step" id="step-3">
+                <h2 class="font-titre-h3 text-titre-h3 text-primary mb-2">Disponibilités</h2>
+                <p class="text-on-surface-variant font-corps-md mb-md">Sélectionnez les créneaux horaires où vous êtes généralement libre pour des sessions de mentorat.</p>
+                <div class="overflow-x-auto border border-outline-variant rounded-xl bg-white">
+                    <table class="w-full text-center border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-low border-b border-outline-variant">
+                                <th class="p-sm font-bouton text-label-caps text-on-surface-variant border-r border-outline-variant">Heure</th>
+                                <th class="p-sm font-bouton text-label-caps text-on-surface-variant">LUN</th>
+                                <th class="p-sm font-bouton text-label-caps text-on-surface-variant">MAR</th>
+                                <th class="p-sm font-bouton text-label-caps text-on-surface-variant">MER</th>
+                                <th class="p-sm font-bouton text-label-caps text-on-surface-variant">JEU</th>
+                                <th class="p-sm font-bouton text-label-caps text-on-surface-variant">VEN</th>
+                                <th class="p-sm font-bouton text-label-caps text-on-surface-variant">SAM</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-b border-outline-variant/30">
+                                <td class="p-sm font-bouton text-xs border-r border-outline-variant bg-surface-container-lowest">08:00 - 12:00</td>
+                                <td class="p-0"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                            </tr>
+                            <tr class="border-b border-outline-variant/30">
+                                <td class="p-sm font-bouton text-xs border-r border-outline-variant bg-surface-container-lowest">14:00 - 17:00</td>
+                                <td class="p-0"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                            </tr>
+                            <tr>
+                                <td class="p-sm font-bouton text-xs border-r border-outline-variant bg-surface-container-lowest">18:00 - 21:00</td>
+                                <td class="p-0"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                                <td class="p-0 border-l border-outline-variant/30"><input class="w-full h-12 appearance-none cursor-pointer checked:bg-secondary-container transition-colors" type="checkbox"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Steps navigation bar -->
+            <div class="flex items-center justify-between pt-lg border-t border-outline-variant/30 mt-lg bg-surface">
+                <button class="invisible flex items-center gap-2 text-primary font-bouton hover:bg-surface-container-low px-md py-sm rounded-lg transition-colors outline-none" id="prev-btn" type="button">
+                    <span class="material-symbols-outlined">arrow_back</span> Précédent
+                </button>
+                <div class="flex gap-md">
+                    <button class="bg-primary text-white font-bouton text-bouton px-xl py-sm rounded-lg hover:bg-primary-container transition-all shadow-md active:scale-95 flex items-center gap-2" id="next-btn" type="button">
+                        Suivant <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                    <button class="hidden bg-secondary-container text-primary font-bold font-bouton text-bouton px-xl py-sm rounded-lg hover:brightness-110 transition-all shadow-md active:scale-95" id="submit-btn" type="submit">
+                        Terminer l'inscription
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/inscription.js' %}"></script>
+{% endblock %}

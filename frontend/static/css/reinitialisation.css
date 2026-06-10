@@ -1,0 +1,6 @@
+/* Styles pour la page de Réinitialisation de mot de passe */
+
+.glass-effect {
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.8);
+}
