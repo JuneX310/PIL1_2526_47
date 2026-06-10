@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tableau de bord — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}"/>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-[1200px] mx-auto px-marge-page py-lg space-y-lg">
+    <!-- Welcome Header -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+        <div>
+            <h1 class="font-titre-h1 text-titre-h2 text-primary">Bienvenue, {{ user.first_name }} !</h1>
+            <p class="font-corps-lg text-on-surface-variant">Voici un résumé de votre activité de mentorat pour cette semaine.</p>
+        </div>
+        <div class="flex items-center gap-sm">
+            <a href="/matching/publier/" class="bg-primary text-white font-bouton text-sm px-6 py-3 rounded-lg hover:bg-primary-container shadow-sm transition-all flex items-center gap-xs">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                Créer une annonce
+            </a>
+        </div>
+    </header>
+
+    <!-- Stats Cards Row -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+        <!-- Card 1 -->
+        <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm flex items-center gap-md hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">calendar_month</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-primary">{{ active_convs_count }}</p>
+                <p class="text-xs text-on-surface-variant font-label-caps">Discussions actives</p>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm flex items-center gap-md hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-secondary-container/10 text-on-secondary-container rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">pending_actions</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-primary">{{ demandes_recues_count }}</p>
+                <p class="text-xs text-on-surface-variant font-label-caps">Demandes reçues</p>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm flex items-center gap-md hover:shadow-md transition-shadow">
+            <div class="w-12 h-12 bg-succes/10 text-succes rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">diversity_3</span>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-primary">{{ annonces_publiees_count }}</p>
+                <p class="text-xs text-on-surface-variant font-label-caps">Mes annonces actives</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Dashboard Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+        <!-- Left 8 columns: Sessions & Recommandations -->
+        <div class="lg:col-span-8 space-y-lg">
+            <!-- Sessions list -->
+            <section class="bg-surface-carte rounded-2xl p-md md:p-lg border border-outline-variant/30 shadow-sm space-y-md">
+                <h3 class="font-titre-h3 text-primary">Discussions de Mentorat Récentes</h3>
+                
+                <div class="space-y-sm">
+                    {% if conversations %}
+                        {% for conv in conversations %}
+                        <a href="{{ conv.link }}" class="p-md rounded-xl bg-surface-container-low border border-outline-variant/10 flex flex-col md:flex-row md:items-center justify-between gap-md hover:bg-surface-container-high/40 transition-colors block">
+                            <div class="flex items-center gap-md">
+                                {% if conv.avatar_url %}
+                                <img src="{{ conv.avatar_url }}" class="w-10 h-10 rounded-full object-cover border border-outline-variant/20" alt="{{ conv.other_name }}"/>
+                                {% else %}
+                                <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-primary">{{ conv.other_initials }}</div>
+                                {% endif %}
+                                <div>
+                                    <h4 class="font-bold text-primary">{{ conv.other_name }}</h4>
+                                    <p class="text-xs text-on-surface-variant">{{ conv.other_niveau_display }} • {{ conv.other_filiere_display }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-md w-full md:w-auto">
+                                <div class="text-left md:text-right">
+                                    <p class="text-sm font-medium text-on-surface-variant truncate max-w-[200px]" title="{{ conv.last_message_content }}">{{ conv.last_message_content }}</p>
+                                    <p class="text-xs text-outline">{{ conv.last_message_time }}</p>
+                                </div>
+                                <span class="bg-primary/5 text-primary-container px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-xs">
+                                    <span class="material-symbols-outlined text-xs">chat</span>
+                                    Écrire
+                                </span>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-lg bg-surface-container-low rounded-xl border border-outline-variant/10">
+                            <span class="material-symbols-outlined text-[36px] text-on-surface-variant mb-1">chat_bubble_outline</span>
+                            <p class="text-sm text-on-surface-variant">Aucune conversation active pour le moment.</p>
+                            <a href="/matching/explorer/" class="text-xs text-primary font-bold hover:underline block mt-1">Trouver un mentor ou mentoré</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Recommanded Mentors -->
+            <section class="space-y-md">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-titre-h3 text-primary">Mentors Recommandés</h3>
+                    <a href="/matching/explorer/" class="text-sm font-bouton text-primary hover:underline flex items-center gap-xs">
+                        Voir tout
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    {% if recommended_mentors %}
+                        {% for mentor in recommended_mentors %}
+                        <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-md mb-md">
+                                    {% if mentor.avatar_url %}
+                                    <img src="{{ mentor.avatar_url }}" class="w-12 h-12 rounded-full object-cover border border-outline-variant/20" alt="{{ mentor.name }}"/>
+                                    {% else %}
+                                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">{{ mentor.initials }}</div>
+                                    {% endif %}
+                                    <div>
+                                        <h4 class="font-bold text-primary">{{ mentor.name }}</h4>
+                                        <p class="text-xs text-on-surface-variant">{{ mentor.niveau_display }} • {{ mentor.filiere_display }}</p>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-on-surface-variant line-clamp-2 italic mb-md">"{{ mentor.bio }}"</p>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-outline-variant/10 pt-sm mt-md">
+                                <span class="text-succes text-xs font-bold flex items-center gap-xs">
+                                    <span class="material-symbols-outlined text-[14px]">bolt</span>
+                                    {{ mentor.score }}% Match
+                                </span>
+                                <a href="{{ mentor.link }}" class="text-xs font-bouton bg-primary text-white px-3 py-1.5 rounded-lg hover:bg-primary-container">Profil</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-span-2 text-center py-lg bg-surface-carte rounded-xl border border-outline-variant/30">
+                            <p class="text-sm text-on-surface-variant">Aucune recommandation disponible pour le moment.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+
+        <!-- Right 4 columns: Notifications & Quick Actions -->
+        <aside class="lg:col-span-4 space-y-lg">
+            <!-- Quick actions -->
+            <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm space-y-md">
+                <h4 class="font-Inter font-bold text-primary">Actions Rapides</h4>
+                <div class="flex flex-col gap-sm">
+                    <a href="/matching/explorer/" class="w-full py-3 bg-surface-container-low hover:bg-surface-container text-primary rounded-lg text-sm font-medium flex items-center gap-md px-md border border-outline-variant/10">
+                        <span class="material-symbols-outlined text-primary">search</span>
+                        Explorer les mentors
+                    </a>
+                    <a href="/matching/matchs/" class="w-full py-3 bg-surface-container-low hover:bg-surface-container text-primary rounded-lg text-sm font-medium flex items-center gap-md px-md border border-outline-variant/10">
+                        <span class="material-symbols-outlined text-primary">diversity_3</span>
+                        Voir mes matchs
+                    </a>
+                    <a href="/profiles/modifier-profil/" class="w-full py-3 bg-surface-container-low hover:bg-surface-container text-primary rounded-lg text-sm font-medium flex items-center gap-md px-md border border-outline-variant/10">
+                        <span class="material-symbols-outlined text-primary">settings</span>
+                        Modifier mon profil
+                    </a>
+                </div>
+            </div>
+
+            <!-- Notifications / Activity Feed -->
+            <div class="bg-surface-carte rounded-xl p-md border border-outline-variant/30 shadow-sm space-y-md">
+                <h4 class="font-Inter font-bold text-primary">Dernières Notifications</h4>
+                <div class="space-y-md text-sm">
+                    {% if notifications %}
+                        {% for notif in notifications %}
+                        <a href="{{ notif.link }}" class="flex gap-sm hover:bg-surface-container-low/40 p-sm rounded-lg transition-colors block">
+                            <span class="material-symbols-outlined {{ notif.icon_color }} mt-0.5">{{ notif.icon }}</span>
+                            <div>
+                                <p class="text-on-surface font-semibold">{{ notif.title }}</p>
+                                <p class="text-xs text-on-surface-variant">{{ notif.text }}</p>
+                                <span class="text-[10px] text-outline font-label-caps block mt-0.5">{{ notif.time_diff }}</span>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-xs text-on-surface-variant italic py-sm text-center">Aucune nouvelle notification.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}
