@@ -41,6 +41,9 @@
     
     <form id="profile-form" method="POST" action="{% url 'profiles:modifier_profil' %}" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
         {% csrf_token %}
+        <input type="hidden" name="delete_photo_profil" id="delete_photo_profil_input" value="false">
+        <input type="hidden" name="delete_photo_couverture" id="delete_photo_couverture_input" value="false">
+        
         <!-- Left Column: Media & Primary Info -->
         <aside class="lg:col-span-4 space-y-md">
             <!-- Identity & Media Card -->
@@ -48,24 +51,40 @@
                 <!-- Couverture -->
                 <div class="w-full h-32 bg-surface-container relative group">
                     <img id="preview-couverture" class="w-full h-full object-cover {% if not etudiant.photo_couverture %}hidden{% endif %}" src="{% if etudiant.photo_couverture %}{{ etudiant.photo_couverture.url }}{% endif %}" alt="Couverture"/>
-                    {% if not etudiant.photo_couverture %}
-                    <div id="placeholder-couverture" class="w-full h-full bg-primary flex items-center justify-center text-on-primary">
+                    <div id="placeholder-couverture" class="w-full h-full bg-primary flex items-center justify-center text-on-primary absolute inset-0 {% if etudiant.photo_couverture %}hidden{% endif %}">
                         <span class="material-symbols-outlined text-4xl opacity-50">wallpaper</span>
                     </div>
-                    {% endif %}
-                    <label class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer" title="Changer la photo de couverture">
-                        <span class="material-symbols-outlined text-on-primary text-3xl">add_photo_alternate</span>
-                        <input type="file" name="photo_couverture" class="hidden" accept="image/*"/>
-                    </label>
+                    
+                    <!-- Overlay de survol - boutons toujours cliquables -->
+                    <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-md transition-opacity z-10" style="pointer-events: none;"></div>
+                    <!-- Boutons toujours cliquables au-dessus de l'overlay -->
+                    <div class="absolute inset-0 flex items-center justify-center gap-md z-20">
+                        <label for="input-couverture" class="cursor-pointer flex items-center justify-center bg-white/20 hover:bg-white/40 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100" title="Changer la photo de couverture">
+                            <span class="material-symbols-outlined text-2xl">add_photo_alternate</span>
+                        </label>
+                        <button type="button" id="btn-delete-couverture" class="bg-red-600/80 hover:bg-red-700 text-white rounded-full p-3 transition-all opacity-0 group-hover:opacity-100 {% if not etudiant.photo_couverture %}hidden{% endif %}" title="Supprimer la photo de couverture">
+                            <span class="material-symbols-outlined text-2xl leading-none flex items-center">delete</span>
+                        </button>
+                    </div>
+                    <input type="file" id="input-couverture" name="photo_couverture" class="hidden" accept="image/*"/>
                 </div>
 
                 <!-- Avatar -->
                 <div class="relative group cursor-pointer w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white shadow-md mx-auto -mt-12 bg-white">
                     <img id="preview-avatar" class="w-full h-full object-cover" alt="{{ user.first_name }} {{ user.last_name }}" src="{% if etudiant.photo_profil %}{{ etudiant.photo_profil.url }}{% elif etudiant.avatar %}{{ etudiant.avatar }}{% else %}https://ui-avatars.com/api/?name={{ user.first_name }}+{{ user.last_name }}&background=random{% endif %}"/>
-                    <label class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer" title="Changer la photo de profil">
-                        <span class="material-symbols-outlined text-on-primary text-3xl">photo_camera</span>
-                        <input type="file" name="photo_profil" class="hidden" accept="image/*"/>
-                    </label>
+                    
+                    <!-- Overlay de survol - visuel uniquement -->
+                    <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity z-10" style="pointer-events: none;"></div>
+                    <!-- Boutons toujours cliquables au-dessus -->
+                    <div class="absolute inset-0 flex items-center justify-center gap-sm z-20">
+                        <label for="input-avatar" class="cursor-pointer flex items-center justify-center bg-white/20 hover:bg-white/40 text-white p-2 rounded-full transition-all opacity-0 group-hover:opacity-100" title="Changer la photo de profil">
+                            <span class="material-symbols-outlined text-xl hover:scale-110 transition-transform">photo_camera</span>
+                        </label>
+                        <button type="button" id="btn-delete-avatar" class="bg-red-600/80 hover:bg-red-700 text-white rounded-full p-2 transition-colors opacity-0 group-hover:opacity-100 {% if not etudiant.photo_profil %}hidden{% endif %}" title="Supprimer la photo de profil">
+                            <span class="material-symbols-outlined text-xl">delete</span>
+                        </button>
+                    </div>
+                    <input type="file" id="input-avatar" name="photo_profil" class="hidden" accept="image/*"/>
                 </div>
 
                 <!-- Info -->
@@ -252,5 +271,5 @@
     window.USER_POINTS_FORTS = {{ strengths_json|safe }};
     window.USER_POINTS_FAIBLES = {{ weaknesses_json|safe }};
 </script>
-<script src="{% static 'js/modifier_profil.js' %}"></script>
+<script src="{% static 'js/modifier_profil.js' %}?v={% now 'U' %}"></script>
 {% endblock %}

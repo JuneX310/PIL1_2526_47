@@ -73,12 +73,20 @@
                         <input name="last_name" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Ex: Mensah" type="text" required/>
                     </div>
                     <div class="flex flex-col gap-xs md:col-span-2">
-                        <label class="font-bouton text-label-caps text-on-surface-variant">Email Institutionnel (@ifri-uac.bj)</label>
-                        <input name="email" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="koffi.mensah@ifri-uac.bj" type="email" required/>
+                        <label class="font-bouton text-label-caps text-on-surface-variant">Adresse Email</label>
+                        <input id="insc-email" name="email" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="exemple@gmail.com" type="email" required/>
+                        <div id="insc-email-error" class="hidden flex items-center gap-1 text-erreur text-xs font-bold mt-1">
+                            <span class="material-symbols-outlined text-[14px]">error</span>
+                            <span id="insc-email-error-msg">Cet email est déjà utilisé.</span>
+                        </div>
                     </div>
                     <div class="flex flex-col gap-xs">
                         <label class="font-bouton text-label-caps text-on-surface-variant">Téléphone (WhatsApp)</label>
-                        <input name="phone" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="+229 01 00 00 00 00" type="tel" required/>
+                        <input id="insc-phone" name="phone" class="border border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="+229 01 00 00 00 00" type="tel" required/>
+                        <div id="insc-phone-error" class="hidden flex items-center gap-1 text-erreur text-xs font-bold mt-1">
+                            <span class="material-symbols-outlined text-[14px]">error</span>
+                            <span>Ce numéro de téléphone est déjà utilisé.</span>
+                        </div>
                     </div>
                     <div class="flex flex-col gap-xs">
                         <label class="font-bouton text-label-caps text-on-surface-variant">Genre</label>

@@ -54,8 +54,91 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // ── Validation temps réel : email & téléphone ─────────────────────────────
+    let emailValid = true;   // false si doublon détecté
+    let phoneValid = true;   // false si doublon détecté
+
+    const emailInput = document.getElementById('insc-email');
+    const phoneInput = document.getElementById('insc-phone');
+    const emailError = document.getElementById('insc-email-error');
+    const phoneError = document.getElementById('insc-phone-error');
+
+    function setFieldState(inputEl, errorEl, hasError) {
+        if (!inputEl) return;
+        if (hasError) {
+            inputEl.classList.add('border-erreur', 'ring-2', 'ring-erreur/30');
+            inputEl.classList.remove('border-outline-variant');
+            if (errorEl) errorEl.classList.remove('hidden');
+        } else {
+            inputEl.classList.remove('border-erreur', 'ring-2', 'ring-erreur/30');
+            inputEl.classList.add('border-outline-variant');
+            if (errorEl) errorEl.classList.add('hidden');
+        }
+    }
+
+    async function checkEmail(email) {
+        if (!email) return;
+        try {
+            const res = await fetch(`/accounts/api/check/?email=${encodeURIComponent(email)}`);
+            const data = await res.json();
+            const msgEl = document.getElementById('insc-email-error-msg');
+            if (data.exists) {
+                if (msgEl) msgEl.textContent = 'Cet email est déjà utilisé. Connectez-vous plutôt.';
+                setFieldState(emailInput, emailError, true);
+                emailValid = false;
+            } else {
+                setFieldState(emailInput, emailError, false);
+                emailValid = true;
+            }
+        } catch (e) {
+            // En cas d'erreur réseau, on laisse passer (la vérification backend prendra le relais)
+            emailValid = true;
+        }
+    }
+
+    async function checkPhone(phone) {
+        if (!phone || phone.length < 8) return;
+        try {
+            const res = await fetch(`/accounts/api/check/?phone=${encodeURIComponent(phone)}`);
+            const data = await res.json();
+            if (data.exists) {
+                setFieldState(phoneInput, phoneError, true);
+                phoneValid = false;
+            } else {
+                setFieldState(phoneInput, phoneError, false);
+                phoneValid = true;
+            }
+        } catch (e) {
+            phoneValid = true;
+        }
+    }
+
+    // Déclenchement au blur (quand l'utilisateur quitte le champ)
+    if (emailInput) {
+        emailInput.addEventListener('blur', () => checkEmail(emailInput.value.trim()));
+    }
+    if (phoneInput) {
+        phoneInput.addEventListener('blur', () => checkPhone(phoneInput.value.trim()));
+    }
+
+    // Déclenchement avec debounce pendant la saisie (600ms)
+    let emailTimer, phoneTimer;
+    if (emailInput) {
+        emailInput.addEventListener('input', () => {
+            clearTimeout(emailTimer);
+            emailTimer = setTimeout(() => checkEmail(emailInput.value.trim()), 600);
+        });
+    }
+    if (phoneInput) {
+        phoneInput.addEventListener('input', () => {
+            clearTimeout(phoneTimer);
+            phoneTimer = setTimeout(() => checkPhone(phoneInput.value.trim()), 600);
+        });
+    }
+
+
     if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
+        nextBtn.addEventListener('click', async () => {
             const currentStepEl = document.getElementById(steps[currentStep]);
             const inputs = currentStepEl.querySelectorAll('input[required], select[required], textarea[required]');
             let isValid = true;
@@ -65,6 +148,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     isValid = false;
                 }
             });
+
+            // Sur l'étape 1, vérifier aussi email & téléphone en temps réel
+            if (isValid && currentStep === 0) {
+                // Forcer la vérification si pas encore faite
+                if (emailInput && emailInput.value.trim()) {
+                    await checkEmail(emailInput.value.trim());
+                }
+                if (phoneInput && phoneInput.value.trim()) {
+                    await checkPhone(phoneInput.value.trim());
+                }
+                if (!emailValid || !phoneValid) {
+                    isValid = false;
+                }
+            }
 
             if (isValid && currentStep < steps.length - 1) {
                 currentStep++;

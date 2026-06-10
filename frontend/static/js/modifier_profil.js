@@ -164,10 +164,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── 4. Image Previews ──
-    const inputCouverture = document.querySelector('input[name="photo_couverture"]');
+    // ── 4. Image Previews & Deletions ──
+    console.log("Initialisation de la gestion des images...");
+    const inputCouverture = document.getElementById('input-couverture');
+    const deleteCouvertureInput = document.getElementById('delete_photo_couverture_input');
+    const btnDeleteCouverture = document.getElementById('btn-delete-couverture');
+    
     if (inputCouverture) {
+        console.log("Input couverture trouvé");
         inputCouverture.addEventListener('change', function() {
+            console.log("Changement d'image couverture détecté, fichiers:", this.files?.length);
             if (this.files && this.files[0]) {
                 const img = document.getElementById('preview-couverture');
                 const ph = document.getElementById('placeholder-couverture');
@@ -178,25 +184,98 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (ph) {
                     ph.classList.add('hidden');
                 }
-                if (this.parentElement && this.parentElement.parentElement) {
-                    this.parentElement.parentElement.classList.add('border-b-4', 'border-primary');
+                if (deleteCouvertureInput) {
+                    deleteCouvertureInput.value = 'false';
+                }
+                if (btnDeleteCouverture) {
+                    btnDeleteCouverture.classList.remove('hidden');
+                    btnDeleteCouverture.style.removeProperty('display');
                 }
             }
         });
+    } else {
+        console.warn("Input couverture NON trouvé !");
     }
 
-    const inputAvatar = document.querySelector('input[name="photo_profil"]');
+    if (btnDeleteCouverture) {
+        console.log("Bouton supprimer couverture trouvé");
+        btnDeleteCouverture.addEventListener('click', function(e) {
+            console.log("Clic sur supprimer couverture");
+            e.stopPropagation();
+            e.preventDefault();
+            const img = document.getElementById('preview-couverture');
+            const ph = document.getElementById('placeholder-couverture');
+            if (img) {
+                img.classList.add('hidden');
+                img.src = '';
+            }
+            if (ph) {
+                ph.classList.remove('hidden');
+            }
+            if (deleteCouvertureInput) {
+                deleteCouvertureInput.value = 'true';
+                console.log("delete_photo_couverture set to true");
+            }
+            if (inputCouverture) {
+                inputCouverture.value = ''; // Reset file input
+            }
+            // Hide the delete button itself
+            this.style.display = 'none';
+        });
+    } else {
+        console.warn("Bouton supprimer couverture NON trouvé !");
+    }
+
+    const inputAvatar = document.getElementById('input-avatar');
+    const deleteAvatarInput = document.getElementById('delete_photo_profil_input');
+    const btnDeleteAvatar = document.getElementById('btn-delete-avatar');
+    
     if (inputAvatar) {
+        console.log("Input avatar trouvé");
         inputAvatar.addEventListener('change', function() {
+            console.log("Changement d'image avatar détecté, fichiers:", this.files?.length);
             if (this.files && this.files[0]) {
                 const img = document.getElementById('preview-avatar');
                 if (img) {
                     img.src = URL.createObjectURL(this.files[0]);
                 }
-                if (this.parentElement && this.parentElement.parentElement) {
-                    this.parentElement.parentElement.classList.add('border-primary');
+                if (deleteAvatarInput) {
+                    deleteAvatarInput.value = 'false';
+                }
+                if (btnDeleteAvatar) {
+                    btnDeleteAvatar.classList.remove('hidden');
+                    btnDeleteAvatar.style.removeProperty('display');
                 }
             }
         });
+    } else {
+        console.warn("Input avatar NON trouvé !");
+    }
+
+    if (btnDeleteAvatar) {
+        console.log("Bouton supprimer avatar trouvé");
+        btnDeleteAvatar.addEventListener('click', function(e) {
+            console.log("Clic sur supprimer avatar");
+            e.stopPropagation();
+            e.preventDefault();
+            const img = document.getElementById('preview-avatar');
+            if (img) {
+                // Revenir sur l'avatar par défaut de ui-avatars
+                const firstName = document.querySelector('input[name="first_name"]')?.value || 'User';
+                const lastName = document.querySelector('input[name="last_name"]')?.value || '';
+                img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName)}+${encodeURIComponent(lastName)}&background=random`;
+            }
+            if (deleteAvatarInput) {
+                deleteAvatarInput.value = 'true';
+                console.log("delete_photo_profil set to true");
+            }
+            if (inputAvatar) {
+                inputAvatar.value = ''; // Reset file input
+            }
+            // Hide the delete button itself
+            this.style.display = 'none';
+        });
+    } else {
+        console.warn("Bouton supprimer avatar NON trouvé !");
     }
 });

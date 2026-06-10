@@ -9,4 +9,5 @@ urlpatterns = [
     path('deconnexion/', views.deconnexion, name='deconnexion'),
     path('inscription/', views.inscription, name='inscription'),
     path('reinitialisation/', views.reinitialisation, name='reinitialisation'),
+    path('api/check/', views.api_check_disponibilite, name='api_check_disponibilite'),
 ]

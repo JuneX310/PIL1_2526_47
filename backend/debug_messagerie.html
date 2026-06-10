@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Messagerie — IFRI MentorLink</title>
+    
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#bf7658",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#401200",
+                        "on-tertiary-fixed-variant": "#70361d",
+                        "erreur": "#D90429",
+                        "secondary": "#8b5000",
+                        "on-primary-fixed": "#05154f",
+                        "surface-container-high": "#d8ebf7",
+                        "primary-container": "#0c1b54",
+                        "primary-fixed-dim": "#b8c3ff",
+                        "primary-fixed": "#dde1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#b8c3ff",
+                        "inverse-on-surface": "#e2f3ff",
+                        "outline": "#767681",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#ffb598",
+                        "on-secondary-fixed": "#2d1600",
+                        "surface-variant": "#d2e5f2",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#7885c3",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-primary-fixed-variant": "#36437c",
+                        "on-surface-variant": "#454650",
+                        "surface-container": "#def1fd",
+                        "on-background": "#0b1e27",
+                        "surface-fond": "#F2F0EC",
+                        "on-surface": "#0b1e27",
+                        "secondary-container": "#ffa441",
+                        "inverse-surface": "#21333c",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "surface-carte": "#FFFFFF",
+                        "primary": "#00052b",
+                        "outline-variant": "#c6c5d1",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-secondary-container": "#6d3e00",
+                        "surface-dim": "#cadde9",
+                        "tertiary": "#1a0400",
+                        "secondary-fixed-dim": "#ffb872",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#d2e5f2",
+                        "surface": "#f4faff",
+                        "on-secondary-fixed-variant": "#6a3c00",
+                        "succes": "#2D6A4F",
+                        "surface-tint": "#4e5b96",
+                        "surface-bright": "#f4faff",
+                        "surface-container-low": "#e8f6ff",
+                        "secondary-fixed": "#ffdcbe",
+                        "background": "#f4faff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "12px",
+                        "grille-colonnes": "12",
+                        "xl": "80px",
+                        "grille-gouttiere": "24px",
+                        "md": "24px",
+                        "marge-page": "5%",
+                        "base": "8px",
+                        "lg": "48px"
+                    },
+                    "fontFamily": {
+                        "titre-h1": ["Montserrat"],
+                        "label-caps": ["Inter"],
+                        "corps-lg": ["Nunito Sans"],
+                        "titre-h3": ["Montserrat"],
+                        "titre-h1-mobile": ["Montserrat"],
+                        "corps-md": ["Nunito Sans"],
+                        "bouton": ["Inter"],
+                        "titre-h2": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "titre-h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "corps-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "titre-h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "titre-h1-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "corps-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "bouton": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                        "titre-h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #00052b;
+            border-radius: 10px;
+        }
+        [v-cloak] {
+            display: none !important;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+        }
+    </style>
+    
+<link rel="stylesheet" href="/static/css/messagerie.css"/>
+
+    <!-- MatierePicker Component -->
+    <link rel="stylesheet" href="/static/css/matiere_picker.css"/>
+</head>
+<body class="bg-surface-fond font-corps-md text-on-surface">
+
+    <!-- Header Navigation -->
+    
+    <nav class="bg-surface dark:bg-inverse-surface shadow-sm sticky top-0 z-50">
+        <div class="flex justify-between items-center px-marge-page py-4 w-full max-w-[1200px] mx-auto">
+            <a href="/matching/explorer/" class="flex items-center gap-2 font-titre-h3 text-titre-h3 font-bold text-primary dark:text-primary-fixed-dim hover:opacity-90">
+                <img src="/static/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain"/>
+                <span>IFRI MentorLink</span>
+            </a>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-md">
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/profiles/dashboard/">Dashboard</a>
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/explorer/">Explorer</a>
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/matchs/">Matchs</a>
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded-lg text-sm" href="/matching/publier/">Publier</a>
+            </div>
+            
+            <!-- Icons & Avatar -->
+            <div class="flex items-center gap-sm">
+                <a href="/profiles/messagerie/" class="p-2 rounded-full bg-surface-container-high text-primary font-bold transition-all active:scale-95" title="Messagerie">
+                    <span class="material-symbols-outlined" data-icon="chat">chat</span>
+                </a>
+                <a href="/profiles/notifications/" class="p-2 rounded-full hover:bg-surface-container-low text-primary transition-all active:scale-95 text-primary relative" title="Notifications">
+                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                    
+                </a>
+                <a href="/profiles/modifier-profil/" class="p-2 rounded-full hover:bg-surface-container-low text-primary transition-all active:scale-95 text-primary" title="Paramètres">
+                    <span class="material-symbols-outlined" data-icon="settings">settings</span>
+                </a>
+                <div class="relative group">
+                    <button class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container block hover:scale-105 active:scale-95 transition-all focus:outline-none">
+                        <img alt="Photo de profil" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Junior+HOUNYE&background=random"/>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block hover:block z-50">
+                        <div class="bg-surface-carte dark:bg-inverse-surface rounded-xl shadow-lg py-2 border border-outline-variant/30">
+                            <a href="/profiles/mon-profil/" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined text-lg">person</span>
+                                Mon Profil
+                            </a>
+                            <a href="/profiles/modifier-profil/" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors">
+                                <span class="material-symbols-outlined text-lg">edit</span>
+                                Modifier profil
+                            </a>
+                            <hr class="border-outline-variant/20 my-1">
+                            <a href="/accounts/deconnexion/" class="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-error hover:bg-error-container/20 transition-colors">
+                                <span class="material-symbols-outlined text-lg text-error">logout</span>
+                                Se déconnecter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Burger Button (Mobile) -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-full hover:bg-surface-container-low transition-all active:scale-95 text-primary focus:outline-none" title="Menu">
+                    <span class="material-symbols-outlined text-[28px]" id="burger-icon">menu</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface dark:bg-inverse-surface border-t border-outline-variant/20 shadow-md">
+            <div class="flex flex-col px-marge-page py-4 gap-sm">
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:bg-surface-container-low px-4 py-3 rounded-lg text-sm transition-all" href="/profiles/dashboard/">Dashboard</a>
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:bg-surface-container-low px-4 py-3 rounded-lg text-sm transition-all" href="/matching/explorer/">Explorer</a>
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:bg-surface-container-low px-4 py-3 rounded-lg text-sm transition-all" href="/matching/matchs/">Matchs</a>
+                <a class="text-on-surface-variant dark:text-surface-variant font-medium hover:bg-surface-container-low px-4 py-3 rounded-lg text-sm transition-all" href="/matching/publier/">Publier</a>
+            </div>
+        </div>
+    </nav>
+    
+
+    <!-- Main Content Area -->
+    <main class="min-h-[calc(100vh-160px)]">
+        
+<input type="hidden" name="csrfmiddlewaretoken" value="uA5AjfRAAEFDwK95s7842YEMhiiy0iZ3UuTXhZQygxDGsddHUuVemfZID9o1ISrt">
+<input type="hidden" id="csrf_token_django" value="uA5AjfRAAEFDwK95s7842YEMhiiy0iZ3UuTXhZQygxDGsddHUuVemfZID9o1ISrt">
+
+<div id="app" v-cloak class="max-w-7xl mx-auto px-marge-page py-md">
+    <div class="grid grid-cols-12 gap-6 chat-container">
+        <!-- Left Panel: Conversation List -->
+        <aside :class="['bg-surface-carte rounded-xl shadow-sm border border-outline-variant/30 flex flex-col overflow-hidden', activeConversation ? 'hidden md:flex col-span-12 md:col-span-4' : 'col-span-12 md:col-span-4']">
+            <div class="p-md border-b border-outline-variant/20">
+                <h2 class="font-titre-h3 text-titre-h3 mb-md">Messages</h2>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+                    <input v-model="searchQuery" class="w-full pl-10 pr-4 py-2 bg-surface-fond border-none rounded-lg text-sm focus:ring-1 focus:ring-primary-container" placeholder="Rechercher..." type="text"/>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto">
+                <div v-if="filteredConversations.length === 0" class="p-md text-center text-on-surface-variant text-sm">
+                    Aucune conversation trouvée.
+                </div>
+                <!-- Conversation Item -->
+                <div v-for="conv in filteredConversations" :key="conv.id" 
+                     @click="selectConversation(conv)"
+                     :class="['p-md flex gap-md cursor-pointer transition-colors border-b border-outline-variant/10', activeConversation && activeConversation.id === conv.id ? 'bg-surface-container border-l-4 border-primary' : 'hover:bg-surface-fond']">
+                    <div class="relative flex-shrink-0">
+                        <img :alt="'Avatar ' + conv.other_user.name" class="w-12 h-12 rounded-full object-cover" :src="conv.other_user.avatar"/>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                            <span class="font-bold text-on-surface truncate mr-2">{{ conv.other_user.name }}</span>
+                            <div class="flex flex-col items-end gap-1">
+                                <span class="text-xs text-on-surface-variant">{{ conv.time }}</span>
+                                <span v-if="conv.unread_count > 0" class="w-5 h-5 bg-erreur text-white rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm animate-pulse">
+                                    {{ conv.unread_count }}
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-sm truncate" :class="conv.unread_count > 0 ? 'text-primary font-bold' : 'text-on-surface-variant'">{{ conv.last_message || 'Nouvelle conversation' }}</p>
+                        <div class="mt-xs">
+                            <span class="inline-block bg-primary-container/10 text-primary-container text-[10px] px-2 py-0.5 rounded-full font-bold">{{ conv.other_user.filiere }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Right Panel: Chat Interface -->
+        <section :class="['bg-surface-carte rounded-xl shadow-sm border border-outline-variant/30 flex flex-col overflow-hidden relative', activeConversation ? 'col-span-12 md:col-span-8 flex' : 'hidden md:flex md:col-span-8']">
+            <template v-if="activeConversation">
+                <!-- Chat Top Bar -->
+                <div class="p-md flex justify-between items-center border-b border-outline-variant/20">
+                    <div class="flex items-center gap-md">
+                        <!-- Back Button for Mobile -->
+                        <button @click="activeConversation = null" class="md:hidden p-2 rounded-full hover:bg-surface-container-low text-primary mr-xs" title="Retour aux discussions">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </button>
+                        <img :alt="activeConversation.other_user.name" class="w-10 h-10 rounded-full object-cover" :src="activeConversation.other_user.avatar"/>
+                        <div>
+                            <h3 class="font-bold text-on-surface">{{ activeConversation.other_user.name }}</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-on-surface-variant">{{ activeConversation.other_user.filiere }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Messages Area -->
+                <div class="flex-1 overflow-y-auto p-md space-y-md bg-surface-fond/30" id="chat-messages" ref="messagesContainer">
+                    <div v-for="msg in messages" :key="msg.id" :class="['flex flex-col max-w-[80%]', msg.is_me ? 'items-end self-end ml-auto' : 'items-start mr-auto']">
+                        <div :class="['p-md rounded-2xl shadow-sm', msg.is_me ? 'bg-primary-container rounded-tr-none' : 'bg-surface border border-outline-variant/20 rounded-tl-none']">
+                            <p :class="['text-sm', msg.is_me ? 'text-on-primary-container' : 'text-on-surface']">{{ msg.contenu }}</p>
+                        </div>
+                        <div :class="['flex items-center gap-1 mt-1', msg.is_me ? 'mr-1' : 'ml-1']">
+                            <span class="text-[10px] text-on-surface-variant">{{ msg.time }}</span>
+                            <span v-if="msg.is_me" class="material-symbols-outlined text-[12px] text-primary" style="font-variation-settings: 'FILL' 1;">done_all</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Input Area -->
+                <div class="p-md bg-surface border-t border-outline-variant/20">
+                    <form class="flex items-center gap-md" @submit.prevent="sendMessage">
+                        <input v-model="newMessage" class="flex-1 py-3 px-md bg-surface-fond border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-container outline-none" placeholder="Écrivez votre message..." type="text"/>
+                        <button type="submit" :disabled="isSending || !newMessage.trim()" class="bg-primary-container text-white p-3 rounded-xl hover:shadow-lg transition-all active:scale-95 flex items-center justify-center disabled:opacity-50">
+                            <span v-if="isSending" class="material-symbols-outlined animate-spin" style="font-variation-settings: 'FILL' 1;">sync</span>
+                            <span v-else class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+                        </button>
+                    </form>
+                </div>
+            </template>
+            <template v-else>
+                <div class="flex-1 flex flex-col items-center justify-center text-center p-xl">
+                    <span class="material-symbols-outlined text-[64px] text-primary/20 mb-md">forum</span>
+                    <h2 class="font-titre-h3 text-titre-h3 text-on-surface mb-xs">Vos conversations</h2>
+                    <p class="text-on-surface-variant max-w-md">Sélectionnez une conversation dans le panneau de gauche pour commencer à discuter avec votre mentor ou mentoré.</p>
+                </div>
+            </template>
+        </section>
+    </div>
+</div>
+
+
+    </main>
+
+    <!-- Footer -->
+    
+    <footer class="w-full py-lg px-marge-page bg-primary dark:bg-primary-container text-on-primary mt-xl">
+        <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
+            <div class="flex flex-col gap-xs items-center md:items-start">
+                <div class="flex items-center gap-2 font-titre-h3 text-titre-h3 font-bold text-on-primary">
+                    <img src="/static/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain brightness-0 invert"/>
+                    <span>IFRI MentorLink</span>
+                </div>
+                <div class="font-label-caps text-label-caps text-on-primary/60 text-xs">© 2026 IFRI - Université d'Abomey-Calavi. Tous droits réservés.</div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-md text-sm">
+                <a class="font-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Guide Académique</a>
+                <a class="font-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Bibliothèque Numérique</a>
+                <a class="font-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Charte de Mentorat</a>
+                <a class="font-corps-md text-on-primary/80 dark:text-on-primary-container/80 hover:text-secondary-container transition-colors underline" href="#">Support Technique</a>
+            </div>
+        </div>
+    </footer>
+    
+
+    <!-- MatierePicker shared data + component -->
+    <script src="/static/js/matieres_ifri.js"></script>
+    <script src="/static/js/matiere_picker.js"></script>
+
+    <!-- Custom Scripts -->
+    
+<script src="/static/js/messagerie.js"></script>
+
+    
+    <!-- Hamburger Menu Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('burger-icon');
+            
+            if (menuBtn && mobileMenu && icon) {
+                menuBtn.addEventListener('click', () => {
+                    const isHidden = mobileMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        mobileMenu.classList.remove('hidden');
+                        icon.textContent = 'close';
+                    } else {
+                        mobileMenu.classList.add('hidden');
+                        icon.textContent = 'menu';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

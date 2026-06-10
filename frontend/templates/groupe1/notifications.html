@@ -122,7 +122,7 @@
 
     createApp({
         setup() {
-            const notifications = ref({{ notifications|safe }});
+            const notifications = ref({{ notifications_json|safe }});
             const currentTab = ref('all');
             const searchQuery = ref('');
 

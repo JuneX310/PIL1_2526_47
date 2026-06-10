@@ -73,10 +73,6 @@ def inscription(request):
             points_faibles = []
             disponibilites = []
 
-        if not email.endswith('@ifri-uac.bj'):
-            messages.error(request, "Veuillez utiliser votre email institutionnel se terminant par @ifri-uac.bj.")
-            return render(request, 'groupe2/inscription.html')
-
         if User.objects.filter(username=email).exists():
             messages.error(request, "Un compte avec cet email existe déjà.")
             return render(request, 'groupe2/inscription.html')
@@ -124,3 +120,25 @@ def inscription(request):
 def reinitialisation(request):
     """Page de réinitialisation de mot de passe."""
     return render(request, 'groupe2/reinitialisation.html')
+
+
+from django.http import JsonResponse
+
+def api_check_disponibilite(request):
+    """
+    API de vérification de disponibilité en temps réel.
+    Vérifie si un email ou un numéro de téléphone existe déjà en BDD.
+    GET /accounts/api/check/ ?email=xxx  ou  ?phone=xxx
+    """
+    email = request.GET.get('email', '').strip()
+    phone = request.GET.get('phone', '').strip()
+
+    if email:
+        exists = User.objects.filter(username=email).exists() or User.objects.filter(email=email).exists()
+        return JsonResponse({'field': 'email', 'exists': exists})
+
+    if phone:
+        exists = Etudiant.objects.filter(telephone=phone).exists()
+        return JsonResponse({'field': 'phone', 'exists': exists})
+
+    return JsonResponse({'error': 'Paramètre manquant'}, status=400)

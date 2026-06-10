@@ -1,6 +1,6 @@
 const { createApp, ref, computed, onMounted, nextTick } = Vue;
 
-createApp({
+const app = createApp({
     setup() {
         const conversations = ref([]);
         const messages = ref([]);
@@ -30,15 +30,19 @@ createApp({
                 const response = await fetch('/profiles/api/conversations/');
                 if (response.ok) {
                     const data = await response.json();
-                    conversations.value = data.conversations;
                     
-                    // Keep active conversation reference in sync with background updates
-                    if (activeConversation.value) {
-                        const updatedActive = conversations.value.find(c => c.id === activeConversation.value.id);
-                        if (updatedActive) {
-                            activeConversation.value.last_message = updatedActive.last_message;
-                            activeConversation.value.time = updatedActive.time;
-                            activeConversation.value.updated_at = updatedActive.updated_at;
+                    // Comparer pour éviter de réécrire la liste si rien n'a changé
+                    if (JSON.stringify(conversations.value) !== JSON.stringify(data.conversations)) {
+                        conversations.value = data.conversations;
+                        
+                        // Keep active conversation reference in sync with background updates
+                        if (activeConversation.value) {
+                            const updatedActive = conversations.value.find(c => c.id === activeConversation.value.id);
+                            if (updatedActive) {
+                                activeConversation.value.last_message = updatedActive.last_message;
+                                activeConversation.value.time = updatedActive.time;
+                                activeConversation.value.updated_at = updatedActive.updated_at;
+                            }
                         }
                     }
                 }
@@ -52,8 +56,12 @@ createApp({
                 const response = await fetch(`/profiles/api/messages/${conversationId}/`);
                 if (response.ok) {
                     const data = await response.json();
-                    messages.value = data.messages;
-                    scrollToBottom();
+                    
+                    // Comparer pour éviter de clignoter ou de scroller si aucun nouveau message n'est reçu
+                    if (JSON.stringify(messages.value) !== JSON.stringify(data.messages)) {
+                        messages.value = data.messages;
+                        scrollToBottom();
+                    }
                 }
             } catch (error) {
                 console.error("Erreur de chargement des messages", error);
@@ -154,13 +162,13 @@ createApp({
                 }
             }
             
-            // Polling simple toutes les 10 secondes (optionnel)
+            // Polling dynamique toutes les 2 secondes (presque instantané)
             setInterval(() => {
                 if (activeConversation.value) {
                     fetchMessages(activeConversation.value.id);
                 }
                 fetchConversations();
-            }, 10000);
+            }, 2000);
         });
 
         return {
@@ -176,4 +184,28 @@ createApp({
             sendMessage
         };
     }
-}).mount('#app');
+});
+
+app.config.errorHandler = (err, instance, info) => {
+    console.error("Vue Error:", err, info);
+    const errDiv = document.createElement('div');
+    errDiv.style = "position:fixed;top:0;left:0;right:0;background:red;color:white;padding:20px;z-index:99999;font-family:monospace;white-space:pre-wrap;";
+    errDiv.textContent = `Vue Error: ${err.message}\nInfo: ${info}\nStack: ${err.stack}`;
+    document.body.appendChild(errDiv);
+};
+
+window.addEventListener('error', (e) => {
+    const errDiv = document.createElement('div');
+    errDiv.style = "position:fixed;top:0;left:0;right:0;background:darkred;color:white;padding:20px;z-index:99999;font-family:monospace;white-space:pre-wrap;";
+    errDiv.textContent = `Global Error: ${e.message}\nLine: ${e.lineno}, Col: ${e.colno}\nFile: ${e.filename}\nStack: ${e.error ? e.error.stack : ''}`;
+    document.body.appendChild(errDiv);
+});
+
+try {
+    app.mount('#app');
+} catch (e) {
+    const errDiv = document.createElement('div');
+    errDiv.style = "position:fixed;top:0;left:0;right:0;background:orange;color:white;padding:20px;z-index:99999;font-family:monospace;white-space:pre-wrap;";
+    errDiv.textContent = `Mount Error: ${e.message}\nStack: ${e.stack}`;
+    document.body.appendChild(errDiv);
+}

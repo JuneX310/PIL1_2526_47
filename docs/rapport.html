@@ -7,56 +7,93 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Material Symbols Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     
     <style>
         :root {
-            --primary: #0f172a;
-            --primary-light: #1e293b;
-            --accent: #2563eb;
-            --accent-light: #eff6ff;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --text-main: #334155;
-            --text-dark: #0f172a;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-            --success: #10b981;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+            /* Mode Sombre (Défaut) */
+            --bg-body: #090d16;
+            --bg-card: #111827;
+            --bg-card-hover: #1f2937;
+            --border-color: #1f2937;
+            --text-main: #9ca3af;
+            --text-title: #f3f4f6;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            --accent-success: #10b981;
+            --accent-success-bg: rgba(16, 185, 129, 0.1);
+            --accent-warning: #f59e0b;
+            --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.7);
+            --badge-bg: #1e1b4b;
+            --badge-text: #c7d2fe;
+            --nav-bg: rgba(17, 24, 39, 0.8);
+            --code-bg: #0f172a;
+            --code-border: #1e293b;
+        }
+
+        [data-theme="light"] {
+            /* Mode Clair */
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --border-color: #e2e8f0;
+            --text-main: #475569;
+            --text-title: #0f172a;
+            --text-muted: #94a3b8;
+            --accent: #4f46e5;
+            --accent-glow: rgba(79, 70, 229, 0.08);
+            --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            --accent-success: #059669;
+            --accent-success-bg: rgba(5, 150, 105, 0.08);
+            --accent-warning: #d97706;
+            --shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            --badge-bg: #e0e7ff;
+            --badge-text: #3730a3;
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --code-bg: #f1f5f9;
+            --code-border: #cbd5e1;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
             color: var(--text-main);
-            background-color: var(--background);
-            line-height: 1.6;
+            line-height: 1.7;
+            padding-bottom: 60px;
         }
 
         h1, h2, h3, h4 {
             font-family: 'Outfit', sans-serif;
-            color: var(--text-dark);
+            color: var(--text-title);
             font-weight: 700;
         }
 
-        /* Container Layout */
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* Header Cover */
+        /* En-tête / Couverture */
         .header-cover {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--accent-gradient);
             color: white;
             border-radius: 24px;
             padding: 60px 40px;
@@ -70,12 +107,26 @@
             content: '';
             position: absolute;
             top: -50%;
-            right: -20%;
-            width: 300px;
-            height: 300px;
-            background: rgba(37, 99, 235, 0.15);
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .badge-group {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
         }
 
         .header-cover h1 {
@@ -83,84 +134,111 @@
             font-size: 2.8rem;
             margin-bottom: 15px;
             letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
-        .badge-group {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 6px 16px;
-            border-radius: 99px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #93c5fd;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 20px;
+        .header-cover p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-bottom: 0;
         }
 
         .header-meta {
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: 24px;
             font-size: 0.95rem;
-            opacity: 0.8;
-            margin-top: 25px;
-            border-t: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
             padding-top: 20px;
         }
 
         .header-meta span {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.9);
         }
 
-        /* Navigation Menu */
-        .nav-sections {
-            background: var(--surface);
-            border: 1px solid var(--border);
+        /* Menu de navigation collant & Sélecteur de Thème */
+        .navbar {
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 40px;
+            padding: 12px 20px;
+            margin-bottom: 45px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            box-shadow: var(--shadow);
+            justify-content: space-between;
+            align-items: center;
             position: sticky;
             top: 20px;
             z-index: 100;
+            box-shadow: var(--shadow);
         }
 
-        .nav-sections a {
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
             text-decoration: none;
-            color: var(--text-light);
-            padding: 10px 18px;
+            color: var(--text-main);
+            padding: 8px 16px;
             border-radius: 10px;
             font-weight: 600;
             font-size: 0.9rem;
             transition: all 0.2s;
         }
 
-        .nav-sections a:hover {
+        .nav-links a:hover {
             color: var(--accent);
-            background: var(--accent-light);
+            background: var(--accent-glow);
         }
 
-        /* Section Styling */
+        /* Commutateur de Thème */
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-title);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-card-hover);
+        }
+
+        /* Sections */
         section {
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 40px;
             margin-bottom: 40px;
             box-shadow: var(--shadow);
             scroll-margin-top: 100px;
+            position: relative;
+        }
+
+        section:hover {
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         section h2 {
             font-size: 1.8rem;
             margin-bottom: 25px;
             padding-bottom: 12px;
-            border-bottom: 2px solid var(--accent-light);
+            border-bottom: 2px solid var(--border-color);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -172,10 +250,13 @@
         }
 
         section h3 {
-            font-size: 1.25rem;
-            margin-top: 30px;
+            font-size: 1.3rem;
+            margin-top: 35px;
             margin-bottom: 15px;
-            color: var(--primary-light);
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         p {
@@ -186,21 +267,21 @@
         }
 
         ul, ol {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             padding-left: 25px;
         }
 
         li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        /* Custom Alert Cards */
+        /* Alertes Spécifiques */
         .alert-card {
-            background-color: var(--accent-light);
+            background-color: var(--accent-glow);
             border-left: 4px solid var(--accent);
             padding: 20px;
             border-radius: 12px;
-            margin-bottom: 25px;
+            margin: 25px 0;
         }
 
         .alert-card h4 {
@@ -208,97 +289,107 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 1.05rem;
         }
 
-        /* Members Table */
+        .alert-success {
+            background-color: var(--accent-success-bg);
+            border-left-color: var(--accent-success);
+        }
+
+        .alert-success h4 {
+            color: var(--accent-success);
+        }
+
+        /* Tableaux */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 25px;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
+            text-align: left;
+            font-size: 0.95rem;
         }
 
         th {
-            background-color: var(--primary);
-            color: white;
+            background-color: var(--border-color);
+            color: var(--text-title);
             font-weight: 600;
-            text-align: left;
-            padding: 14px 18px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            padding: 16px 20px;
+            border-bottom: 2px solid var(--border-color);
+            white-space: nowrap;
         }
 
         td {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.95rem;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
             color: var(--text-main);
+            vertical-align: top;
         }
 
         tr:last-child td {
             border-bottom: none;
         }
 
-        tr:nth-child(even) {
-            background-color: var(--background);
+        tr:hover td {
+            background-color: var(--bg-card-hover);
         }
 
-        /* Tech Stack Grid */
-        .tech-grid {
-            display: grid;
-            grid-template-cols: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-            margin-bottom: 25px;
+        .badge-sp {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
-        .tech-card {
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
-            background: var(--background);
+        .badge-ia { background-color: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .badge-gl { background-color: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .badge-si { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+        .badge-im { background-color: rgba(236, 72, 153, 0.15); color: #f472b6; }
+
+        /* Arborescence Visuelle */
+        .tree-container {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            padding: 24px;
+            border-radius: 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            color: #38bdf8;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            white-space: pre;
         }
 
-        .tech-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-            border-color: var(--accent);
+        .tree-comment {
+            color: #64748b;
         }
 
-        .tech-card h4 {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tech-card h4 .material-symbols-outlined {
-            color: var(--accent);
-        }
-
-        /* Code block wrapper */
+        /* Blocs de Code */
         pre {
-            background: #0f172a;
-            color: #f8fafc;
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            color: var(--text-title);
             padding: 20px;
             border-radius: 12px;
             overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Fira Code', monospace;
             font-size: 0.9rem;
             margin-bottom: 25px;
-            border: 1px solid #1e293b;
         }
 
         code {
-            font-family: 'Courier New', Courier, monospace;
-            background: #f1f5f9;
-            color: #ef4444;
+            font-family: 'Fira Code', monospace;
+            background: var(--bg-card-hover);
+            color: var(--accent);
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 0.9rem;
@@ -315,25 +406,36 @@
         footer {
             text-align: center;
             padding: 40px 0;
-            color: var(--text-light);
+            color: var(--text-muted);
             font-size: 0.9rem;
-            border-t: 1px solid var(--border);
+            border-top: 1px solid var(--border-color);
             margin-top: 60px;
         }
 
-        /* Responsive */
+        /* Styles Responsifs */
+        @media (max-width: 1024px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .theme-toggle {
+                align-self: center;
+            }
+        }
+
         @media (max-width: 768px) {
             section {
-                padding: 20px;
+                padding: 25px 20px;
             }
             .header-cover {
                 padding: 40px 20px;
             }
             .header-cover h1 {
                 font-size: 2rem;
-            }
-            .nav-sections {
-                display: none; /* Hide sticky nav on small mobile screens */
             }
         }
     </style>
@@ -342,92 +444,122 @@
 
     <div class="container">
         
-        <!-- Header Cover -->
+        <!-- En-tête principal -->
         <header class="header-cover">
             <span class="badge-group">Rapport Officiel — Groupe PIL1_2526_47</span>
             <h1>Projet Intégrateur : IFRI MentorLink</h1>
-            <p>Plateforme web d'interconnexion et de mentorat académique pour les étudiants de l'Institut de Formation et de Recherche en Informatique (IFRI).</p>
+            <p>Plateforme web d'interconnexion et de mentorat académique pour les étudiants de l'Institut de Formation et de Recherche en Informatique (IFRI), Université d'Abomey-Calavi.</p>
             
             <div class="header-meta">
                 <span><span class="material-symbols-outlined">group</span> Groupe PIL1_2526_47</span>
                 <span><span class="material-symbols-outlined">calendar_month</span> Juin 2026</span>
-                <span><span class="material-symbols-outlined">location_on</span> UAC — IFRI</span>
+                <span><span class="material-symbols-outlined">location_on</span> Cotonou — IFRI (UAC)</span>
             </div>
         </header>
 
-        <!-- Navigation Menu -->
-        <nav class="nav-sections">
-            <a href="#membres">1. Équipe & Rôles</a>
-            <a href="#fonctionnement">2. Fonctionnement Interne</a>
-            <a href="#conception">3. Conception & Architecture</a>
-            <a href="#deploiement">4. Guide de Déploiement</a>
-            <a href="#manuel">5. Manuel d'Utilisation</a>
+        <!-- Barre de Navigation avec sélecteur de thème -->
+        <nav class="navbar">
+            <div class="nav-links">
+                <a href="#membres">1. Équipe & Rôles</a>
+                <a href="#fonctionnement">2. Fonctionnement Interne</a>
+                <a href="#conception">3. Conception & Architecture</a>
+                <a href="#deploiement">4. Guide de Déploiement</a>
+                <a href="#manuel">5. Manuel d'Utilisation</a>
+            </div>
+            <button class="theme-toggle" id="themeBtn" aria-label="Changer de thème">
+                <span class="material-symbols-outlined" id="themeIcon">light_mode</span>
+            </button>
         </nav>
 
         <!-- 1. MEMBRES DE L'EQUIPE -->
         <section id="membres">
-            <h2><span class="material-symbols-outlined">group</span> 1. Liste des Membres de l'Équipe</h2>
-            <p>Le groupe 47 est composé d'étudiants de diverses spécialités de l'IFRI, créant une complémentarité idéale pour le développement complet du système.</p>
+            <h2><span class="material-symbols-outlined">group</span> 1. Liste des Membres de l'Équipe & Rôles</h2>
+            <p>Le groupe PIL1_2526_47 réunit 7 étudiants issus de spécialités complémentaires de l'IFRI, permettant une synergie efficace pour le développement du projet.</p>
             
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nom & Prénoms</th>
-                        <th>Spécialité</th>
-                        <th>Rôle principal</th>
-                        <th>Contribution majeure</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>[Membre 1]</strong></td>
-                        <td>Génie Logiciel (GL)</td>
-                        <td>Chef de projet & Lead Backend</td>
-                        <td>Architecture du code Django, logique métier, base de données et authentification.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>[Membre 2]</strong></td>
-                        <td>Intelligence Artificielle (IA)</td>
-                        <td>Développeur Matching & Données</td>
-                        <td>Algorithme de calcul de compatibilité (matching), traitement et formatage des données.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>[Membre 3]</strong></td>
-                        <td>Internet et Multimédia (IM)</td>
-                        <td>UI/UX Designer & Lead Frontend</td>
-                        <td>Maquettes d'interface, intégration HTML/CSS, animations et design moderne responsif.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>[Membre 4]</strong></td>
-                        <td>Sécurité Informatique (SI)</td>
-                        <td>Admin Sécurité & DevOps</td>
-                        <td>Sécurisation des mots de passe, gestion de l'environnement virtuel, permissions et scripts SQL.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>[Membre 5]</strong></td>
-                        <td>Systèmes Embarqués (SE&IoT)</td>
-                        <td>Développeur Frontend JS</td>
-                        <td>Interactivité client (Vue.js), gestion des requêtes asynchrones pour la messagerie instantanée.</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom & Prénoms</th>
+                            <th>Spécialité</th>
+                            <th>Rôles & Sous-Groupe</th>
+                            <th>Attributions & Contributions techniques</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>SOZAN Euloge</strong></td>
+                            <td><span class="badge-sp badge-ia">Licence IA</span></td>
+                            <td><strong>Chef de Projet & Développeur</strong><br>Groupe 1 (Cœur)</td>
+                            <td>Conception complète de la maquette A-Z, répartition des tâches, initialisation de l'arborescence, suivi en temps réel et déblocage, fusion globale et résolution de conflits. Rédaction du rapport et du fichier README.<br><strong>Tâches :</strong> Notifications, Annonces de mentorat (<code>publier</code>), Suggestions automatiques (<code>matchs</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BOKO Conceptia (Vanessa)</strong></td>
+                            <td><span class="badge-sp badge-gl">Licence GL</span></td>
+                            <td><strong>Développeuse Frontend & Backend</strong><br>Groupe 1 (Cœur)</td>
+                            <td>Développement des interfaces d'exploration des annonces et des fiches détaillées.<br><strong>Tâches :</strong> Moteur de recherche et filtres de mentorat (<code>explorer</code>) et Fiche profil détaillée (<code>profil_de_l_etudiant</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sylvestre FASSINOU</strong></td>
+                            <td><span class="badge-sp badge-si">Licence SI</span></td>
+                            <td><strong>Développeur Accès</strong><br>Groupe 2 (Sécurité)</td>
+                            <td>Création de la vitrine d'accueil du site et sécurisation de la connexion utilisateur.<br><strong>Tâches :</strong> Page de garde de la plateforme (<code>landing_page</code>) et Formulaire de connexion sécurisé (<code>connexion</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Alex HOUNSOU</strong></td>
+                            <td><span class="badge-sp badge-gl">Licence GL</span></td>
+                            <td><strong>Développeur Enregistrement</strong><br>Groupe 2 (Sécurité)</td>
+                            <td>Développement des mécanismes d'enrôlement multi-étapes et récupération sécurisée.<br><strong>Tâches :</strong> Formulaire d'inscription (<code>inscription</code>) et Récupération de mot de passe (<code>r_initialisation</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ACAPO Elom Princesse</strong></td>
+                            <td><span class="badge-sp badge-im">Licence IM</span></td>
+                            <td><strong>Développeuse Profils</strong><br>Groupe 3 (Profils)</td>
+                            <td>Développement de la gestion d'informations personnelles, compétences (points forts/faibles) et grilles horaires.<br><strong>Tâches :</strong> Visualisation de profil (<code>mon_profil</code>) et Mise à jour des informations (<code>modifier_profil</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HOUNYE Junior</strong></td>
+                            <td><span class="badge-sp badge-si">Licence SI</span></td>
+                            <td><strong>Développeur Communication</strong><br>Groupe 3 (Profils)</td>
+                            <td>Intégration et raccordement de la messagerie instantanée réactive avec actualisation asynchrone.<br><strong>Tâches :</strong> Salon de chat et historique de messagerie (<code>messagerie</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Marck LANTONKPODE</strong></td>
+                            <td><span class="badge-sp badge-si">Licence SI</span></td>
+                            <td><strong>Développeur Dashboard</strong><br>Groupe 3 (Profils)</td>
+                            <td>Création du tableau de bord consolidé, intégration des indicateurs statistiques et des notifications récentes.<br><strong>Tâches :</strong> Page d'accueil utilisateur authentifié (<code>dashboard</code>).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- 2. FONCTIONNEMENT INTERNE -->
         <section id="fonctionnement">
             <h2><span class="material-symbols-outlined">handshake</span> 2. Mode de Fonctionnement Interne</h2>
-            <p>Afin de mener à bien le projet sous une contrainte de temps stricte de 10 jours, notre groupe a adopté une approche inspirée de la méthodologie Agile Scrum :</p>
+            <p>Notre équipe s'est structurée de manière agile avec des rôles et des responsabilités claires, permettant de mener à bien ce projet dans le respect du délai imparti de 10 jours.</p>
             
-            <h3>Démarche collaborative et outils</h3>
+            <h3>Méthodologie collaborative et outils</h3>
             <ul>
-                <li><strong>Gestion des Tâches (Trello) :</strong> Un tableau Trello a été configuré avec les colonnes traditionnelles (Backlog, En cours, À valider, Terminé) permettant de suivre en temps réel la progression de chaque module.</li>
-                <li><strong>Dépôt Git & GitHub :</strong> Collaboration obligatoire via Git. Le dépôt <code>PIL1_2526_47</code> a été partagé avec tous les membres et les enseignants. Nous avons utilisé des branches thématiques pour chaque fonctionnalité (ex: <code>feature/auth</code>, <code>feature/matching</code>) et des revues de code lors des fusions.</li>
-                <li><strong>Rencontres de coordination :</strong> Synchronisations quotidiennes de 15 minutes en présentiel ou sur Discord pour lever les points de blocage et planifier les étapes suivantes.</li>
+                <li><strong>Gestion de projet Agile (Trello) :</strong> Un tableau de suivi Kanban a permis d'affecter les tâches et de suivre leur état (Backlog, En Cours, À Valider, Terminé).</li>
+                <li><strong>Réunions d'avancement (Google Meet) :</strong> L'équipe a tenu des réunions d'alignement régulières sur <strong>Google Meet</strong> pour faire le point sur la progression de chaque sous-groupe, identifier les difficultés et planifier les étapes suivantes.</li>
+                <li><strong>Assistance à la conception (Gemini) :</strong> Le modèle d'IA <strong>Gemini</strong> a été activement utilisé comme assistant de projet pour la conception ergonomique, la génération et le raffinement des maquettes graphiques de l'application, l'aide à la structuration du code, ainsi que la rédaction de la documentation finale (ce présent rapport technique HTML et le fichier <code>README.md</code>).</li>
+                <li><strong>Gestion de version Git (GitHub) :</strong> Collaboration centralisée sur le dépôt <code>PIL1_2526_47</code>. Chaque sous-groupe disposait de sa branche dédiée (<code>groupe_1</code>, <code>groupe_2</code>, <code>groupe_3</code>) pour éviter les interférences. Les fusions se faisaient sur la branche d'intégration <code>dev</code> puis vers <code>main</code>.</li>
             </ul>
 
-            <div class="alert-card">
-                <h4><span class="material-symbols-outlined">info</span> Accès Enseignants</h4>
-                <p style="margin-bottom:0;">Comme exigé par la fiche de cours, l'accès au dépôt GitHub a été partagé avec les comptes <strong>ratheilesse</strong>, <strong>primearwyn</strong> et <strong>MaryseGAHOU</strong>.</p>
+            <h3>Le Rôle de Facilitateur du Chef de Groupe (SOZAN Euloge)</h3>
+            <p>En complément de son travail de développement dans le groupe 1, le chef de projet a piloté l'intégration globale :</p>
+            <ol>
+                <li><strong>Amorce du Projet :</strong> Conception intégrale de la maquette de l'interface utilisateur de A à Z avec l'aide de Gemini, et établissement de la répartition initiale des modules entre les membres.</li>
+                <li><strong>Architecture de base :</strong> Initialisation de la structure physique du projet et de l'arborescence Git (Django côté backend, templates et assets côté frontend).</li>
+                <li><strong>Supervision active :</strong> Contrôle continu de l'avancement des tâches en temps réel et intervention directe pour aider les membres rencontrant des blocages techniques.</li>
+                <li><strong>Intégration & Résolution des Conflits :</strong> Rapatriement de l'ensemble des branches, réalisation de la fusion finale des codes sources de chaque sous-groupe, et gestion manuelle des conflits de fusion (fichiers de code et migrations de base de données).</li>
+                <li><strong>Rédaction de la documentation :</strong> Réalisation de la mise en forme et de la rédaction de la documentation technique (rapport HTML et README.md).</li>
+            </ol>
+
+            <div class="alert-card alert-success">
+                <h4><span class="material-symbols-outlined">verified</span> Accès d'Évaluation Enseignants</h4>
+                <p style="margin-bottom:0;">L'accès au dépôt GitHub du projet a été partagé avec les comptes enseignants requis : <strong>ratheilesse</strong>, <strong>primearwyn</strong> et <strong>MaryseGAHOU</strong> afin de permettre le suivi des commits de chaque contributeur.</p>
             </div>
         </section>
 
@@ -435,109 +567,162 @@
         <section id="conception">
             <h2><span class="material-symbols-outlined">schema</span> 3. Conception et Architecture</h2>
             
-            <h3>Structure Globale du Projet</h3>
-            <p>Le projet est organisé suivant une architecture client-serveur découplée permettant une modularité maximale :</p>
-            <ul>
-                <li><strong>Backend (Django) :</strong> Contient la logique d'administration, le traitement de la base de données, la messagerie et l'algorithme de matching. Structuré en 3 applications modulaires :
-                    <ul>
-                        <li><code>apps.accounts</code> : Authentification, profils étudiants, gestion des accès.</li>
-                        <li><code>apps.matching</code> : Offres et demandes, calcul et tri par compatibilité.</li>
-                        <li><code>apps.profiles</code> : Messagerie instantanée, conversations et messages.</li>
-                    </ul>
-                </li>
-                <li><strong>Frontend (HTML/CSS/JS) :</strong> Logé dans le répertoire <code>frontend/</code>. Le style est moderne et responsive (utilisation de variables CSS, flexbox, grid, et de Tailwind pour les composants). L'interactivité est assurée par <strong>Vue.js 3</strong> (montage direct pour éviter le besoin d'un build complexe).</li>
-            </ul>
+            <h3>Structure Physique du Projet</h3>
+            <p>Le projet adopte une architecture client-serveur avec une séparation nette entre le serveur de services Django et l'interface utilisateur gérée via des modèles HTML dynamisés par Vue.js :</p>
+
+            <div class="tree-container">PIL1_2526_47/
+├── README.md               <span class="tree-comment"># Documentation globale du dépôt</span>
+├── requirements.txt        <span class="tree-comment"># Dépendances Python requises</span>
+│
+├── frontend/               <span class="tree-comment"># Couche de présentation (HTML, CSS, JS)</span>
+│   ├── static/             <span class="tree-comment"># Assets statiques</span>
+│   │   ├── css/            <span class="tree-comment"># Fichiers styles (connexion.css, explorer.css, profil.css, etc.)</span>
+│   │   └── js/             <span class="tree-comment"># Scripts (explorer.js, modifier_profil.js, etc.)</span>
+│   └── templates/          <span class="tree-comment"># Pages HTML modulaires</span>
+│       ├── base.html       <span class="tree-comment"># Gabarit de structure globale</span>
+│       ├── groupe1/        <span class="tree-comment"># Pages : explorer.html, matchs.html, publier.html, profil_de_l_etudiant.html, notifications.html</span>
+│       ├── groupe2/        <span class="tree-comment"># Pages : landing_page.html, connexion.html, inscription.html, r_initialisation.html</span>
+│       └── groupe3/        <span class="tree-comment"># Pages : dashboard.html, messagerie.html, mon_profil.html, modifier_profil.html</span>
+│
+├── backend/                <span class="tree-comment"># Logique métier (Django)</span>
+│   ├── manage.py           <span class="tree-comment"># Point d'entrée de commandes Django</span>
+│   ├── config/             <span class="tree-comment"># Répertoire de configuration (settings, urls, wsgi)</span>
+│   └── apps/               <span class="tree-comment"># Applications logicielles internes</span>
+│       ├── accounts/       <span class="tree-comment"># Gestion des comptes utilisateurs et profils (models.py, views.py)</span>
+│       ├── matching/       <span class="tree-comment"># Système d'annonces et algorithme de suggestion</span>
+│       └── profiles/       <span class="tree-comment"># Messagerie instantanée et tableau de bord</span>
+│
+└── database/
+    └── schema.sql          <span class="tree-comment"># Structure exportée de la base de données relationnelle finale</span></div>
 
             <h3>Base de données relationnelle (MySQL)</h3>
-            <p>La base de données finale est structurée sous MySQL (tel que recommandé). Les principales relations sont :</p>
+            <p>La persistance des données repose sur MySQL. Le diagramme ci-dessous illustre l'organisation des principales tables :</p>
             <ul>
-                <li>Une table <strong>accounts_etudiant</strong> liée par relation un-à-un à la table utilisateur système de Django (<code>auth_user</code>).</li>
-                <li>Une table <strong>matching_annonce</strong> liée à un étudiant auteur, enregistrant les compétences cibles, le format et les disponibilités spécifiques.</li>
-                <li>Une table <strong>matching_match</strong> qui lie un mentor et un mentoré avec un score calculé de compatibilité.</li>
-                <li>Des tables <strong>profiles_conversation</strong> et <strong>profiles_message</strong> pour stocker l'historique des conversations.</li>
+                <li><strong>auth_user :</strong> Table native de Django pour la gestion de la sécurité, des droits d'accès et de l'authentification (username, email, hash du mot de passe).</li>
+                <li><strong>accounts_etudiant :</strong> Extension d'informations liée par relation One-to-One à <code>auth_user</code>. Contient le numéro de téléphone, le sexe, la filière (GL, IA, SI, IM, SE), le niveau (L1 à M2), la biographie, ainsi que les listes de compétences et créneaux sous formats JSON.</li>
+                <li><strong>matching_annonce :</strong> Contient les publications d'offres ou demandes de mentorat créées par un étudiant (matières ciblées, format : présentiel/en ligne, descriptif).</li>
+                <li><strong>matching_match :</strong> Table pivot associant un mentor et un mentoré avec un score d'adéquation calculé et un état (en attente, accepté, refusé).</li>
+                <li><strong>profiles_conversation & profiles_message :</strong> Tables supportant le canal de messagerie privée, associant deux étudiants et stockant les messages datés et leur état de lecture.</li>
             </ul>
 
             <div class="alert-card">
                 <h4><span class="material-symbols-outlined">database</span> Fichier SQL de structure</h4>
-                <p style="margin-bottom:0;">La structure SQL finale et complète a été exportée et se trouve à la racine du dossier de base de données : <a href="file:///c:/Users/HP/Desktop/MY RESEARCH/PROJET-INTEGRATEUR-2025-2026-IFRI/CODE SOURCE/PIL1_2526_47/database/schema.sql" target="_blank">database/schema.sql</a>.</p>
+                <p style="margin-bottom:0;">Le schéma relationnel SQL complet et finalisé a été exporté à la racine du module base de données : <a href="file:///c:/Users/HP/Desktop/MY RESEARCH/PROJET-INTEGRATEUR-2025-2026-IFRI/CODE SOURCE/PIL1_2526_47/database/schema.sql" target="_blank">database/schema.sql</a>.</p>
             </div>
         </section>
 
         <!-- 4. GUIDE DE DEPLOIEMENT -->
         <section id="deploiement">
-            <h2><span class="material-symbols-outlined">terminal</span> 4. Guide de Déploiement</h2>
-            <p>Suivez les étapes ci-dessous pour déployer l'application localement en utilisant l'environnement virtuel inclus dans le backend.</p>
+            <h2><span class="material-symbols-outlined">terminal</span> 4. Guide de Déploiement Local</h2>
+            <p>Pour faire fonctionner le projet sur un serveur de développement local, veuillez dérouler la séquence de commandes suivantes :</p>
 
-            <h3>1. Cloner le dépôt et se placer dans le projet</h3>
-            <pre><code>git clone https://github.com/votre-compte/PIL1_2526_47.git
+            <h3>1. Clonage du code source</h3>
+            <pre><code>git clone https://github.com/IFRI-PROJETS/PIL1_2526_47.git
 cd PIL1_2526_47</code></pre>
 
-            <h3>2. Configuration de l'environnement</h3>
-            <p>Un environnement virtuel est déjà configuré dans le dossier <code>backend/venv/</code>. Pour l'activer :</p>
-            <pre><code># Sur Windows (PowerShell)
+            <h3>2. Initialisation de l'environnement virtuel Python</h3>
+            <p>Créez et activez un environnement isolé dans le répertoire <code>backend/</code> :</p>
+            <pre><code># Accéder au dossier backend
 cd backend
+
+# Création de l'environnement virtuel venv
+python -m venv venv
+
+# Activation de l'environnement (Windows)
 .\venv\Scripts\activate
 
-# Sur Linux / macOS
-cd backend
+# Activation de l'environnement (Linux/macOS)
 source venv/bin/activate</code></pre>
 
-            <h3>3. Installation des dépendances</h3>
+            <h3>3. Installation des paquets requis</h3>
             <pre><code>pip install -r ../requirements.txt</code></pre>
 
-            <h3>4. Configuration des variables d'environnement (Base de données)</h3>
-            <p>Créez un fichier <code>.env</code> dans le dossier <code>backend/</code> inspiré de <code>.env.example</code> :</p>
-            <pre><code>SECRET_KEY=votre_cle_secrete
+            <h3>4. Fichier d'environnement (.env)</h3>
+            <p>Dans le dossier <code>backend/</code>, créez un fichier nommé <code>.env</code> en copiant le fichier exemple <code>.env.example</code>, puis ajustez vos paramètres de connexion MySQL :</p>
+            <pre><code>SECRET_KEY=votre_cle_de_securite_django
 DB_NAME=mentorlink_db
-DB_USER=votre_utilisateur_mysql
-DB_PASSWORD=votre_mot_de_passe
+DB_USER=root
+DB_PASSWORD=votre_mot_de_passe_mysql
 DB_HOST=localhost
 DB_PORT=3306</code></pre>
 
-            <h3>5. Application des migrations et lancement</h3>
-            <pre><code># Appliquer les schémas à MySQL
+            <h3>5. Migration et démarrage de l'application</h3>
+            <p>Exécutez la mise en place des tables dans votre base MySQL locale et lancez le serveur :</p>
+            <pre><code># Appliquer les migrations de structure
 python manage.py migrate
 
-# Lancer le serveur de développement
+# Démarrer le serveur local
 python manage.py runserver</code></pre>
-            <p>L'application sera accessible à l'adresse suivante : <code>http://127.0.0.1:8000/</code></p>
+            <p>Le site est alors disponible à l'adresse suivante : <a href="http://127.0.0.1:8000/" target="_blank">http://127.0.0.1:8000/</a></p>
         </section>
 
         <!-- 5. MANUEL D'UTILISATION -->
         <section id="manuel">
             <h2><span class="material-symbols-outlined">menu_book</span> 5. Manuel d'Utilisation</h2>
             
-            <h3>1. Inscription et Création de Profil</h3>
-            <p>Rendez-vous sur la page d'inscription. Vous devez remplir un formulaire en 3 étapes :</p>
-            <ol>
-                <li><strong>Étape 1 :</strong> Saisissez votre prénom, nom, numéro de téléphone (WhatsApp), genre, filière d'étude à l'IFRI (GL, IA, SI, IM) et votre niveau (L1 à M2). <em>Note: Seuls les emails finissant par @ifri-uac.bj sont acceptés pour valider l'authenticité de l'étudiant.</em></li>
-                <li><strong>Étape 2 :</strong> Sélectionnez graphiquement vos points forts (compétences acquises) et vos besoins de soutien (points faibles).</li>
-                <li><strong>Étape 3 :</strong> Renseignez vos plages horaires de disponibilité habituelles dans une grille interactive (Matin, Après-midi, Soir du Lundi au Samedi).</li>
-            </ol>
-
-            <h3>2. Connexion</h3>
-            <p>Connectez-vous via l'écran d'accueil avec vos identifiants. Vous pouvez utiliser indifféremment votre <strong>adresse email institutionnelle</strong> ou votre <strong>numéro de téléphone</strong> pour vous connecter.</p>
-
-            <h3>3. Exploration des offres et demandes</h3>
-            <p>L'onglet <strong>"Explorer"</strong> liste toutes les annonces de la communauté. Vous pouvez :</p>
+            <h3>1. Accès & Gestion du Compte (Groupe 2)</h3>
             <ul>
-                <li>Basculer entre les onglets "Je propose du mentorat" (Offres) et "Je recherche du mentorat" (Demandes).</li>
-                <li>Rechercher par texte libre (nom d'étudiant, descriptif ou compétence).</li>
-                <li>Filtrer instantanément par matière/compétence, par format (présentiel, en ligne), par filière ou par niveau d'étude.</li>
+                <li><strong>Découverte (Landing Page) :</strong> La page d'accueil présente le concept IFRI MentorLink et oriente les utilisateurs vers la connexion ou l'inscription.</li>
+                <li><strong>Création de compte (Inscription) :</strong> L'enrôlement s'effectue en 3 étapes guidées :
+                    <ol>
+                        <li><em>Coordonnées de base :</em> Prénom, nom, adresse email (tous les domaines de messagerie sont acceptés), téléphone WhatsApp, filière et niveau d'étude.</li>
+                        <li><em>Aptitudes & Lacunes :</em> Sélection interactive des matières maîtrisées (points forts) et des matières où un soutien est recherché (points faibles).</li>
+                        <li><em>Emploi du temps :</em> Sélection des plages de disponibilités hebdomadaires (Lundi au Samedi divisé en Matin, Après-midi et Soir).</li>
+                    </ol>
+                </li>
+                <li><strong>Connexion :</strong> Authentification sécurisée via l'adresse email ou le numéro de téléphone combiné avec le mot de passe.</li>
+                <li><strong>Récupération :</strong> En cas de perte du mot de passe, un module permet la réinitialisation sécurisée des accès.</li>
             </ul>
 
-            <h3>4. Matching Automatique (Vos Matchs)</h3>
-            <p>L'onglet <strong>"Mes Matchs"</strong> calcule et trie les profils compatibles avec le vôtre. L'algorithme analyse vos points faibles par rapport aux points forts des autres, vos proximités académiques et vos horaires. Un indicateur circulaire affiche votre score de compatibilité en pourcentage pour chaque étudiant.</p>
+            <h3>2. Tableau de Bord & Profils (Groupe 3)</h3>
+            <ul>
+                <li><strong>Le Dashboard :</strong> Centre de contrôle affichant les statistiques clés de l'utilisateur (annonces actives, conversations ouvertes, demandes reçues), des recommandations de mentors basées sur l'algorithme, ainsi que le flux des notifications récentes.</li>
+                <li><strong>Mon profil :</strong> Permet d'afficher la fiche de profil telle que vue par les autres membres (bio, compétences, grilles horaires, etc.).</li>
+                <li><strong>Modifier le profil :</strong> Permet de mettre à jour la biographie, de téléverser une photo de profil ou de couverture, et d'ajuster dynamiquement ses compétences ou disponibilités.</li>
+            </ul>
 
-            <h3>5. Messagerie Instantanée</h3>
-            <p>Depuis le profil d'un étudiant ou la liste des matchs, cliquez sur <strong>"Contacter"</strong> pour lui envoyer un message d'introduction. La messagerie intégrée permet d'échanger en temps réel (actualisation automatique toutes les 10 secondes) et de conserver l'historique des conversations pour planifier vos sessions.</p>
+            <h3>3. Module d'Appairage (Groupe 1)</h3>
+            <ul>
+                <li><strong>Annonces (Explorer) :</strong> Permet de visualiser toutes les publications de soutien de la communauté. Un sélecteur permet de basculer entre les "Offres de mentorat" et les "Demandes de mentorat". Des filtres dynamiques par matière, format (présentiel / en ligne / les deux) et recherche plein texte sont disponibles.</li>
+                <li><strong>Publier :</strong> Formulaire rapide permettant de soumettre une nouvelle annonce en choisissant les compétences, le descriptif et le format de session désiré.</li>
+                <li><strong>Matching de profils :</strong> La page "Matchs" exécute un algorithme d'appairage. Le score (en %) dépend de trois facteurs : la complémentarité compétences/lacunes, la proximité des filières d'étude à l'IFRI, et le recoupement des créneaux horaires disponibles.</li>
+                <li><strong>Messagerie instantanée :</strong> Un bouton de contact ouvre une fenêtre de messagerie privée. Les échanges se mettent à jour automatiquement toutes les 10 secondes pour offrir une conversation fluide.</li>
+                <li><strong>Notifications :</strong> Un flux dynamique informe l'étudiant en temps réel de la réception de nouveaux messages ou de demandes d'appairage en attente d'acceptation.</li>
+            </ul>
         </section>
 
     </div>
 
     <footer>
-        <p>© 2026 IFRI MentorLink — Projet de groupe (PIL1_2526_47). Tous droits réservés.</p>
+        <p>© 2026 IFRI MentorLink — Rapport de fin de projet (Groupe PIL1_2526_47). Tous droits réservés.</p>
     </footer>
 
+    <!-- Script de gestion du commutateur de thème (Sombre/Clair) -->
+    <script>
+        const themeBtn = document.getElementById('themeBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        // Charger le thème précédemment enregistré ou le mode sombre par défaut
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateToggleIcon(currentTheme);
+
+        themeBtn.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            let newTheme = (theme === 'dark') ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon(newTheme);
+        });
+
+        function updateToggleIcon(theme) {
+            if (theme === 'light') {
+                themeIcon.textContent = 'dark_mode';
+            } else {
+                themeIcon.textContent = 'light_mode';
+            }
+        }
+    </script>
 </body>
 </html>

@@ -272,12 +272,46 @@ def modifier_profil(request):
             except Exception:
                 pass
                 
-        if 'photo_profil' in request.FILES:
-            print("photo_profil trouvée:", request.FILES['photo_profil'])
+        # Gestion de la suppression ou du remplacement de la photo de profil
+        if request.POST.get('delete_photo_profil') == 'true':
+            if etudiant.photo_profil:
+                try:
+                    import os
+                    if os.path.exists(etudiant.photo_profil.path):
+                        os.remove(etudiant.photo_profil.path)
+                except Exception as e:
+                    print("Error deleting photo_profil:", e)
+                etudiant.photo_profil = None
+        elif 'photo_profil' in request.FILES:
+            # Remplacement : supprimer l'ancienne d'abord pour ne garder qu'un seul fichier
+            if etudiant.photo_profil:
+                try:
+                    import os
+                    if os.path.exists(etudiant.photo_profil.path):
+                        os.remove(etudiant.photo_profil.path)
+                except Exception as e:
+                    print("Error deleting old photo_profil:", e)
             etudiant.photo_profil = request.FILES['photo_profil']
             
-        if 'photo_couverture' in request.FILES:
-            print("photo_couverture trouvée:", request.FILES['photo_couverture'])
+        # Gestion de la suppression ou du remplacement de la photo de couverture
+        if request.POST.get('delete_photo_couverture') == 'true':
+            if etudiant.photo_couverture:
+                try:
+                    import os
+                    if os.path.exists(etudiant.photo_couverture.path):
+                        os.remove(etudiant.photo_couverture.path)
+                except Exception as e:
+                    print("Error deleting photo_couverture:", e)
+                etudiant.photo_couverture = None
+        elif 'photo_couverture' in request.FILES:
+            # Remplacement : supprimer l'ancienne d'abord pour ne garder qu'un seul fichier
+            if etudiant.photo_couverture:
+                try:
+                    import os
+                    if os.path.exists(etudiant.photo_couverture.path):
+                        os.remove(etudiant.photo_couverture.path)
+                except Exception as e:
+                    print("Error deleting old photo_couverture:", e)
             etudiant.photo_couverture = request.FILES['photo_couverture']
                 
         etudiant.save()
@@ -478,7 +512,11 @@ def notifications_history(request):
     # Trier par date de création décroissante
     notifications_list.sort(key=lambda x: x['created_at'], reverse=True)
     
+    # Convertir les objets datetime en chaînes de caractères ISO pour la sérialisation JSON
+    for notif in notifications_list:
+        notif['created_at'] = notif['created_at'].isoformat()
+        
     context = {
-        'notifications': notifications_list
+        'notifications_json': json.dumps(notifications_list)
     }
     return render(request, 'groupe1/notifications.html', context)
