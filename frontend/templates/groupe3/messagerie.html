@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Messagerie — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/messagerie.css' %}"/>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<input type="hidden" id="csrf_token_django" value="{{ csrf_token }}">
+{% verbatim %}
+<div id="app" v-cloak class="max-w-7xl mx-auto px-marge-page py-md">
+    <div class="grid grid-cols-12 gap-6 chat-container">
+        <!-- Left Panel: Conversation List -->
+        <aside :class="['bg-surface-carte rounded-xl shadow-sm border border-outline-variant/30 flex flex-col overflow-hidden', activeConversation ? 'hidden md:flex col-span-12 md:col-span-4' : 'col-span-12 md:col-span-4']">
+            <div class="p-md border-b border-outline-variant/20">
+                <h2 class="font-titre-h3 text-titre-h3 mb-md">Messages</h2>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+                    <input v-model="searchQuery" class="w-full pl-10 pr-4 py-2 bg-surface-fond border-none rounded-lg text-sm focus:ring-1 focus:ring-primary-container" placeholder="Rechercher..." type="text"/>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto">
+                <div v-if="filteredConversations.length === 0" class="p-md text-center text-on-surface-variant text-sm">
+                    Aucune conversation trouvée.
+                </div>
+                <!-- Conversation Item -->
+                <div v-for="conv in filteredConversations" :key="conv.id" 
+                     @click="selectConversation(conv)"
+                     :class="['p-md flex gap-md cursor-pointer transition-colors border-b border-outline-variant/10', activeConversation && activeConversation.id === conv.id ? 'bg-surface-container border-l-4 border-primary' : 'hover:bg-surface-fond']">
+                    <div class="relative flex-shrink-0">
+                        <img :alt="'Avatar ' + conv.other_user.name" class="w-12 h-12 rounded-full object-cover" :src="conv.other_user.avatar"/>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start">
+                            <span class="font-bold text-on-surface truncate mr-2">{{ conv.other_user.name }}</span>
+                            <div class="flex flex-col items-end gap-1">
+                                <span class="text-xs text-on-surface-variant">{{ conv.time }}</span>
+                                <span v-if="conv.unread_count > 0" class="w-5 h-5 bg-erreur text-white rounded-full flex items-center justify-center text-[10px] font-bold shadow-sm animate-pulse">
+                                    {{ conv.unread_count }}
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-sm truncate" :class="conv.unread_count > 0 ? 'text-primary font-bold' : 'text-on-surface-variant'">{{ conv.last_message || 'Nouvelle conversation' }}</p>
+                        <div class="mt-xs">
+                            <span class="inline-block bg-primary-container/10 text-primary-container text-[10px] px-2 py-0.5 rounded-full font-bold">{{ conv.other_user.filiere }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Right Panel: Chat Interface -->
+        <section :class="['bg-surface-carte rounded-xl shadow-sm border border-outline-variant/30 flex flex-col overflow-hidden relative', activeConversation ? 'col-span-12 md:col-span-8 flex' : 'hidden md:flex md:col-span-8']">
+            <template v-if="activeConversation">
+                <!-- Chat Top Bar -->
+                <div class="p-md flex justify-between items-center border-b border-outline-variant/20">
+                    <div class="flex items-center gap-md">
+                        <!-- Back Button for Mobile -->
+                        <button @click="activeConversation = null" class="md:hidden p-2 rounded-full hover:bg-surface-container-low text-primary mr-xs" title="Retour aux discussions">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </button>
+                        <img :alt="activeConversation.other_user.name" class="w-10 h-10 rounded-full object-cover" :src="activeConversation.other_user.avatar"/>
+                        <div>
+                            <h3 class="font-bold text-on-surface">{{ activeConversation.other_user.name }}</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-on-surface-variant">{{ activeConversation.other_user.filiere }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Messages Area -->
+                <div class="flex-1 overflow-y-auto p-md space-y-md bg-surface-fond/30" id="chat-messages" ref="messagesContainer">
+                    <div v-for="msg in messages" :key="msg.id" :class="['flex flex-col max-w-[80%]', msg.is_me ? 'items-end self-end ml-auto' : 'items-start mr-auto']">
+                        <div :class="['p-md rounded-2xl shadow-sm', msg.is_me ? 'bg-primary-container rounded-tr-none' : 'bg-surface border border-outline-variant/20 rounded-tl-none']">
+                            <p :class="['text-sm', msg.is_me ? 'text-on-primary-container' : 'text-on-surface']">{{ msg.contenu }}</p>
+                        </div>
+                        <div :class="['flex items-center gap-1 mt-1', msg.is_me ? 'mr-1' : 'ml-1']">
+                            <span class="text-[10px] text-on-surface-variant">{{ msg.time }}</span>
+                            <span v-if="msg.is_me" class="material-symbols-outlined text-[12px] text-primary" style="font-variation-settings: 'FILL' 1;">done_all</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Input Area -->
+                <div class="p-md bg-surface border-t border-outline-variant/20">
+                    <form class="flex items-center gap-md" @submit.prevent="sendMessage">
+                        <input v-model="newMessage" class="flex-1 py-3 px-md bg-surface-fond border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-container outline-none" placeholder="Écrivez votre message..." type="text"/>
+                        <button type="submit" :disabled="isSending || !newMessage.trim()" class="bg-primary-container text-white p-3 rounded-xl hover:shadow-lg transition-all active:scale-95 flex items-center justify-center disabled:opacity-50">
+                            <span v-if="isSending" class="material-symbols-outlined animate-spin" style="font-variation-settings: 'FILL' 1;">sync</span>
+                            <span v-else class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+                        </button>
+                    </form>
+                </div>
+            </template>
+            <template v-else>
+                <div class="flex-1 flex flex-col items-center justify-center text-center p-xl">
+                    <span class="material-symbols-outlined text-[64px] text-primary/20 mb-md">forum</span>
+                    <h2 class="font-titre-h3 text-titre-h3 text-on-surface mb-xs">Vos conversations</h2>
+                    <p class="text-on-surface-variant max-w-md">Sélectionnez une conversation dans le panneau de gauche pour commencer à discuter avec votre mentor ou mentoré.</p>
+                </div>
+            </template>
+        </section>
+    </div>
+</div>
+{% endverbatim %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/messagerie.js' %}"></script>
+{% endblock %}
