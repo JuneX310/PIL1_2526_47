@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Réinitialisation de mot de passe — IFRI MentorLink{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/reinitialisation.css' %}"/>
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<main class="font-corps-md text-on-background min-h-screen flex items-center justify-center p-md bg-surface-fond">
+    <!-- Main Container -->
+    <div class="w-full max-w-[440px]">
+        <!-- Brand Header (Simplified for focused task) -->
+        <div class="text-center mb-lg flex flex-col items-center">
+            <img src="{% static 'assets/logo.png' %}" alt="Logo" class="h-10 w-auto object-contain mb-2"/>
+            <h1 class="font-titre-h3 text-titre-h3 font-bold text-primary mb-2">IFRI MentorLink</h1>
+            <div class="h-1 w-12 bg-secondary-container mx-auto rounded-full"></div>
+        </div>
+        
+        <!-- Auth Card -->
+        <div class="bg-surface-carte rounded-[16px] shadow-[0px_4px_24px_rgba(12,27,84,0.06)] border border-outline-variant/30 overflow-hidden">
+            <div class="p-lg md:p-xl flex flex-col items-center">
+                <!-- Icon Header -->
+                <div class="w-16 h-16 bg-surface-container-low rounded-full flex items-center justify-center mb-md group transition-all hover:bg-surface-container">
+                    <span class="material-symbols-outlined text-[32px] text-primary transition-transform group-hover:scale-110">lock_reset</span>
+                </div>
+                
+                <!-- Text Content -->
+                <div class="text-center mb-lg">
+                    <h2 class="font-titre-h3 text-titre-h3 text-primary mb-2">Mot de passe oublié?</h2>
+                    <p class="font-corps-md text-on-surface-variant">Entrez votre email, on vous envoie un lien de réinitialisation.</p>
+                </div>
+                
+                <!-- Form -->
+                <form class="w-full space-y-md">
+                    <div class="space-y-xs">
+                        <label class="font-label-caps text-label-caps text-primary block ml-1" for="email">ADRESSE EMAIL</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">mail</span>
+                            <input class="w-full pl-11 pr-4 py-3 rounded-lg border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-primary transition-all font-corps-md placeholder:text-outline-variant outline-none" id="email" placeholder="exemple@ifri-uac.bj" type="email" required/>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-primary text-on-primary font-bouton text-bouton py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-primary-container active:scale-[0.98] transition-all shadow-md" type="submit">
+                        Envoyer le lien
+                        <span class="material-symbols-outlined text-[18px]">send</span>
+                    </button>
+                </form>
+                
+                <!-- Footer Link -->
+                <div class="mt-lg">
+                    <a class="flex items-center gap-2 text-primary font-bouton text-bouton hover:text-secondary transition-colors group" href="/accounts/connexion/">
+                        <span class="material-symbols-outlined text-[18px] transition-transform group-hover:-translate-x-1">arrow_back</span>
+                        Retour à la connexion
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Visual Decoration Footer -->
+            <div class="h-1.5 w-full bg-gradient-to-r from-primary via-secondary-container to-primary/80"></div>
+        </div>
+        
+        <!-- Academic Resource Teaser -->
+        <div class="mt-lg text-center opacity-60">
+            <p class="font-label-caps text-label-caps text-on-surface-variant flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[14px]">school</span>
+                INSTITUT DE FORMATION ET DE RECHERCHE EN INFORMATIQUE
+            </p>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/reinitialisation.js' %}"></script>
+{% endblock %}
